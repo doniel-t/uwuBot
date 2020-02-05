@@ -1,6 +1,6 @@
 function uwufy(string) {
-    var owoString = "";
-    for (var char of string) {
+    let uwuString = "";
+    for (let char of string) {
         switch (char) {
             case 'l':
                 char = 'w';
@@ -12,10 +12,9 @@ function uwufy(string) {
                 char = 'w';
                 break;
         }
-        owoString += char;
+        uwuString += char;
     }
-    owoString += " ~ uwu";
-    return owoString;
+    return uwuString + " ";
 }
 // token to login
 const token = require('botToken.json');
@@ -25,12 +24,22 @@ const bot = new Discord.Client();
 bot.on('message', (message) => {
     if (message.isMentioned(bot.user)) {
         // gets rid of <[userID]> => message.content = inputMessage of user
-        message.content = message.content.slice(message.content.indexOf(">") + 2, message.content.length);
+        let contentArgs = message.content.split(" ");
+        let returnString = "";
+        let index = 0;
+        if (message.author.bot) { return; }
+        for (let arg of contentArgs) {
+            if (index != 0) {
+                arg = uwufy(arg);
+                returnString += arg;
+            }
+            index++;
+        }
         if (message.content.startsWith("!padoru")) {
-            message.channel.send("HASHIRE SORI YOKAZE NO YOU NITSUKIMIHARA WOPADORU PADORU");
+            message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
             return;
         }
-        message.channel.send(uwufy(message.content));
+        message.channel.send(returnString);
     }
 });
 
