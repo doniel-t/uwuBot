@@ -17,6 +17,7 @@ function uwufy(string) {
     return uwuString + " ";
 }
 
+
 function uwufyMessage(message, contentArgs) {
     // gets rid of <[userID]> => message.content = inputMessage of user
     let returnString = "";
@@ -38,7 +39,7 @@ const bot = new Discord.Client();
 
 bot.on('message', (message) => {
     let contentArgs = message.content.split(" ");
-    if (contentArgs.includes("!padoru")) {
+    if (contentArgs[0] === "!padoru") {
         message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
         return;
     }
