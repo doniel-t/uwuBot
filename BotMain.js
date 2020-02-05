@@ -1,4 +1,4 @@
-const token = require('botToken.json');
+const token = require('botToken.json'); //Has DiscordToken under token.token
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const osu = require('node-osu');
@@ -10,17 +10,28 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
     parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
 });
 
-function osuRecent() {
-    
-}
-
 async function getRecent(message) {
     let contentArgs = message.content.split(" ");
+    var name;
     if (contentArgs[1] == null) {
-        return 'No User given';
+        switch (message.author.username) {
+            case "ackhack":
+                name = "ackh4ck";
+                break;
+            case "RSI > RMI > RPC":
+                name = "daninator";
+                break;
+            case "DragonHunter428":
+                name = "DH428";
+                break;
+            default:
+                return "No User given";
+            }
+    } else {
+        name = contentArgs[1];
     }
 
-    s = osuAPI.getUserRecent({ u: contentArgs[1] }).then( //osuAPI-Call
+    s = osuAPI.getUserRecent({ u: name }).then( //osuAPI-Call
         async result => { 
 
         recentScore= result[0];
@@ -39,22 +50,19 @@ async function getRecent(message) {
         if(recentScore.pp != null) {
             endMessage = endMessage .concat("\nPP:       ").concat(recentScore.pp);
         }
-        
-        // for (var mod in recentScore.mods) {
-        //     endMessage += mod.toString();
-        // }
+    
         return endMessage;
     }
-    ).catch(error => {
-        console.log(error);
+    ).catch(() => {
+        message.channel.send("Username not found");
     });
 
-    let result = await s;
+    let result = await s;   //wait for PromiseResolve
     message.channel.send(result);
 }
 
 
-function uwufy(string) {
+function uwufy(string) {    //uwu a String
     let uwuString = "";
     for (let char of string) {
         switch (char) {
@@ -74,11 +82,11 @@ function uwufy(string) {
 }
 
 
-function uwufyMessage(message, contentArgs) {
+function uwufyMessage(message, contentArgs) {   //uwu a Message
     // gets rid of <[userID]> => message.content = inputMessage of user
     let returnString = "";
     let index = 0;
-    if (message.author.bot) { return; }
+    if (message.author.bot) { return; }     //No uwu if Author is Bot himself
     for (let arg of contentArgs) {
         if (index != 0) {
             arg = uwufy(arg);
@@ -92,7 +100,7 @@ function uwufyMessage(message, contentArgs) {
 
 bot.on('message', (message) => { //Grab Message
 
-    let contentArgs = message.content.split(" ");
+    let contentArgs = message.content.split(" ");   //Split Message for simpler Access
     if (contentArgs[0] === "!padoru") {
         message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
         return;
@@ -102,10 +110,10 @@ bot.on('message', (message) => { //Grab Message
     }
 
     if(message.content.startsWith('!osu')) {        //Here all osu! related Code
-        if (contentArgs[0] === ('!osurecent')) {
+        if (contentArgs[0] === ('!osurecent')) {    //Sends last played Map passed or unpassed
             getRecent(message);
         }
     }
 });
 
-bot.login(token.token);
+bot.login(token.token); //Starts Bot
