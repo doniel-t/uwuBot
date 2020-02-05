@@ -37,12 +37,12 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 bot.on('message', (message) => {
-    if (message.isMentioned(bot.user)) {
-        let contentArgs = message.content.split(" ");
-        if (contentArgs.includes("!padoru")) {
-            message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
-            return;
-        }
+    let contentArgs = message.content.split(" ");
+    if (contentArgs.includes("!padoru")) {
+        message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
+        return;
+    }
+    if (contentArgs[0] === "!uwufy") {
         message.channel.send(uwufyMessage(message, contentArgs));
     }
 });
