@@ -1,5 +1,5 @@
 function uwufy(string) {
-    var owoString = "";
+    var uwuString = "";
     for (var char of string) {
         switch (char) {
             case 'l':
@@ -12,10 +12,10 @@ function uwufy(string) {
                 char = 'w';
                 break;
         }
-        owoString += char;
+        uwuString += char;
     }
-    owoString += " ~ uwu";
-    return owoString;
+    uwuString += " ~ uwu";
+    return uwuString;
 }
 // token to login
 const token = require('botToken.json');
