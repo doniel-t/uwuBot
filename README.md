@@ -7,3 +7,4 @@ node-osu
 require-dir
 discord.js
 nhentai-api-js
+leagueapiwrapper
