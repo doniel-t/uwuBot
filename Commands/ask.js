@@ -1,7 +1,3 @@
-const Discord = require('discord.js');
-const requireDir = require('require-dir');
-const bot = new Discord.Client();
-
 module.exports = {
     ask: function(message) {
         let randomMessage = Math.floor(Math.random() * (20 - 0 + 1));
