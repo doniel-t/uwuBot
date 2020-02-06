@@ -7,24 +7,17 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
     parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
 });
 
+const osuName = require("./getosuName.js");
+
 module.exports = {
+    
     getRecent: async function(message){
+
         let contentArgs = message.content.split(" ");
         var name;
+
         if (contentArgs[1] == null) {
-            switch (message.author.username) {
-                case "ackhack":
-                    name = "ackh4ck";
-                    break;
-                case "Human Daniel":
-                    name = "daninator";
-                    break;
-                case "DragonHunter428":
-                    name = "DH428";
-                    break;
-                default:
-                    return "No User given";
-            }
+            name = osuName.getosuName(message);
         } else {
             name = contentArgs[1];
         }
