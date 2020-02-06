@@ -10,6 +10,7 @@
   "dependencies": {
     "chai": "^4.2.0",
     "discord.js": "^11.5.1",
+    "leagueapiwrapper": "^1.1.0",
     "mocha": "^7.0.1",
     "nhentai-api-js": "^1.1.2",
     "node-osu": "^2.2.0",
@@ -24,5 +25,5 @@
     "url": "https://github.com/danieltheil/uwuBot/issues"
   },
   "homepage": "https://github.com/danieltheil/uwuBot#readme",
-  "description": ""
+  "description": "An osuAPIKey (save in ./Dependencies/osuAPIKey.json)\r An DiscordBotToken (save in ./Dependencies/botToken.json)"
 }
