@@ -22,7 +22,7 @@ bot.on('message', (message) => { //Grab Message
             osurecent.getRecent(message);
         }
         if (contentArgs[0] === '!osuplays') {
-            message.channel.send(topPlays.getTopPlays(contentArgs[1]));
+            topPlays.getTopPlays(message);
         }
     }
 });
