@@ -6,3 +6,4 @@ An DiscordBotToken (save in ./Dependencies/botToken.json)
 node-osu
 require-dir
 discord.js
+nhentai-api-js
