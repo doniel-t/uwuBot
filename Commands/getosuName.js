@@ -1,9 +1,9 @@
 module.exports = {
-    getosuName: function (message) {     //Hardcoded Names
+    getosuName: function (message) {       //Gives back a NameString 
 
         let contentArgs = message.content.split(" ");
 
-        if (contentArgs[1] == null) {
+        if (contentArgs[1] == null) {   //Hardcoded Names
             switch (message.author.username) {
                 case "ackhack":         //Discordname
                     return "ackh4ck";   //osuname
@@ -19,7 +19,7 @@ module.exports = {
             }
         }
         else {
-            return contentArgs[1];
+            return contentArgs[1];  //When Name given
         }
     }
 }

@@ -11,7 +11,7 @@ const osuName = require("./getosuName.js");
 
 module.exports = {
 
-    getRecent: async function (message) {
+    osurecent: async function (message) {   //Gets most recent Play(passed or unpassed)
 
         name = osuName.getosuName(message);
 

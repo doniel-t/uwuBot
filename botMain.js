@@ -1,30 +1,34 @@
 const token = require('./Dependencies/botToken.json'); //Has DiscordToken under token.token
 const Discord = require('discord.js');
+const requireDir = require('require-dir');
 const bot = new Discord.Client();
 
-const topPlays = require('./Commands/getUserBest.js');
-const osurecent = require('./Commands/getUserRecent.js');
-const uwufy = require('./Commands/uwufy.js');
+const commands = requireDir('./Commands');
 
 bot.on('message', (message) => { //Grab Message
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
-    if (contentArgs[0] === "!padoru") {
-        message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
-        return;
-    }
-    if (contentArgs[0] === "!uwufy") {
-        uwufy.uwufyMessage(message, contentArgs);
+
+    if (contentArgs[0].charAt(0) == '!') {   //Call Method
+
+        let command = contentArgs[0].substring(1);
+        command = command.concat('.').concat(command);
+        executeFunctionByName(command,commands,message); //Calls function
+        
+        //So you have to call the .js and your function like the command you want to execute at.
+        //Example !osurecent calls commands.osurecent.osurecent(message)
     }
 
-    if (message.content.startsWith('!osu')) { //Here all osu! related Code
-        if (contentArgs[0] === ('!osurecent')) { //Sends last played Map passed or unpassed
-            osurecent.getRecent(message);
-        }
-        if (contentArgs[0] === '!osuplays') {   //Gets Top 5 Plays
-            topPlays.getTopPlays(message);
-        }
-    }
 });
 
 bot.login(token.token); //Starts Bot
+
+function executeFunctionByName(functionName, context /*, args */) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for(var i = 0; i < namespaces.length; i++) {
+      context = context[namespaces[i]];
+    }
+    return context[func].apply(context, args);
+  }
