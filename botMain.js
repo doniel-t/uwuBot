@@ -1,14 +1,9 @@
-const token = require('botToken.json'); //Has DiscordToken under token.token
+const token = require('./Dependencies/botToken.json'); //Has DiscordToken under token.token
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const osu = require('node-osu');
-const osuAPIKey = require('osuAPIKey.json'); //Has APIKey under osuAPIKEY.key
-const osuAPI = new osu.Api(osuAPIKey.key, {
-    // baseUrl: sets the base api url (default: https://osu.ppy.sh/api)
-    notFoundAsError: true, // Throw an error on not found instead of returning nothing. (default: true)
-    completeScores: true, // When fetching scores also fetch the beatmap they are for (Allows getting accuracy) (default: false)
-    parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
-});
+
+const osurecent = require('./Commands/userRecent.js');
+const uwufy = require('./Commands/uwufy.js');
 
 bot.on('message', (message) => { //Grab Message
 
@@ -18,12 +13,12 @@ bot.on('message', (message) => { //Grab Message
         return;
     }
     if (contentArgs[0] === "!uwufy") {
-        message.channel.send(uwufyMessage(message, contentArgs));
+        uwufy.uwufyMessage(message, contentArgs);
     }
 
     if (message.content.startsWith('!osu')) { //Here all osu! related Code
         if (contentArgs[0] === ('!osurecent')) { //Sends last played Map passed or unpassed
-            getRecent(message);
+            osurecent.getRecent(message);
         }
     }
 });
