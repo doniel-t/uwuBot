@@ -1,16 +1,26 @@
 {
   "name": "discordbot",
   "version": "1.0.0",
-  "main": "uwufy.js",
+  "main": "botMain.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.2.0",
     "discord.js": "^11.5.1",
+    "mocha": "^7.0.1",
     "node-osu": "^2.2.0"
   },
   "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieltheil/uwuBot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danieltheil/uwuBot/issues"
+  },
+  "homepage": "https://github.com/danieltheil/uwuBot#readme",
   "description": ""
 }

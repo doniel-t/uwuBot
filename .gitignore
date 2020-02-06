@@ -1,1 +1,2 @@
-*.json
+Dependencies/
+node_modules/
