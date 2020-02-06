@@ -8,6 +8,7 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
 });
 
 const osuName = require("./getosuName.js");
+const parseMods = require("./parseMods.js");
 
 module.exports = {
 
@@ -26,16 +27,17 @@ module.exports = {
                 let endMessage = "Score:    ".concat(recentScore.score)
                     .concat("\nCombo:    ").concat(recentScore.maxCombo)
                     .concat("\nTitle:    ").concat(recentScore.beatmap.title)
-                    .concat("\Link:      ").concat("https://osu.ppy.sh/beatmapsets/").concat(recentScore.beatmap.beatmapSetId)
+                    .concat("\nLink:      ").concat("https://osu.ppy.sh/beatmapsets/").concat(recentScore.beatmap.beatmapSetId)
                     .concat("\nDiff:     ").concat(recentScore.beatmap.version)
                     .concat("\nStarDiff: ").concat(recentScore.beatmap.difficulty.rating)
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
-                    .concat("\nAcc:      ").concat(Acc).concat("%");;
+                    .concat("\nAcc:      ").concat(Acc).concat("%")
+                    .concat("\nMods:     ").concat(parseMods.parseMods(recentScore.mods));
 
                 if (recentScore.pp != null) {
                     endMessage = endMessage.concat("\nPP:       ").concat(recentScore.pp);
                 }
-
+                
                 return endMessage;
             }
         ).catch(() => {
