@@ -12,7 +12,7 @@ const parseMods = require("./parseMods.js");
 
 module.exports = {
 
-    osurecent: async function (message) {   //Gets most recent Play(passed or unpassed)
+    osurecent: async function(message) { //Gets most recent Play(passed or unpassed)
 
         name = osuName.getosuName(message);
 
@@ -33,11 +33,9 @@ module.exports = {
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
                     .concat("\nAcc:      ").concat(Acc).concat("%")
                     .concat("\nMods:     ").concat(parseMods.parseMods(recentScore.mods));
-
                 if (recentScore.pp != null) {
                     endMessage = endMessage.concat("\nPP:       ").concat(recentScore.pp);
                 }
-                
                 return endMessage;
             }
         ).catch(() => {
