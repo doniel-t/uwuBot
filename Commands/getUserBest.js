@@ -1,4 +1,4 @@
-const token = require('botToken.json'); //Has DiscordToken under token.token
+const token = require('../Dependencies/osuAPIKey.json'); //Has DiscordToken under token.token
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const osu = require('node-osu');
@@ -14,15 +14,17 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
 module.exports = {
     getTopPlays: async function(username) {
         let topPlays = "";
-        if (username === 'daninator') console.log("pog");
         let apiCall = osuAPI.getUserBest({ u: username }).then(async scores => {
             for (let index = 0; index < 10; index++) {
                 topPlays = topPlays.concat("Name: ").concat(scores[index].beatmap.title).concat(" Acc: ").concat(scores[index].accuracy)
                     .concat(" PP: ").concat(scores[index].pp).concat(" Link: https://osu.ppy.sh/beatmapsets/").concat(scores[index].beatmap.beatmapSetId).concat("\n");
             }
+            console.log(topPlays);
             return topPlays
+        }).catch(() => {
+            message.channel.send("Username not found");
         });
-        let topPlays = await apiCall;
-        return topPlays;
+        let result = await apiCall;
+        return result;
     }
 };

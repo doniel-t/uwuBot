@@ -23,7 +23,6 @@ bot.on('message', (message) => { //Grab Message
         }
         if (contentArgs[0] === '!osuplays') {
             message.channel.send(topPlays.getTopPlays(contentArgs[1]));
-            console.log("HAHA PEEEPE")
         }
     }
 });
