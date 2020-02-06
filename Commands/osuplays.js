@@ -10,21 +10,21 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
 const osuName = require("./getosuName.js");
 
 module.exports = {
-    getTopPlays: async function (message) {
+    osuplays: async function (message) {   //Gets Top 5 PP Plays!
+
 
         name = osuName.getosuName(message);
 
         let apiCall = osuAPI.getUserBest({ u: name }).then(async scores => {
-
+            let topPlays = "";
             for (let index = 0; index < 5; index++) {
-                topPlays = "Name: ".concat(scores[index].beatmap.title)
+                topPlays = topPlays.concat("Name: ").concat(scores[index].beatmap.title)
                     .concat(" Acc: ").concat(scores[index].accuracy * 100)
                     .concat(" PP: ").concat(scores[index].pp)
                     .concat(" Link: https://osu.ppy.sh/beatmapsets/").concat(scores[index].beatmap.beatmapSetId)
                     .concat("\n\n")
                     ;
             }
-
             return topPlays;
         }
         ).catch(() => {

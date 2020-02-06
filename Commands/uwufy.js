@@ -1,13 +1,13 @@
 
 module.exports = {
-    uwufyMessage: function(message, contentArgs) { //uwu a Message
+    uwufy: function(message, contentArgs) { //uwu a Message
         // gets rid of <[userID]> => message.content = inputMessage of user
         let returnString = "";
         let index = 0;
         if (message.author.bot) { return; } //No uwu if Author is Bot himself
         for (let arg of contentArgs) {
             if (index != 0) {
-                arg = uwufy(arg);
+                arg = uwufyS(arg);
                 returnString += arg;
             }
             index++;
@@ -16,7 +16,7 @@ module.exports = {
     }
 }
 
-function uwufy(string) { //uwu a String
+function uwufyS(string) { //uwu a String
     let uwuString = "";
     for (let char of string) {
         switch (char) {
