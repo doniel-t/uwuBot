@@ -1,7 +1,8 @@
 
 module.exports = {
-    uwufy: function(message, contentArgs) { //uwu a Message
+    uwufy: function(message) { //uwu a Message
         // gets rid of <[userID]> => message.content = inputMessage of user
+        let contentArgs = message.content.split(" "); //Split Message for simpler Access
         let returnString = "";
         let index = 0;
         if (message.author.bot) { return; } //No uwu if Author is Bot himself

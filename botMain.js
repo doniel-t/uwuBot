@@ -1,29 +1,34 @@
 const token = require('./Dependencies/botToken.json'); //Has DiscordToken under token.token
 const Discord = require('discord.js');
+const requireDir = require('require-dir');
 const bot = new Discord.Client();
 
-const osuplays = require('./Commands/osuplays.js');
-const osurecent = require('./Commands/osurecent.js');
-const uwufy = require('./Commands/uwufy.js');
-const padoru = require('./Commands/padoru.js');
+const commands = requireDir('./Commands');
 
 bot.on('message', (message) => { //Grab Message
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
-    
-    if (contentArgs[0] === "!padoru") {
-        padoru.padoru(message);
-    }
-    if (contentArgs[0] === "!uwufy") {
-        uwufy.uwufy(message, contentArgs);
-    }
-    if (contentArgs[0] === ('!osurecent')) { //Sends last played Map passed or unpassed
-        osurecent.osurecent(message);
-    }
-    if (contentArgs[0] === '!osuplays') {   //Gets Top 5 Plays
-        osuplays.osuplays(message);
+
+    if (contentArgs[0].charAt(0) == '!') {   //Call Method
+
+        let command = contentArgs[0].substring(1);
+        command = command.concat('.').concat(command);
+        executeFunctionByName(command,commands,message); //Calls function
+        
+        //So you have to call the .js and your function like the command you want to execute at.
+        //Example !osurecent calls commands.osurecent.osurecent(message)
     }
 
 });
 
 bot.login(token.token); //Starts Bot
+
+function executeFunctionByName(functionName, context /*, args */) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for(var i = 0; i < namespaces.length; i++) {
+      context = context[namespaces[i]];
+    }
+    return context[func].apply(context, args);
+  }

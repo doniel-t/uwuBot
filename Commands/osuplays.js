@@ -12,7 +12,6 @@ const osuName = require("./getosuName.js");
 module.exports = {
     osuplays: async function (message) {   //Gets Top 5 PP Plays!
 
-
         name = osuName.getosuName(message);
 
         let apiCall = osuAPI.getUserBest({ u: name }).then(async scores => {
