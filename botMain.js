@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const topPlays = require('./Commands/getUserBest.js');
-const osurecent = require('./Commands/userRecent.js');
+const osurecent = require('./Commands/getUserRecent.js');
 const uwufy = require('./Commands/uwufy.js');
 
 bot.on('message', (message) => { //Grab Message
@@ -21,7 +21,7 @@ bot.on('message', (message) => { //Grab Message
         if (contentArgs[0] === ('!osurecent')) { //Sends last played Map passed or unpassed
             osurecent.getRecent(message);
         }
-        if (contentArgs[0] === '!osuplays') {
+        if (contentArgs[0] === '!osuplays') {   //Gets Top 5 Plays
             topPlays.getTopPlays(message);
         }
     }
