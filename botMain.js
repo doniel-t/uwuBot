@@ -13,7 +13,12 @@ bot.on('message', (message) => { //Grab Message
 
         let command = contentArgs[0].substring(1);
         command = command.concat('.').concat(command);
-        executeFunctionByName(command,commands,message); //Calls function
+        try {
+          executeFunctionByName(command,commands,message); //Calls function
+        }catch(error) {
+            message.channel.send('Command not Found, use !help for help');
+        }
+        
         
         //So you have to call the .js and your function like the command you want to execute at.
         //Example !osurecent calls commands.osurecent.osurecent(message)
