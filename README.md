@@ -16,4 +16,4 @@ npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper
 - [ ] japanese translator
 - [ ] !neko
 - [ ] helptext to json format to remove fs modul
-- [ ] any way to remove require-dir
+- [ ] try to remove require-dir
