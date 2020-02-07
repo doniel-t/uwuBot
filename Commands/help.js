@@ -1,9 +1,14 @@
-const fs = require("fs");
+const file = require('../Files/helptext.json');
 
 module.exports = {
     help: function(message) {
 
-        var text = fs.readFileSync("./Files/helptext.txt").toString('utf-8'); //Read from helptext.txt
+        var textarray = file.helpList;
+        var text = '';
+
+        for (var line of textarray) {
+            text = text.concat(line).concat('\n');
+        }
 
         message.channel.send(text);
     }
