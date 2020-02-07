@@ -1,6 +1,6 @@
 const RiotAPIKey = require('../Dependencies/RiotAPIKey.json'); //Has RiotAPIKey under RiotAPIKey.key
 const leagueName = require("./getleagueName.js");
-const champions = require('./champions.json');
+const champions = require('../Files/champions.json');
 let LeagueAPI = require('leagueapiwrapper');
 LeagueAPI = new LeagueAPI(RiotAPIKey.key, Region.EUW);
 

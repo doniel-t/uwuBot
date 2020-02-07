@@ -2,21 +2,21 @@ const Discord = require('discord.js');
 
 module.exports = {
     poll: function (message) {
-        let contentArgs = message.content.split(" "); //Split Message for simpler Access
+        let contentArgs = message.content.split(";"); //Split Message for simpler Access
 
-        if (contentArgs[2] == null) {
+        if (message.content.indexOf(';') == -1) {
 
             message.react('🤷');
             message.react('👎');
             message.react('👍');
         } else {
 
-            let title = contentArgs[1];
+            let title = contentArgs[0].substring(contentArgs[0].indexOf(' '));
             var args = [];
             let counter = 0;
 
             for (var x of contentArgs) {
-                if (!(x == contentArgs[1] || x == contentArgs[0])) {
+                if (x != contentArgs[0]) {
                     args[counter] = x;
                     counter++;
                 }
