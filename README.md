@@ -18,3 +18,7 @@ npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper
 - [ ] helptext to json format to remove fs modul
 - [ ] try to remove require-dir
 - [ ] add SelfUpdate-Command for Servers
+- [ ] Error logger
+- [ ] Admincheck for log commands
+- [ ] log get
+- [ ] log delete
