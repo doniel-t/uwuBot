@@ -5,7 +5,7 @@
 
 ## Required npm modules
 ```sh
-npm install node-osu require-dir discord.js nhentai-api-js leagueapiwrapper
+npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper
 ```
 ## TODO
 - [x] TODO im Repo
@@ -15,10 +15,9 @@ npm install node-osu require-dir discord.js nhentai-api-js leagueapiwrapper
 - [ ] Strawpoll
 - [ ] japanese translator
 - [ ] !neko
-- [x] helptext to json format to remove fs modul
 - [ ] try to remove require-dir
 - [ ] add SelfUpdate-Command for Servers
-- [ ] Error logger
+- [x] Error logger
 - [ ] Admincheck for log commands
-- [ ] log get
-- [ ] log delete
+- [x] log get
+- [ ] Twitch-Emote getter

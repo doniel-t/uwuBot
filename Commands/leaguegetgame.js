@@ -1,3 +1,4 @@
+const Logger = require('../Logger.js');
 const RiotAPIKey = require('../Dependencies/RiotAPIKey.json'); //Has RiotAPIKey under RiotAPIKey.key
 const leagueName = require("./getleagueName.js");
 const champions = require('../Files/champions.json');
@@ -27,6 +28,8 @@ module.exports = {
             .catch(error => {
                 if (error.status.status_code == 404) {
                     message.channel.send('No active Game');
+                } else {
+                    Logger.log(error);
                 }
             });
     }

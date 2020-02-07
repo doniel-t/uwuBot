@@ -1,0 +1,11 @@
+List of current commands:
+!padoru                                                                        => answers your Callings for the almighty Being
+!ask <QUESTION>                                                    => answers your question with 100% accuracy
+!uwufy <MESSAGE>                                                 => uwufies your message
+!nhentai <optional: Number>                                  => gives you a link to a random(or your chosen) nhentai
+!nhentaiprint <optional: Number>                         => prints every page of a random(or your chosen) nhentai
+!osuplays <optional: osuName>                             => gives you your(or osuName's) 5 best osu plays
+!osurecent <optional: osuName>                           => gives you your (or osuName's) most recent play(passed or not passed)
+!leaguegetgame <optional: leagueName>           => gives you your (or leagueName's) current league game
+!poll <title>                                                                 => gives you a reaction poll
+!poll <title; option 1; option2>                                => gives you a poll based on your title (optional: with custom options)

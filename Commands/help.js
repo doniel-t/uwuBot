@@ -1,15 +1,14 @@
-const file = require('../Files/helptext.json');
+const Logger = require('../Logger.js');
+const fs = require('fs');
 
 module.exports = {
     help: function(message) {
-
-        var textarray = file.helpList;
-        var text = '';
-
-        for (var line of textarray) {
-            text = text.concat(line).concat('\n');
+        try {
+            var text = fs.readFileSync("./Files/helptext.txt").toString('utf-8'); //Read from helptext.txt
+        } catch(error) {
+            Logger.log(error);
         }
-
+        
         message.channel.send(text);
     }
 }

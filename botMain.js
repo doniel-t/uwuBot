@@ -2,6 +2,7 @@ const token = require('./Dependencies/botToken.json'); //Has DiscordToken under 
 const Discord = require('discord.js');
 const requireDir = require('require-dir');
 const bot = new Discord.Client();
+const Logger = require('./Logger.js');
 
 const commands = requireDir('./Commands');
 
@@ -16,12 +17,27 @@ bot.on('message', (message) => { //Grab Message
         try {
           executeFunctionByName(command,commands,message); //Calls function
         }catch(error) {
-            console.log(error);
+            Logger.log(error);
             message.channel.send('Command not Found, use !help for help');
         }
         
         //So you have to call the .js and your function like the command you want to execute at.
         //Example !osurecent calls commands.osurecent.osurecent(message)
+    }
+
+    if(contentArgs[0].startsWith('@UwU_Bot')) {
+      try {
+        if (Logger.isAdmin(message)) {
+          executeFunctionByName(contentArgs[1],Logger,message);
+        } else {
+          message.channel.send('You are not an Admin');
+        }
+        
+      }catch(error) {
+        Logger.log(error);
+        message.channel.send('Not a admin command');
+      }
+      
     }
 
 });
