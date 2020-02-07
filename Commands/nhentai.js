@@ -1,3 +1,4 @@
+const Logger = require('../Logger.js');
 const nHentaiApi = require('nhentai-api-js')
 let api = new nHentaiApi();
 
@@ -14,6 +15,7 @@ module.exports = {
             });
 
         } else {
+            Logger.log(error);
             message.channel.send("https://nhentai.net/g/".concat(contentArgs[1]));
         }
     }

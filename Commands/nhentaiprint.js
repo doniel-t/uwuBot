@@ -1,3 +1,4 @@
+const Logger = require('../Logger.js');
 const nHentaiApi = require('nhentai-api-js')
 let api = new nHentaiApi();
 
@@ -27,6 +28,7 @@ module.exports = {
                     }
 
                 }).catch(() => {
+                    Logger.log(error);
                     message.channel.send("There was a problem");
                 });
             });
@@ -48,6 +50,7 @@ module.exports = {
                 }
 
             }).catch(() => {
+                Logger.log(error);
                 message.channel.send("There was a problem");
             });
         }
