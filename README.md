@@ -5,7 +5,7 @@
 
 ## Required npm modules
 ```sh
-npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper
+npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper snoowrap
 ```
 ## TODO
 - [x] TODO im Repo
