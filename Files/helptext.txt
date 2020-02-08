@@ -9,3 +9,4 @@ List of current commands:
 !leaguegetgame <optional: leagueName>           => gives you your (or leagueName's) current league game
 !poll <title>                                                                 => gives you a reaction poll
 !poll <title; option 1; option2>                                => gives you a poll based on your title (optional: with custom options)
+!zins <startMoney> <number_of_months> <percentage>  => calculates the end money
