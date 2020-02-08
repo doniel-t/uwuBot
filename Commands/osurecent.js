@@ -41,7 +41,7 @@ module.exports = {
             }
         ).catch((error) => {
             Logger.log(error);
-            message.channel.send("Username not found");
+            message.channel.send("Username not found or this user has not played today!");
         });
 
         let result = await s; //wait for PromiseResolve
