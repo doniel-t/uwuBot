@@ -1,4 +1,3 @@
-
 module.exports = {
     uwufy: function(message) { //uwu a Message
         // gets rid of <[userID]> => message.content = inputMessage of user
@@ -29,6 +28,15 @@ function uwufyS(string) { //uwu a String
                 break;
             case 'v':
                 char = 'w';
+                break;
+            case 'L':
+                char = 'W';
+                break;
+            case 'R':
+                char = 'W';
+                break;
+            case 'V':
+                char = 'W';
                 break;
         }
         uwuString += char;
