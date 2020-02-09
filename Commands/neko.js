@@ -10,11 +10,22 @@ const redditAPI = new snoowrap({
 
 module.exports = {
     neko: function(message) {
-        redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
-            let link = submission.permalink;
-            message.channel.send("http://reddit.com" + link);
-        }).catch(error => {
-            console.log("Something went wrong!");
-        })
+        let rand = Math.random();
+        if (rand <= 0.5) {
+            redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
+                let link = submission.permalink;
+                message.channel.send("http://reddit.com" + link);
+            }).catch(error => {
+                console.log("Something went wrong!");
+            })
+        } else {
+            redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
+                let link = submission.permalink;
+                message.channel.send("http://reddit.com" + link);
+            }).catch(error => {
+                console.log("Something went wrong!");
+            })
+        }
     }
+
 }
