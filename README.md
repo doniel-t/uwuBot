@@ -14,7 +14,7 @@ npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper s
 - [ ] Nhentai digit validation
 - [ ] Strawpoll
 - [ ] japanese translator
-- [ ] !neko
+- [x] !neko
 - [ ] try to remove require-dir
 - [ ] add SelfUpdate-Command for Servers
 - [x] Error logger
