@@ -11,3 +11,5 @@ List of current commands:
 !poll <title; option 1; option2>                                => gives you a poll based on your title (optional: with custom options)
 !zins <startMoney> <number_of_months> <percentage>  => calculates the end money
 !neko                                                                           => gives you a random reddit post from the r/neko!
+!nekomimi                                                                       => gives you a random reddit post from the r/nekomimi!
+!kimono                                                                       => gives you a random reddit post from r/kimono
