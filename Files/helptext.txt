@@ -10,4 +10,4 @@ List of current commands:
 !poll <title>                                                                 => gives you a reaction poll
 !poll <title; option 1; option2>                                => gives you a poll based on your title (optional: with custom options)
 !zins <startMoney> <number_of_months> <percentage>  => calculates the end money
-!neko                                                      => gives you a random reddit post from the r/neko!
+!neko                                                                           => gives you a random reddit post from the r/neko!
