@@ -1,5 +1,7 @@
 var version = require('./Files/version.json');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var child_process = require('child_process');
+
 
 module.exports = {
     log: function (error) {
@@ -22,7 +24,7 @@ module.exports = {
 
     searchUpdate: function (message) {
 
-        var url = 'https://raw.githubusercontent.com/ackhack/uwuBot/master/Files/version.json';
+        var url = 'https://raw.githubusercontent.com/danieltheil/uwuBot/master/Files/version.json';
         var jsonFile = new XMLHttpRequest();
         jsonFile.open("GET", url, true);
         jsonFile.send();
@@ -49,10 +51,29 @@ module.exports = {
             message.channel.send('Please search for Update first');
 
         } else {
-            //ADD UPDATER HERE
-            Updateable = false;
+            child_process.exec('Updater.bat', function(_error, stdout, _stderr) {
+                message.channel.send(stdout);
+            });
+            process.exit(0);
         }
 
+    },
+
+    stop: function(message) {
+        if (stopvar) {
+            process.exit(0); 
+        } else {
+            message.channel.send("If you really want to stop the Bot call this function again within 10 sec");
+            stopvar = true;
+            setTimeout(function() {stopvar = false;},10000);
+        }
+    },
+
+    restart: function(message) {
+        child_process.exec('run.bat', function(_error, stdout, _stderr) {
+            message.channel.send(stdout);
+        });
+        process.exit(0);
     }
 }
 
@@ -61,4 +82,5 @@ var Admins = [              //Add DiscordID for AdminAccess
     '222398053703876628'    //Human Daniel
 ]
 
+var stopvar = false;
 var Updateable = false;

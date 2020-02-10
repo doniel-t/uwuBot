@@ -1,5 +1,5 @@
 Dependencies/
 node_modules/
-bot.log
+*.log
 Commands/nhentai.js
 Commands/nhentaiprint.js
