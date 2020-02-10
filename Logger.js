@@ -11,7 +11,7 @@ module.exports = {
     },
 
     isAdmin: function(message) {
-        if (message.author.id == '270929192399536138' || '222398053703876628') {
+        if (message.author.id == '270929192399536138' || message.author.id == '222398053703876628') {
             return true;
         } else {
             console.log(message.author.username + " executed an Admin command");

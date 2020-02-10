@@ -10,7 +10,6 @@ bot.on('message', (message) => { //Grab Message
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    Logger.log(message);
     if (contentArgs[0].charAt(0) == '!') { //Call Method
 
         let command = contentArgs[0].substring(1);
