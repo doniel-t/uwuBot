@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const requireDir = require('require-dir');
 const bot = new Discord.Client();
 const Logger = require('./Admin.js');
+const BotID = require('./Dependencies/BotID.json');
 
 const commands = requireDir('./Commands');
 
@@ -25,7 +26,7 @@ bot.on('message', (message) => { //Grab Message
         //Example !osurecent calls commands.osurecent.osurecent(message)
     }
 
-    if (contentArgs[0].startsWith('<@!673222512179675149>')) { //Tagging the Bot itself, can vary on different Servers
+    if (contentArgs[0].startsWith(BotID.id)) { //Tagging the Bot itself
         try {
             if (Logger.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Logger, message);

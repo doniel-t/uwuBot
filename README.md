@@ -3,12 +3,12 @@
 * An DiscordBotToken (save in ./Dependencies/botToken.json)
 * An RiotAPIKey (save in ./Dependencies/RiotAPIKey.json)
 * An RedditAPIKey (save in ./Dependencies/RedditAPI.json, search for right format)
+* A DiscordBotID (save in ./Dependencies/BotID.json)
 * Add your DiscordID to Admin.js
-* Change Tag in botMain.js
 
 ## Required npm modules
 ```sh
-npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap
+npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap xmlhttprequest
 ```
 ## TODO
 - [x] TODO im Repo
