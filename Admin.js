@@ -1,6 +1,7 @@
 var version = require('./Files/version.json');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var child_process = require('child_process');
+const { spawn } = require('child_process');
 
 
 module.exports = {
@@ -51,10 +52,12 @@ module.exports = {
             message.channel.send('Please search for Update first');
 
         } else {
-            child_process.exec('Updater.bat', function(_error, stdout, _stderr) {
-                message.channel.send(stdout);
-            });
-            process.exit(0);
+            let pro = spawn('start', ['cmd.exe','/k', 'Updater.bat'], { shell: true });
+        
+            pro.on('exit', m => {
+                console.log(m);
+                process.exit(0);
+            })
         }
 
     },
@@ -69,11 +72,15 @@ module.exports = {
         }
     },
 
-    restart: function(message) {
-        child_process.exec('run.bat', function(_error, stdout, _stderr) {
-            message.channel.send(stdout);
-        });
-        process.exit(0);
+    restart: function(_message) {
+
+        let pro2 = spawn('start', ['cmd.exe','/k', 'run.bat'], { shell: true });
+
+        pro2.on('exit', m => {
+            console.log(m);
+            process.exit(0);
+        })
+        
     }
 }
 
