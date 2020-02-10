@@ -17,8 +17,7 @@ npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_p
 - [ ] Strawpoll
 - [ ] japanese translator
 - [x] !neko
-- [ ] try to remove require-dir
-- [ ] add SelfUpdate-Command for Servers
+- [x] add SelfUpdate-Command for Servers
 - [x] Error logger
 - [x] Admincheck for log commands
 - [x] log get
