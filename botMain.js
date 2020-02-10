@@ -25,7 +25,7 @@ bot.on('message', (message) => { //Grab Message
         //Example !osurecent calls commands.osurecent.osurecent(message)
     }
 
-    if (contentArgs[0].startsWith('@UwU_Bot')) {
+    if (contentArgs[0].startsWith('<@!673222512179675149>')) {
         try {
             if (Logger.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Logger, message);
