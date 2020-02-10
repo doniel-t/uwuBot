@@ -9,27 +9,49 @@ const redditAPI = new snoowrap({
     password: apiKey.password
 });
 
+const talkedRecently = new Set();
+
 module.exports = {
     neko: function (message) {
 
-        if (Math.random() <= 0.5) {
+        if (!Logger.canspamneko()) {
+            if (talkedRecently.has(message.author.id)) {
+                message.channel.send("Wait 15 Seconds before getting typing this again. - " + message.author);
+            } else {
+                execneko(message);
 
-            redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
-                message.channel.send("http://reddit.com" + submission.permalink);
-
-            }).catch(error => {
-                Logger.log(error);
-                message.channel.send("An Error occured");
-            })
+                talkedRecently.add(message.author.id);
+                setTimeout(() => {
+                    // Removes the user from the set after a minute
+                    talkedRecently.delete(message.author.id);
+                }, 15000);
+            }
         } else {
-
-            redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
-                message.channel.send("http://reddit.com" + submission.permalink);
-
-            }).catch(error => {
-                Logger.log(error);
-                message.channel.send("An Error occured");
-            })
+            execneko(message);
         }
+
+
+    }
+}
+
+function execneko(message) {
+    if (Math.random() <= 0.5) {
+
+        redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
+            message.channel.send("http://reddit.com" + submission.permalink);
+
+        }).catch(error => {
+            Logger.log(error);
+            message.channel.send("An Error occured");
+        })
+    } else {
+
+        redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
+            message.channel.send("http://reddit.com" + submission.permalink);
+
+        }).catch(error => {
+            Logger.log(error);
+            message.channel.send("An Error occured");
+        })
     }
 }

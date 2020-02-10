@@ -12,8 +12,8 @@ module.exports = {
 
         var logFile;
         let array = fs.readdirSync('.');
-        for(var i = 0;i<array.length;i++) {
-            if(array[i].endsWith('.log')) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].endsWith('.log')) {
                 logFile = array[i];
             }
         }
@@ -24,7 +24,7 @@ module.exports = {
             message.channel.send("LogFile", { files: [logFile] });
         }
 
-        
+
     },
 
     isAdmin: function (message) {
@@ -64,7 +64,23 @@ module.exports = {
             process.exit(0);
         })
 
+    },
+
+    toogleneko: function (message) {
+
+        spamneko = !spamneko;
+
+        if (spamneko) {
+            message.channel.send("Can spam now");
+        } else {
+            message.channel.send("Cant spam now");
+        }
+    },
+
+    canspamneko: function () {
+        return spamneko;
     }
+
 }
 
 var Admins = [ //Add DiscordID for AdminAccess
@@ -72,4 +88,5 @@ var Admins = [ //Add DiscordID for AdminAccess
     '222398053703876628' //Human Daniel
 ]
 
+var spamneko = true;
 var stopvar = false;
