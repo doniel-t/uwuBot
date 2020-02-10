@@ -1,5 +1,5 @@
-var version = require('./Files/version.json');
 const { spawn } = require('child_process');
+const fs = require('fs');
 
 
 module.exports = {
@@ -8,8 +8,23 @@ module.exports = {
         console.log('\n-------------------------------------------- \n\n');
     },
 
-    get: function (message) {
-        message.channel.send("Clear Log manual", { files: ["./Bot.log"] });
+    getLogFile: function (message) {
+
+        var logFile;
+        let array = fs.readdirSync('.');
+        for(var i = 0;i<array.length;i++) {
+            if(array[i].endsWith('.log')) {
+                logFile = array[i];
+            }
+        }
+        if (logFile == null) {
+            console.log("NO LOG FILE");
+            message.channel.send("There is no LogFile");
+        } else {
+            message.channel.send("LogFile", { files: [logFile] });
+        }
+
+        
     },
 
     isAdmin: function (message) {
@@ -21,12 +36,11 @@ module.exports = {
         }
     },
 
-    update: function (message) {
+    update: function (_message) {
 
         let pro = spawn('start', ['cmd.exe', '/c', 'Updater.bat'], { shell: true });
 
         pro.on('exit', m => {
-            console.log(m);
             process.exit(0);
         })
 
@@ -47,7 +61,6 @@ module.exports = {
         let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
 
         pro2.on('exit', m => {
-            console.log(m);
             process.exit(0);
         })
 
