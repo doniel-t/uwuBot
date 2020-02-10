@@ -1,6 +1,3 @@
-const fs = require('fs');
-const LogFile = 'Bot.log';
-
 module.exports = {
     log: function(error) {
         console.log(error);
