@@ -21,3 +21,4 @@ npm install fs node-osu require-dir discord.js nhentai-api-js leagueapiwrapper s
 - [ ] Admincheck for log commands
 - [x] log get
 - [ ] Twitch-Emote getter
+- [ ] Fix NSFW-Access for !headpat 
