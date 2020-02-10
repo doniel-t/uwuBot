@@ -1,4 +1,4 @@
-const Logger = require('../Logger.js');
+const Logger = require('../Admin.js');
 const osu = require('node-osu');
 const osuAPIKey = require('../Dependencies/osuAPIKey.json'); //Has APIKey under osuAPIKEY.key
 const osuAPI = new osu.Api(osuAPIKey.key, {
@@ -29,7 +29,7 @@ module.exports = {
         }
         ).catch((error) => {
             Logger.log(error);
-            message.channel.send("Username not found");
+            message.channel.send("An Error occured");
         });
 
         let result = await apiCall;
