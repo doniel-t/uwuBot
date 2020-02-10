@@ -8,7 +8,7 @@
 
 ## Required npm modules
 ```sh
-npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap xmlhttprequest
+npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap xmlhttprequest child_process
 ```
 ## TODO
 - [x] TODO im Repo
