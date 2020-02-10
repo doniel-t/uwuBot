@@ -22,7 +22,7 @@ module.exports = {
 
     searchUpdate: function() {
 
-        var url = 'https://raw.githubusercontent.com/ackhack/uwuBot/master/Files/version';
+        var url = 'https://raw.githubusercontent.com/ackhack/uwuBot/master/Files/version.json';
         var jsonFile = new XMLHttpRequest();
         jsonFile.open("GET",url,true);
         jsonFile.send();
@@ -31,13 +31,15 @@ module.exports = {
 
         jsonFile.onreadystatechange = function() {
             if (jsonFile.readyState== 4 && jsonFile.status == 200) {
-                gitversion = jsonFile.responseText;
+                gitversion = JSON.parse(jsonFile.responseText);
             }
          }
 
-        if (version.version == gitversion) {
+        if (version.version == gitversion.version) {
             message.channel.send('Bot is up to Date');
         } else {
+            console.log(version.version);
+            console.log(gitversion);
             //RUN UPDATE HERE
         }
     }
