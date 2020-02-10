@@ -3,6 +3,8 @@
 * An DiscordBotToken (save in ./Dependencies/botToken.json)
 * An RiotAPIKey (save in ./Dependencies/RiotAPIKey.json)
 * An RedditAPIKey (save in ./Dependencies/RedditAPI.json, search for right format)
+* Add your DiscordID to Admin.js
+* Change Tag in botMain.js
 
 ## Required npm modules
 ```sh

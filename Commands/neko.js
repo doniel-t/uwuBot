@@ -1,3 +1,4 @@
+const Logger = require('../Admin.js');
 const snoowrap = require('snoowrap');
 const apiKey = require('../Dependencies/RedditAPI.json');
 const redditAPI = new snoowrap({
@@ -9,21 +10,25 @@ const redditAPI = new snoowrap({
 });
 
 module.exports = {
-    neko: function(message) {
-        let rand = Math.random();
-        if (rand <= 0.5) {
+    neko: function (message) {
+
+        if (Math.random() <= 0.5) {
+
             redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
-                let link = submission.permalink;
-                message.channel.send("http://reddit.com" + link);
+                message.channel.send("http://reddit.com" + submission.permalink);
+
             }).catch(error => {
-                console.log("Something went wrong!");
+                Logger.log(error);
+                message.channel.send("An Error occured");
             })
         } else {
+
             redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
-                let link = submission.permalink;
-                message.channel.send("http://reddit.com" + link);
+                message.channel.send("http://reddit.com" + submission.permalink);
+
             }).catch(error => {
-                console.log("Something went wrong!");
+                Logger.log(error);
+                message.channel.send("An Error occured");
             })
         }
     }
