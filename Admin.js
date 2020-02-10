@@ -21,8 +21,8 @@ module.exports = {
         }
     },
 
-    applyUpdate: function (message) {
-        
+    update: function (message) {
+
         let pro = spawn('start', ['cmd.exe', '/c', 'Updater.bat'], { shell: true });
 
         pro.on('exit', m => {
