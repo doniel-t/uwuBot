@@ -3,12 +3,12 @@ const fs = require('fs');
 
 
 module.exports = {
-    log: function (error) {
+    log: function(error) {
         console.log(error);
         console.log('\n-------------------------------------------- \n\n');
     },
 
-    getLogFile: function (message) {
+    getLogFile: function(message) {
 
         var logFile;
         let array = fs.readdirSync('.');
@@ -27,7 +27,7 @@ module.exports = {
 
     },
 
-    isAdmin: function (message) {
+    isAdmin: function(message) {
         if (Admins.includes(message.author.id)) {
             return true;
         } else {
@@ -36,7 +36,7 @@ module.exports = {
         }
     },
 
-    update: function (_message) {
+    update: function(_message) {
 
         let pro = spawn('start', ['cmd.exe', '/c', 'Updater.bat'], { shell: true });
 
@@ -46,17 +46,17 @@ module.exports = {
 
     },
 
-    stop: function (message) {
+    stop: function(message) {
         if (stopvar) {
             process.exit(0);
         } else {
             message.channel.send("If you really want to stop the Bot call this function again within 10 sec");
             stopvar = true;
-            setTimeout(function () { stopvar = false; }, 10000);
+            setTimeout(function() { stopvar = false; }, 10000);
         }
     },
 
-    restart: function (_message) {
+    restart: function(_message) {
 
         let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
 
@@ -66,7 +66,7 @@ module.exports = {
 
     },
 
-    toogleneko: function (message) {
+    toggleneko: function(message) {
 
         spamneko = !spamneko;
 
@@ -77,7 +77,7 @@ module.exports = {
         }
     },
 
-    canspamneko: function () {
+    canspamneko: function() {
         return spamneko;
     }
 
