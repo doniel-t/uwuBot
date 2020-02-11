@@ -16,7 +16,7 @@ module.exports = {
 
         if (!Logger.canspamneko()) {
             if (talkedRecently.has(message.author.id)) {
-                message.channel.send("Wait 15 Seconds before getting typing this again. - " + message.author);
+                message.channel.send("Wait 15 Seconds before typing this again. - " + message.author);
             } else {
                 execneko(message);
 
