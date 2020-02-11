@@ -3,12 +3,12 @@ const fs = require('fs');
 
 
 module.exports = {
-    log: function(error) {
+    log: function(error) {  //Only used by Program itself, is useless if called in Discord
         console.log(error);
         console.log('\n-------------------------------------------- \n\n');
     },
 
-    getLogFile: function(message) {
+    getLogFile: function(message) { //Bot will give you the current LogFile
 
         var logFile;
         let array = fs.readdirSync('.');
@@ -27,7 +27,7 @@ module.exports = {
 
     },
 
-    isAdmin: function(message) {
+    isAdmin: function(message) {    //Checks if User that called an AdminCommand is an Admin, is useless if called in Discord
         if (Admins.includes(message.author.id)) {
             return true;
         } else {
@@ -36,7 +36,7 @@ module.exports = {
         }
     },
 
-    update: function(_message) {
+    update: function(_message) {    //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
 
         let pro = spawn('start', ['cmd.exe', '/c', 'Updater.bat'], { shell: true });
 
@@ -46,7 +46,7 @@ module.exports = {
 
     },
 
-    stop: function(message) {
+    stop: function(message) {   //Stops the Bot if called twice within 10 Seconds
         if (stopvar) {
             process.exit(0);
         } else {
@@ -56,7 +56,7 @@ module.exports = {
         }
     },
 
-    restart: function(_message) {
+    restart: function(_message) {   //Restarts the Bot, will delete the LogFile until now so be careful
 
         let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
 
@@ -66,7 +66,7 @@ module.exports = {
 
     },
 
-    toggleneko: function(message) {
+    toggleneko: function(message) { //Toggles if !neko can be spammed or not
 
         spamneko = !spamneko;
 
@@ -77,7 +77,7 @@ module.exports = {
         }
     },
 
-    canspamneko: function() {
+    canspamneko: function() {   //Only here to get the Variable, is useless if called in Discord
         return spamneko;
     }
 
