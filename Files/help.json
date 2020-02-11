@@ -1,0 +1,50 @@
+{
+    "ask": {
+        "usage": "!ask <question>",
+        "does": "answers your question with 100% accuracy"
+    },
+    "dorime": {
+        "usage": "!dorime",
+        "does": "answers your Prayers"
+    },
+    "leaguegetgame": {
+        "usage": "!leaguegetgame <optional: leagueName>",
+        "does": "gives you your (or leagueName's) current league game"
+    },
+    "neko": {
+        "usage": "!neko",
+        "does": "gives you a random Post from r/neko!"
+    },
+    "osuplays": {
+        "usage": "!osuplays <optional: osuName>",
+        "does": "gives you your(or osuName's) 5 best osu plays"
+    },
+    "osurecent": {
+        "usage": "!osurecent <optional: osuName>",
+        "does": "gives you your (or osuName's) most recent Play (passed or not passed)"
+    },
+    "padoru": {
+        "usage": "!padoru",
+        "does": "answers your Callings for the almighty Being"
+    },
+    "poll1": {
+        "usage": "!poll <title>",
+        "does": "gives you a reaction poll"
+    },
+    "poll2": {
+        "usage": "!poll <title; option 1; option2>",
+        "does": "gives you a poll based on your title (optional: with custom options)"
+    },
+    "ransub": {
+        "usage": "!ransub <subreddit>",
+        "does": "gives you a random Post of the subreddit"
+    },
+    "uwufy": {
+        "usage": "!uwufy <message>",
+        "does": "uwufies your message"
+    },
+    "zins": {
+        "usage": "!zins <startMoney> <number_of_months> <percentage>",
+        "does": "calculates the end money"
+    }
+}
