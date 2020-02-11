@@ -1,4 +1,8 @@
 {
+    "AdminCommands": {
+        "usage": "|BotID| <command>",
+        "does": "will executed given command, check Admin.js for commandlist"
+    },
     "ask": {
         "usage": "!ask <question>",
         "does": "answers your question with 100% accuracy"
