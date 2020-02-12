@@ -12,7 +12,7 @@ const redditAPI = new snoowrap({
 const talkedRecently = new Set();
 
 module.exports = {
-    neko: function (message) {
+    neko: function(message) {
 
         if (!Logger.canspamneko()) {
 

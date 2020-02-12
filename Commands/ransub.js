@@ -11,9 +11,19 @@ const redditAPI = new snoowrap({
 
 module.exports = {
 
-    ransub: function (message) {
+    ransub: function(message) {
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
+
+        if (contentArgs[1] === "" || contentArgs[1] == null) {
+            redditAPI.getSubreddit('Random').getRandomSubmission().then(submission => {
+                if (submission.permalink == undefined) {
+                    message.channel.send('Reddit returned undefined (can happen for some subreddit`s, idk why)');
+                } else {
+                    message.channel.send("http://reddit.com" + submission.permalink);
+                }
+            });
+        }
 
         redditAPI.getSubreddit(contentArgs[1]).getRandomSubmission().then(submission => {
             if (submission.permalink == undefined) {

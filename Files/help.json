@@ -40,8 +40,8 @@
         "does": "gives you a poll based on your title (optional: with custom options)"
     },
     "ransub": {
-        "usage": "!ransub <subreddit>",
-        "does": "gives you a random Post of the subreddit"
+        "usage": "!ransub optional:<subreddit>",
+        "does": "gives you a random Post (of the subreddit)"
     },
     "uwufy": {
         "usage": "!uwufy <message>",
