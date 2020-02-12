@@ -1,15 +1,21 @@
 const Logger = require('../Admin.js');
-const fs = require('fs');
+const jsonFile = require('../Files/help.json');
 
 module.exports = {
-    help: function(message) {
+    help: function (message) {
         try {
-            var text = fs.readFileSync("./Files/helptext.txt").toString('utf-8'); //Read from helptext.txt
-        } catch(error) {
+            for (var com in jsonFile) {
+                var comm = jsonFile[com];
+                message.channel.send(
+                    "Command:   ".concat(com)
+                    .concat('\nUsage:           ').concat(comm.usage)
+                    .concat('\nDoes:             ').concat(comm.does)
+                    .concat("\n-----------------------------------"));
+            }
+        } catch (error) {
             Logger.log(error);
-            message.channel.send("An Error occured");
+            message.channel.send("Error in help.json");
         }
-        
-        message.channel.send(text);
+
     }
 }

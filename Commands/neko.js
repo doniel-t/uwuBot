@@ -15,9 +15,12 @@ module.exports = {
     neko: function (message) {
 
         if (!Logger.canspamneko()) {
+
             if (talkedRecently.has(message.author.id)) {
                 message.channel.send("Wait 15 Seconds before typing this again. - " + message.author);
+
             } else {
+
                 execneko(message);
 
                 talkedRecently.add(message.author.id);
@@ -29,8 +32,6 @@ module.exports = {
         } else {
             execneko(message);
         }
-
-
     }
 }
 

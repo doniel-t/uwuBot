@@ -7,30 +7,36 @@ LeagueAPI = new LeagueAPI(RiotAPIKey.key, Region.EUW);
 
 module.exports = {
 
-    leaguegetgame: async function(message) {
+    leaguegetgame: async function (message) {
 
         name = leagueName.getleagueName(message);
 
         LeagueAPI.getSummonerByName(name)
-            .then(async function(accountObject) {
+            .then(async function (accountObject) {
 
                 return await LeagueAPI.getActiveGames(accountObject);
             }).catch()
-            .then(function(activeGames) {
+            .then(function (activeGames) {
+
                 let res = 'LEAGUE GAME \n';
 
                 for (var x = 0; x < activeGames.participants.length; x++) {
-                    res = res.concat("https://euw.op.gg/summoner/userName=").concat(activeGames.participants[x].summonerName).concat(' plays as ').concat(getChamp(activeGames.participants[x].championId)).concat('\n');
+                    res = res.concat(activeGames.participants[x].summonerName).concat(' plays as ').concat(getChamp(activeGames.participants[x].championId)).concat('\n');
                 }
-
                 message.channel.send(res);
+
+
+                let opgg= "OP.GG LINKS:\n";
+
+                for (var y = 0; y < activeGames.participants.length; y++) {
+                    opgg = opgg.concat('https://euw.op.gg/summoner/userName=').concat(activeGames.participants[y].summonerName.replace(/ /g,'_')).concat('\n');
+                }
+                message.channel.send(opgg);
+
             })
             .catch(error => {
-                if (error.status.status_code == 404) {
-                    message.channel.send('No active Game');
-                } else {
-                    Logger.log(error);
-                }
+                message.channel.send('An Error occured');
+                Logger.log(error);
             });
     }
 
@@ -38,7 +44,7 @@ module.exports = {
 
 function getChamp(ID) {
     for (var champ in champions.data) {
-        eval('var c = champions.data.' + champ);
+        c = champions.data[champ];
         if (c.key == ID) {
             return c.id;
         }

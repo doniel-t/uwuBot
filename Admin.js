@@ -1,14 +1,14 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
-
+const version = require('./Files/version.json');
 
 module.exports = {
-    log: function(error) {
+    log: function(error) {  //Only used by Program itself, is useless if called in Discord
         console.log(error);
         console.log('\n-------------------------------------------- \n\n');
     },
 
-    getLogFile: function(message) {
+    getLogFile: function(message) { //Bot will give you the current LogFile
 
         var logFile;
         let array = fs.readdirSync('.');
@@ -27,7 +27,7 @@ module.exports = {
 
     },
 
-    isAdmin: function(message) {
+    isAdmin: function(message) {    //Checks if User that called an AdminCommand is an Admin, is useless if called in Discord
         if (Admins.includes(message.author.id)) {
             return true;
         } else {
@@ -36,7 +36,8 @@ module.exports = {
         }
     },
 
-    update: function(_message) {
+    update: function(_message) {    //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
+        message.channel.send("Updating now");
 
         let pro = spawn('start', ['cmd.exe', '/c', 'Updater.bat'], { shell: true });
 
@@ -46,7 +47,9 @@ module.exports = {
 
     },
 
-    stop: function(message) {
+    stop: function(message) {   //Stops the Bot if called twice within 10 Seconds
+        message.channel.send("Stoping now");
+
         if (stopvar) {
             process.exit(0);
         } else {
@@ -56,7 +59,8 @@ module.exports = {
         }
     },
 
-    restart: function(_message) {
+    restart: function(message) {   //Restarts the Bot, will delete the LogFile until now so be careful
+        message.channel.send("Restarting now");
 
         let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
 
@@ -66,7 +70,7 @@ module.exports = {
 
     },
 
-    toggleneko: function(message) {
+    toggleneko: function(message) { //Toggles if !neko can be spammed or not
 
         spamneko = !spamneko;
 
@@ -77,15 +81,19 @@ module.exports = {
         }
     },
 
-    canspamneko: function() {
+    canspamneko: function() {   //Only here to get the Variable, is useless if called in Discord
         return spamneko;
+    },
+
+    version: function(message) {    //returns current version
+        message.channel.send(version.version);
     }
 
 }
 
 var Admins = [ //Add DiscordID for AdminAccess
     '270929192399536138', //ackhack
-    '222398053703876628' //Human Daniel
+    '222398053703876628'  //Human Daniel
 ]
 
 var spamneko = true;

@@ -4,10 +4,15 @@ const requireDir = require('require-dir');
 const bot = new Discord.Client();
 const Logger = require('./Admin.js');
 const BotID = require('./Dependencies/BotID.json');
+const version = require('./Files/version.json');
 
 const commands = requireDir('./Commands');
 
-bot.on('message', (message) => { //Grab Message
+bot.on('ready', () => { //At Startup
+    bot.user.setPresence({ game: { name: 'on '+version.version }, status: 'idle' });
+});
+
+bot.on('message', (message) => { //When Message sent
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
