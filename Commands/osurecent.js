@@ -44,10 +44,14 @@ module.exports = {
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
                     .concat("\nAcc:      ").concat(Acc).concat("%");
 
-                if (!(recentScore.mods === "" || recentScore.mods == null)) {
-                    endMessage = endMessage.concat("\nMods:     ").concat(parseMods.parseMods(recentScore.mods));
+                console.log("mods:" + recentScore.mods + "y");
+
+                let parsedMods = parseMods.parseMods(recentScore.mods);
+
+                if (!(parsedMods === "" || parsedMods == null)) {
+                    endMessage = endMessage.concat("\nMods:     ").concat(parsedMods);
                 } else {
-                    endMessage = endMessage.concat("\nMods:     NM");
+                    endMessage = endMessage.concat("\nMods:     NoMod");
                 }
                 if (recentScore.pp != null) {
                     endMessage = endMessage.concat("\nPP:       ").concat(recentScore.pp);
@@ -55,7 +59,6 @@ module.exports = {
                 if (percentagePassed !== 100) {
                     endMessage = endMessage.concat("\nPassed:    ").concat(percentagePassed.toFixed(2)).concat("%");
                 }
-                console.log(percentagePassed);
                 return endMessage;
             }
         ).catch((error) => {
