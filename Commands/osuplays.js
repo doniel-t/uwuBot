@@ -11,7 +11,7 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
 const osuName = require("./getosuName.js");
 
 module.exports = {
-    osuplays: async function (message) {   //Gets Top 5 PP Plays!
+    osuplays: async function(message) { //Gets Top 5 PP Plays!
 
         name = osuName.getosuName(message);
 
@@ -22,12 +22,10 @@ module.exports = {
                     .concat(" Acc: ").concat(scores[index].accuracy * 100)
                     .concat(" PP: ").concat(scores[index].pp)
                     .concat(" Link: https://osu.ppy.sh/beatmapsets/").concat(scores[index].beatmap.beatmapSetId)
-                    .concat("\n\n")
-                    ;
+                    .concat("\n\n");
             }
             return topPlays;
-        }
-        ).catch((error) => {
+        }).catch((error) => {
             Logger.log(error);
             message.channel.send("An Error occured");
         });

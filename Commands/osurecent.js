@@ -44,7 +44,7 @@ module.exports = {
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
                     .concat("\nAcc:      ").concat(Acc).concat("%");
 
-                console.log("mods:" + recentScore.mods + "y");
+                console.log(recentScore.pp);
 
                 let parsedMods = parseMods.parseMods(recentScore.mods);
 
