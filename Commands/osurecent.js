@@ -34,6 +34,7 @@ module.exports = {
 
                 let percentagePassed = (ScoreCount / ObjectCount) * 100;
 
+
                 let endMessage = "Score:    ".concat(recentScore.score)
                     .concat("\nCombo:    ").concat(recentScore.maxCombo)
                     .concat("\nTitle:    ").concat(recentScore.beatmap.title)
@@ -41,8 +42,13 @@ module.exports = {
                     .concat("\nDiff:     ").concat(recentScore.beatmap.version)
                     .concat("\nStarDiff: ").concat(recentScore.beatmap.difficulty.rating)
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
-                    .concat("\nAcc:      ").concat(Acc).concat("%")
-                    .concat("\nMods:     ").concat(parseMods.parseMods(recentScore.mods));
+                    .concat("\nAcc:      ").concat(Acc).concat("%");
+
+                if (!(recentScore.mods === "" || recentScore.mods == null)) {
+                    endMessage = endMessage.concat("\nMods:     ").concat(parseMods.parseMods(recentScore.mods));
+                } else {
+                    endMessage = endMessage.concat("\nMods:     NM");
+                }
                 if (recentScore.pp != null) {
                     endMessage = endMessage.concat("\nPP:       ").concat(recentScore.pp);
                 }
