@@ -23,7 +23,16 @@ module.exports = {
                 recentScore = result[0];
 
                 var Acc = recentScore.accuracy * 100;
+                let ObjectCount = Number.parseInt(recentScore.beatmap.objects.normal) +
+                    Number.parseInt(recentScore.beatmap.objects.slider) +
+                    Number.parseInt(recentScore.beatmap.objects.spinner);
 
+                let ScoreCount = Number.parseInt(recentScore.counts["50"]) +
+                    Number.parseInt(recentScore.counts["100"]) +
+                    Number.parseInt(recentScore.counts["300"]) +
+                    Number.parseInt(recentScore.counts["miss"]);
+
+                let percentagePassed = (ScoreCount / ObjectCount) * 100;
 
                 let endMessage = "Score:    ".concat(recentScore.score)
                     .concat("\nCombo:    ").concat(recentScore.maxCombo)
@@ -37,6 +46,10 @@ module.exports = {
                 if (recentScore.pp != null) {
                     endMessage = endMessage.concat("\nPP:       ").concat(recentScore.pp);
                 }
+                if (percentagePassed !== 100) {
+                    endMessage = endMessage.concat("\nPassed:    ").concat(percentagePassed.toFixed(2)).concat("%");
+                }
+                console.log(percentagePassed);
                 return endMessage;
             }
         ).catch((error) => {
