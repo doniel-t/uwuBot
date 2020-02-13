@@ -23,18 +23,18 @@ module.exports = {
                     message.channel.send("http://reddit.com" + submission.permalink);
                 }
             });
+        } else {
+            redditAPI.getSubreddit(contentArgs[1]).getRandomSubmission().then(submission => {
+                if (submission.permalink == undefined) {
+                    message.channel.send('Reddit returned undefined (can happen for some subreddit`s, idk why)');
+                } else {
+                    message.channel.send("http://reddit.com" + submission.permalink);
+                }
+
+            }).catch(error => {
+                Logger.log(error);
+                message.channel.send("An Error occured");
+            })
         }
-
-        redditAPI.getSubreddit(contentArgs[1]).getRandomSubmission().then(submission => {
-            if (submission.permalink == undefined) {
-                message.channel.send('Reddit returned undefined (can happen for some subreddit`s, idk why)');
-            } else {
-                message.channel.send("http://reddit.com" + submission.permalink);
-            }
-
-        }).catch(error => {
-            Logger.log(error);
-            message.channel.send("An Error occured");
-        })
     }
 }
