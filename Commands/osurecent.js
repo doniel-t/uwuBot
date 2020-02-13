@@ -7,6 +7,7 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
     completeScores: true, // When fetching scores also fetch the beatmap they are for (Allows getting accuracy) (default: false)
     parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
 });
+const BotID = require("../Dependencies/BotID.json");
 
 const osuName = require("./getosuName.js");
 const parseMods = require("./parseMods.js");
@@ -17,9 +18,16 @@ module.exports = {
 
         name = osuName.getosuName(message);
 
+        let emojiIds = ["<:hit300:677469703798521881>", //300
+            "<:hit100:677469559875305473>", //100
+            "<:hit50:677469611725422625>", //50
+            "<:hit0:677469777274601491>" //miss
+        ];
+
+        console.log(message);
+
         s = osuAPI.getUserRecent({ u: name }).then( //osuAPI-Call
             async result => {
-
                 recentScore = result[0];
 
                 var Acc = recentScore.accuracy * 100;
@@ -34,7 +42,6 @@ module.exports = {
 
                 let percentagePassed = (ScoreCount / ObjectCount) * 100;
 
-
                 let endMessage = "Score:    ".concat(recentScore.score)
                     .concat("\nCombo:    ").concat(recentScore.maxCombo)
                     .concat("\nTitle:    ").concat(recentScore.beatmap.title)
@@ -42,13 +49,11 @@ module.exports = {
                     .concat("\nDiff:     ").concat(recentScore.beatmap.version)
                     .concat("\nStarDiff: ").concat(recentScore.beatmap.difficulty.rating)
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
-                    .concat("\nAcc:      ").concat(Acc).concat("% ")
-                    .concat(recentScore.counts["300"]).concat("x :hit300:")
-                    .concat(recentScore.counts["100"]).concat("x :hit100:")
-                    .concat(recentScore.counts["50"]).concat("x :hit50:")
-                    .concat(recentScore.counts["miss"]).concat("x :hit0:");
-
-                console.log(recentScore.pp);
+                    .concat("\nAcc:      ").concat(Acc.toFixed(2)).concat("%\n")
+                    .concat(recentScore.counts["300"]).concat(emojiIds[0] + " ")
+                    .concat(recentScore.counts["100"]).concat(emojiIds[1] + " ")
+                    .concat(recentScore.counts["50"]).concat(emojiIds[2] + " ")
+                    .concat(recentScore.counts["miss"]).concat(emojiIds[3] + " ");
 
                 let parsedMods = parseMods.parseMods(recentScore.mods);
 
