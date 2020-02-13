@@ -9,7 +9,7 @@ const version = require('./Files/version.json');
 const commands = requireDir('./Commands');
 
 bot.on('ready', () => { //At Startup
-    bot.user.setPresence({ game: { name: 'on '+version.version }, status: 'idle' });
+    bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
 });
 
 bot.on('message', (message) => { //When Message sent
