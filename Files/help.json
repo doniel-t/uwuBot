@@ -39,8 +39,8 @@
         "usage": "!poll <title; option 1; option2>",
         "does": "gives you a poll based on your title (optional: with custom options)"
     },
-    "ransub": {
-        "usage": "!ransub optional:<subreddit>",
+    "rngsub": {
+        "usage": "!rngsub optional:<subreddit>",
         "does": "gives you a random Post (of the subreddit)"
     },
     "uwufy": {
