@@ -42,7 +42,11 @@ module.exports = {
                     .concat("\nDiff:     ").concat(recentScore.beatmap.version)
                     .concat("\nStarDiff: ").concat(recentScore.beatmap.difficulty.rating)
                     .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
-                    .concat("\nAcc:      ").concat(Acc).concat("%");
+                    .concat("\nAcc:      ").concat(Acc).concat("% ")
+                    .concat(recentScore.counts["300"]).concat("x :hit300:")
+                    .concat(recentScore.counts["100"]).concat("x :hit100:")
+                    .concat(recentScore.counts["50"]).concat("x :hit50:")
+                    .concat(recentScore.counts["miss"]).concat("x :hit0:");
 
                 console.log(recentScore.pp);
 
