@@ -24,8 +24,6 @@ module.exports = {
             "<:hit0:677469777274601491>" //miss
         ];
 
-        console.log(message);
-
         s = osuAPI.getUserRecent({ u: name }).then( //osuAPI-Call
             async result => {
                 recentScore = result[0];

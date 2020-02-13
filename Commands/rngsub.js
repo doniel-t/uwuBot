@@ -11,7 +11,7 @@ const redditAPI = new snoowrap({
 
 module.exports = {
 
-    ransub: function(message) {
+    rngsub: function(message) {
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
