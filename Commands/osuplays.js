@@ -8,12 +8,10 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
     parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
 });
 
-const osuName = require("./getosuName.js");
-
 module.exports = {
     osuplays: async function(message) { //Gets Top 5 PP Plays!
 
-        name = osuName.getosuName(message);
+        name = getosuName(message);
 
         let apiCall = osuAPI.getUserBest({ u: name }).then(async scores => {
             let topPlays = "";
@@ -33,4 +31,29 @@ module.exports = {
         let result = await apiCall;
         message.channel.send(result);
     }
-};
+}
+
+function getosuName(message) {       //Gives back a NameString 
+
+    let contentArgs = message.content.split(" ");
+
+    if (contentArgs[1] == null) {   //Hardcoded Names
+        switch (message.author.username) {
+            
+            case "ackhack":         //Discordname
+                return "ackh4ck";   //osuname
+
+            case "Human Daniel":
+                return "daninator";
+
+            case "DragonHunter428":
+                return "DH428";
+
+            default:
+                return "No User given";
+        }
+    }
+    else {
+        return contentArgs[1];  //When Name given
+    }
+}

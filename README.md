@@ -7,7 +7,7 @@
 
 ## Required npm modules
 ```sh
-npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process
+npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vitalets/google-translate-api
 ```
 
 ## Installation
@@ -24,11 +24,11 @@ npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_p
 - [x] League Support
 - [x] Polls
 - [ ] Strawpoll
-- [ ] japanese translator
+- [x] japanese translator
 - [x] !neko
 - [x] add SelfUpdate-Command for Servers
 - [x] Error logger
 - [x] Admincheck for log commands
 - [x] log get
 - [ ] Twitch-Emote getter
-- [ ] !headpat 
+- [x] !headpat (included in rngsub)

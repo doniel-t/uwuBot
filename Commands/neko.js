@@ -1,13 +1,5 @@
 const Logger = require('../Admin.js');
-const snoowrap = require('snoowrap');
-const apiKey = require('../Dependencies/RedditAPI.json');
-const redditAPI = new snoowrap({
-    userAgent: 'my user-agent',
-    clientId: apiKey.clientId,
-    clientSecret: apiKey.clientSecret,
-    username: apiKey.username,
-    password: apiKey.password
-});
+const redditAPI = require('./rngsub.js');
 
 const talkedRecently = new Set();
 
@@ -38,21 +30,28 @@ module.exports = {
 function execneko(message) {
     if (Math.random() <= 0.5) {
 
-        redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
-            message.channel.send("http://reddit.com" + submission.permalink);
+        message.content = "con0 neko";
 
-        }).catch(error => {
-            Logger.log(error);
-            message.channel.send("An Error occured");
-        })
+        // redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
+        //     message.channel.send("http://reddit.com" + submission.permalink);
+
+        // }).catch(error => {
+        //     Logger.log(error);
+        //     message.channel.send("An Error occured");
+        // })
     } else {
 
-        redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
-            message.channel.send("http://reddit.com" + submission.permalink);
+        message.content = "con0 nekomimi";
 
-        }).catch(error => {
-            Logger.log(error);
-            message.channel.send("An Error occured");
-        })
+
+
+        // redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
+        //     message.channel.send("http://reddit.com" + submission.permalink);
+
+        // }).catch(error => {
+        //     Logger.log(error);
+        //     message.channel.send("An Error occured");
+        // })
     }
+    redditAPI.rngsub(message);
 }

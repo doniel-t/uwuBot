@@ -12,16 +12,18 @@ module.exports = {
 
         var logFile;
         let array = fs.readdirSync('.');
-        for (var i = 0; i < array.length; i++) {
+
+        for (var i = 0; i < array.length; i++) {    //Search for File ending on .log
             if (array[i].endsWith('.log')) {
                 logFile = array[i];
             }
         }
+
         if (logFile == null) {
             console.log("NO LOG FILE");
             message.channel.send("There is no LogFile");
         } else {
-            message.channel.send("LogFile", { files: [logFile] });
+            message.channel.send("LogFile", { files: [logFile] });  //Send File
         }
 
 
@@ -48,11 +50,13 @@ module.exports = {
     },
 
     stop: function(message) { //Stops the Bot if called twice within 10 Seconds
-        message.channel.send("Stoping now");
 
         if (stopvar) {
+
+            message.channel.send("Stoping now");
             process.exit(0);
         } else {
+
             message.channel.send("If you really want to stop the Bot call this function again within 10 sec");
             stopvar = true;
             setTimeout(function() { stopvar = false; }, 10000);
@@ -70,14 +74,14 @@ module.exports = {
 
     },
 
-    toggleneko: function(message) { //Toggles if !neko can be spammed or not
+    toggleneko: function(message) { //Toggles !neko Spamability
 
         spamneko = !spamneko;
 
         if (spamneko) {
             message.channel.send("Can spam now");
         } else {
-            message.channel.send("Cant spam now");
+            message.channel.send("Can't spam now");
         }
     },
 

@@ -7,16 +7,12 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
     completeScores: true, // When fetching scores also fetch the beatmap they are for (Allows getting accuracy) (default: false)
     parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
 });
-const BotID = require("../Dependencies/BotID.json");
-
-const osuName = require("./getosuName.js");
-const parseMods = require("./parseMods.js");
 
 module.exports = {
 
     osurecent: async function(message) { //Gets most recent Play(passed or unpassed)
 
-        name = osuName.getosuName(message);
+        name = getosuName(message);
 
         let emojiIds = ["<:hit300:677469703798521881>", //300
             "<:hit100:677469559875305473>", //100
@@ -53,7 +49,7 @@ module.exports = {
                     .concat(recentScore.counts["50"]).concat(emojiIds[2] + " ")
                     .concat(recentScore.counts["miss"]).concat(emojiIds[3] + " ");
 
-                let parsedMods = parseMods.parseMods(recentScore.mods);
+                let parsedMods = parseMods(recentScore.mods);
 
                 if (!(parsedMods === "" || parsedMods == null)) {
                     endMessage = endMessage.concat("\nMods:     ").concat(parsedMods);
@@ -75,5 +71,43 @@ module.exports = {
 
         let result = await s; //wait for PromiseResolve
         message.channel.send(result);
+    }
+}
+
+function parseMods(mods) {
+    let result = "";
+    for (let x = 0;x<mods.length;x++) {
+
+        if (mods[x] != 'FreeModAllowed' && mods[x] != 'ScoreIncreaseMods') {
+            result += mods[x] + ',';
+        }
+    }
+
+    result = result.substring(0,result.length-1);
+    return result;
+}
+
+function getosuName(message) {       //Gives back a NameString 
+
+    let contentArgs = message.content.split(" ");
+
+    if (contentArgs[1] == null) {   //Hardcoded Names
+        switch (message.author.username) {
+            
+            case "ackhack":         //Discordname
+                return "ackh4ck";   //osuname
+
+            case "Human Daniel":
+                return "daninator";
+
+            case "DragonHunter428":
+                return "DH428";
+
+            default:
+                return "No User given";
+        }
+    }
+    else {
+        return contentArgs[1];  //When Name given
     }
 }
