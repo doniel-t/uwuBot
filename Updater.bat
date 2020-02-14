@@ -1,3 +1,3 @@
 git pull origin master
-npm install
+npm update
 start cmd.exe /c ".\run.bat"
