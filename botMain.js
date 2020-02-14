@@ -21,7 +21,7 @@ bot.on('message', (message) => { //When Message sent
         let command = contentArgs[0].substring(1);
         command = command.concat('.').concat(command);
         try {
-            executeFunctionByName(command, commands, message); //Calls function
+            executeFunctionByName(command, commands, message, bot); //Calls function
         } catch (error) {
             Logger.log(error);
             message.channel.send('Command not Found, use !help for help');

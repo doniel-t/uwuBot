@@ -31,6 +31,10 @@
         "usage": "!padoru",
         "does": "answers your Callings for the almighty Being"
     },
+    "play": {
+        "usage": "!play <YT-URL>",
+        "does": "plays a YT-Video in your Channel"
+    },
     "poll1": {
         "usage": "!poll <title>",
         "does": "gives you a reaction poll"
@@ -42,6 +46,10 @@
     "rngsub": {
         "usage": "!rngsub optional:<subreddit>",
         "does": "gives you a random Post (of the subreddit)"
+    },
+    "stop": {
+        "usage": "!stop",
+        "does": "Stops the Music in your Channel"
     },
     "uwufy": {
         "usage": "!uwufy <message>",

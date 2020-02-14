@@ -1,3 +1,3 @@
 git pull origin master
-echo Finished Downloading, restarting now
+npm update
 start cmd.exe /c ".\run.bat"
