@@ -7,14 +7,14 @@
 
 ## Required npm modules
 ```sh
-npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vitalets/google-translate-api
+fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vitalets/google-translate-api ffmpeg-binaries@3.2.2-3 ytdl-core-discord
 ```
 
 ## Installation
 * Install git
 * Install node.js
 * Clone Repo to PC
-* Run npm-command above in Repo-Folder
+* Run 'npm install' in Repo-Folder
 * Extract Dependencies_Template.rar (uwuBot/Dependencies/botToken.json)
 * Fill all Dependencies
 * Start Bot with run.bat
@@ -32,3 +32,6 @@ npm install fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_p
 - [x] log get
 - [ ] Twitch-Emote getter
 - [x] !headpat (included in rngsub)
+- [x] Music
+- [ ] Minesweeper
+- [ ] 2048 Game
