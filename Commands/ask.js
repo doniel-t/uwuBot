@@ -1,7 +1,9 @@
 module.exports = {
     ask: function(message) {
-        let randomMessage = Math.floor(Math.random() * (15 - 0 + 1));
-        switch (randomMessage) {
+        switch (Math.floor(Math.random() * 16)) { //Random Message select
+            case 0:
+                message.channel.send("So it would seem.");
+                break;
             case 1:
                 message.channel.send("As I see it, yes.");
                 break;

@@ -1,6 +1,5 @@
 const Logger = require('../Admin.js');
 const RiotAPIKey = require('../Dependencies/RiotAPIKey.json'); //Has RiotAPIKey under RiotAPIKey.key
-const leagueName = require("./getleagueName.js");
 const champions = require('../Files/champions.json');
 let LeagueAPI = require('leagueapiwrapper');
 LeagueAPI = new LeagueAPI(RiotAPIKey.key, Region.EUW);
@@ -9,7 +8,7 @@ module.exports = {
 
     leaguegetgame: async function (message) {
 
-        name = leagueName.getleagueName(message);
+        name = getleagueName(message);
 
         LeagueAPI.getSummonerByName(name)
             .then(async function (accountObject) {
@@ -48,5 +47,32 @@ function getChamp(ID) {
         if (c.key == ID) {
             return c.id;
         }
+    }
+}
+
+function getleagueName(message) { //Gives back a NameString 
+
+    let contentArgs = message.content.split(" ");
+
+    if (contentArgs[1] == null) { //Hardcoded Names
+        switch (message.author.username) {
+
+            case "ackhack": //Discordname
+                return "ackhack"; //leaguename
+
+            case "Human Daniel":
+                return "Epicly Bad Gamer";
+
+            case "LeftDoge":
+                return "JohnTheVirtuoso";
+
+            case "HST_Tutorials":
+                return "HST KZSZ";
+
+            default:
+                return "No User given";
+        }
+    } else {
+        return contentArgs[1]; //When Name given
     }
 }

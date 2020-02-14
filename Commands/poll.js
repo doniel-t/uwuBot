@@ -4,32 +4,32 @@ module.exports = {
     poll: function (message) {
         let contentArgs = message.content.split(";"); //Split Message for simpler Access
 
-        if (message.content.indexOf(';') == -1) {
+        if (message.content.indexOf(';') == -1) {   //If no ; is given do React Poll
 
             message.react('🤷');
             message.react('👎');
             message.react('👍');
         } else {
 
-            let title = contentArgs[0].substring(contentArgs[0].indexOf(' '));
+            let title = contentArgs[0].substring(contentArgs[0].indexOf(' '));  //Get Title
             var args = [];
             let counter = 0;
 
-            for (var x of contentArgs) {
+            for (var x of contentArgs) {  //Get Answers excludeding contentArgs[0] becuase its the Title
                 if (x != contentArgs[0]) {
                     args[counter] = x;
                     counter++;
                 }
             }
 
-            const Embed = new Discord.RichEmbed().setTitle(title);
+            const Embed = new Discord.RichEmbed().setTitle(title);  //Build an Embeded Message
 
             for (var p = 0; p < args.length; p++) {
                 Embed.addField(getEmote(p) + ' ' + args[p], '----');
             }
 
             message.channel.send(Embed).then(function (answer) {
-                for (var o = 0; o < args.length; o++) {
+                for (var o = 0; o < args.length; o++) { //Reacts to message with Emojis
                     answer.react(getEmote(o));
                 }
             });
@@ -37,7 +37,7 @@ module.exports = {
     }
 }
 
-function getEmote(number) {
+function getEmote(number) { //Returns an Emoji
     switch (number) {
         case 0:
             return '0️⃣';

@@ -31,7 +31,7 @@ bot.on('message', (message) => { //When Message sent
         //Example !osurecent calls commands.osurecent.osurecent(message)
     }
 
-    if (contentArgs[0].startsWith(BotID.id)) { //Tagging the Bot itself
+    if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
         try {
             if (Logger.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Logger, message);
