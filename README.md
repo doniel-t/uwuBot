@@ -7,7 +7,7 @@
 
 ## Required npm modules
 ```sh
-fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vitalets/google-translate-api ffmpeg-binaries@3.2.2-3 ytdl-core-discord
+fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vitalets/google-translate-api ffmpeg-binaries@3.2.2-3 ffmpeg-static ytdl-core-discord @discord.js/opus
 ```
 
 ## Installation
