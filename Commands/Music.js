@@ -1,4 +1,5 @@
-const ytdl = require('ytdl-core-discord');
+const ytdldc = require('ytdl-core-discord');
+const ytdl = require('ytdl-core');
 const Logger = require('../Admin.js');
 
 //This file is not reachable through Commands-only, method must be called through corresponded .js
@@ -62,14 +63,13 @@ function join(message, bot) { //Joins VoiceChannel of Caller
 
     dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID).join().then(connection => {
 
+        Musicconnection = connection;
         inChannel = true;
         playyt(connection, MusicQueue.pop()).then(dispatcher => { //Has to be called here so the Promise is returned
 
             Musicdispatcher = dispatcher;
 
             dispatcher.on('end', () => {
-
-                Musicconnection = connection;
 
                 if (MusicQueue.length > 0) {
                     playSong();
@@ -78,24 +78,33 @@ function join(message, bot) { //Joins VoiceChannel of Caller
                     stop();
                 }
             })
-        }) 
+        })
     });
 }
 
-function play(message, bot) { //Adds Music to Queue and starts Playing if not playing already
-
-    let Pos = MusicQueue.length + 1;
+async function play(message, bot) { //Adds Music to Queue and starts Playing if not playing already
 
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
-        message.channel.send("Added Song to Queue at Position " + Pos);
-        MusicQueue.push(message.content.substring(6));
+        var Link = message.content.substring(6);
 
-        if (MusicQueue.length == 1) {
-            if (!inChannel) {
-                join(message, bot);
+        ytdl.getBasicInfo(Link).then(info => {  //If no Info is given, it isnt a Video
+            MusicQueue.push(Link);
+
+            if (Musicdispatcher != undefined) {
+                if (Musicdispatcher.time != 0) {
+                    message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
+                }
             }
-        }
+
+            if (MusicQueue.length == 1) {
+                if (!inChannel) {
+                    join(message, bot);
+                }
+            }
+        }).catch(() => {
+            message.channel.send('Not a valid Link');
+        })
     } else {
         message.channel.send('Please join a VoiceChannel');
     }
@@ -123,9 +132,9 @@ function next() {       //Ends current Song
 
 async function playyt(connection, url) {    //Plays the URL
     try {
-        var YTStream = await ytdl(url); 
-    } catch(error) {
+        var YTStream = await ytdldc(url);
+    } catch (error) {
         Logger.log(error);
     }
-    return connection.playOpusStream(YTStream);  
+    return connection.playOpusStream(YTStream);
 }
