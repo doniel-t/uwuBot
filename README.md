@@ -13,8 +13,7 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 ## Installation
 * Install git
 * Install node.js
-* Clone Repo to PC
-* Run 'npm install' in Repo-Folder
+* Run Installer.bat
 * Extract Dependencies_Template.rar (uwuBot/Dependencies/botToken.json)
 * Fill all Dependencies
 * Start Bot with run.bat
