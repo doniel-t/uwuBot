@@ -1,4 +1,4 @@
-const Player = require('./play');
+const Music = require('./Music.js');
 
 module.exports = {
     dorime: function (message,bot) { //Plays dorime. in Voicechannel
@@ -6,6 +6,6 @@ module.exports = {
         message.channel.send("Dorime\nInterimo, adapare Dorime \nAmeno Ameno Latire \nLatiremo \nDorime.. ");
 
         message.content = 'https://www.youtube.com/watch?v=zQ4LiyFF8RU';
-        Player.play(message,bot);
+        Music.play(message,bot);
     }
 }
