@@ -62,14 +62,13 @@ function join(message, bot) { //Joins VoiceChannel of Caller
 
     dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID).join().then(connection => {
 
+        Musicconnection = connection;
         inChannel = true;
         playyt(connection, MusicQueue.pop()).then(dispatcher => { //Has to be called here so the Promise is returned
 
             Musicdispatcher = dispatcher;
 
             dispatcher.on('end', () => {
-
-                Musicconnection = connection;
 
                 if (MusicQueue.length > 0) {
                     playSong();
@@ -78,18 +77,20 @@ function join(message, bot) { //Joins VoiceChannel of Caller
                     stop();
                 }
             })
-        }) 
+        })
     });
 }
 
 function play(message, bot) { //Adds Music to Queue and starts Playing if not playing already
 
-    let Pos = MusicQueue.length + 1;
-
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
-        message.channel.send("Added Song to Queue at Position " + Pos);
         MusicQueue.push(message.content.substring(6));
+        if (Musicdispatcher != undefined) {
+            if (Musicdispatcher.time != 0) {
+                message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
+            }
+        }
 
         if (MusicQueue.length == 1) {
             if (!inChannel) {
@@ -123,9 +124,9 @@ function next() {       //Ends current Song
 
 async function playyt(connection, url) {    //Plays the URL
     try {
-        var YTStream = await ytdl(url); 
-    } catch(error) {
+        var YTStream = await ytdl(url);
+    } catch (error) {
         Logger.log(error);
     }
-    return connection.playOpusStream(YTStream);  
+    return connection.playOpusStream(YTStream);
 }
