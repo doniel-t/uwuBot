@@ -88,7 +88,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         var Link = message.content.substring(6);
 
-        ytdl.getBasicInfo(Link).then(info => {  //If no Info is given, it isnt a Video
+        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
             MusicQueue.push(Link);
 
             if (Musicdispatcher != undefined) {
@@ -116,6 +116,8 @@ function stop() {       //Stops Music, cleares Queue and leaves Channel
     inChannel = false;
     dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID).leave();
     ogmessage = undefined;
+    Musicdispatcher = undefined;
+    Musicconnection = undefined;
 }
 
 function pause() {      //Stops Music, remains Queue and stays in Channel
