@@ -34,3 +34,5 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] Music
 - [ ] Minesweeper
 - [ ] 2048 Game
+- [ ] Hangman
+- [ ] RiotAPIKey replenish
