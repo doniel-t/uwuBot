@@ -29,10 +29,9 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] Error logger
 - [x] Admincheck for log commands
 - [x] log get
-- [ ] Twitch-Emote getter
 - [x] !headpat (included in rngsub)
 - [x] Music
 - [ ] Minesweeper
 - [ ] 2048 Game
-- [ ] Hangman
+- [x] Hangman
 - [ ] RiotAPIKey replenish

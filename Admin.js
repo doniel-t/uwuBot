@@ -13,7 +13,7 @@ module.exports = {
         var logFile;
         let array = fs.readdirSync('.');
 
-        for (var i = 0; i < array.length; i++) {    //Search for File ending on .log
+        for (var i = 0; i < array.length; i++) { //Search for File ending on .log
             if (array[i].endsWith('.log')) {
                 logFile = array[i];
             }
@@ -23,7 +23,7 @@ module.exports = {
             console.log("NO LOG FILE");
             message.channel.send("There is no LogFile");
         } else {
-            message.channel.send("LogFile", { files: [logFile] });  //Send File
+            message.channel.send("LogFile", { files: [logFile] }); //Send File
         }
 
 
@@ -63,8 +63,7 @@ module.exports = {
         }
     },
 
-    restart: function(message) { //Restarts the Bot, will delete the LogFile until now so be careful
-        message.channel.send("Restarting now");
+    restart: function() { //Restarts the Bot, will delete the LogFile until now so be careful
 
         let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
 
