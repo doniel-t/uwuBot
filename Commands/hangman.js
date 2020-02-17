@@ -34,18 +34,21 @@ var listener = function(inputLetter) { //Controls game state
     if (inputLetter.channel == ogMessage.channel) {
         if (inputLetter.content.length === 1) {
             checkLetter(inputLetter.content);
-            ogMessage.channel.send(hiddenMessage + " tries left" + hp);
+            ogMessage.channel.send(hiddenMessage + " 11tries left" + hp);
             if (hp === 0) {
-                ogMessage.channel.send("You lose xD");
+                ogMessage.channel.send("You lose xD " + inputWord);
+                hp = 7;
                 dcBot.removeListener('message', listener);
             }
             if (hiddenMessage === inputWord) {
-                ogMessage.channel.send("You won!");
+                ogMessage.channel.send("You won! " + inputWord);
+                hp = 7;
                 dcBot.removeListener('message', listener);
             }
         }
         if (inputLetter.content === inputWord) {
-            ogMessage.channel.send("You won!");
+            ogMessage.channel.send("You won! " + inputWord);
+            hp = 7;
             dcBot.removeListener('message', listener);
         }
     }
