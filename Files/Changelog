@@ -2,7 +2,7 @@
     -Refractored Files
     -Moved log to Logger.js
     -Moved Admin into Commands
-    -Moved Dependencies_Template.rar / Installer.bat / Updater.bat / README.md into ./Files
+    -Moved Dependencies_Template.rar / Installer.bat / Updater.bat into ./Files
     -Added Comments in botMain and hangman
     -Added Changelog
 
