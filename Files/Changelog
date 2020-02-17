@@ -5,6 +5,7 @@
     -Moved Dependencies_Template.rar / Installer.bat / Updater.bat into ./Files
     -Added Comments in botMain and hangman
     -Added Changelog
+    -Fixed hangman not resetting HP
 
 1.4.1: 17.02.2020
     -Added HP Feedback to Hangman messages
