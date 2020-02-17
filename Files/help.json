@@ -23,6 +23,10 @@
         "usage": "!leaguegetgame <optional: leagueName>",
         "does": "gives you your (or leagueName's) current league game"
     },
+    "minesweeper": {
+        "usage": "!minesweeper <FieldSize> <BombNumber>",
+        "does": "creates a Game of Minesweeper, the Field has FieldSize² Squares"
+    },
     "neko": {
         "usage": "!neko",
         "does": "gives you a random Post from r/neko!"

@@ -35,7 +35,7 @@ bot.on('message', (message) => { //When Message sent
     if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
         try {
             if (Admin.isAdmin(message)) {
-                executeFunctionByName(contentArgs[1], Logger, message);
+                executeFunctionByName(contentArgs[1], Admin, message);
             } else {
                 message.channel.send('You are not an Admin');
             }
