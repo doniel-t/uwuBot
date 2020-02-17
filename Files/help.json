@@ -24,8 +24,8 @@
         "does": "gives you your (or leagueName's) current league game"
     },
     "minesweeper": {
-        "usage": "!minesweeper <FieldSize> <BombNumber>",
-        "does": "creates a Game of Minesweeper, the Field has FieldSize² Squares"
+        "usage": "!minesweeper <FieldSize/stop> <BombNumber>",
+        "does": "creates a Game of Minesweeper with FieldSize² Squares or stops current game"
     },
     "neko": {
         "usage": "!neko",

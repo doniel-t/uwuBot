@@ -2,7 +2,7 @@ var dcbot;
 var ogmessage;
 var GameField;
 var gamemessage;
-var numberChecked = 0;
+var numberRevealed = 0;
 var GameSize;
 var GameBombs;
 
@@ -16,6 +16,28 @@ function minesweeper(message, bot) {    //Starts the Game
     dcbot = bot;
     ogmessage = message;
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
+
+    if (contentArgs[1] == 'stop') { //StopFunction
+        gamemessage.channel.send('Minesweeper was stopped');
+        stop();
+        return;
+    }
+    if (contentArgs[1] > 9) {
+        ogmessage.channel.send('Field too big, only a max of 9 is supported');
+        return;
+    }
+    if (contentArgs[1] < 1 || contentArgs[2] < 1) {
+        ogmessage.channel.send('Please dont use negative numbers');
+        return;
+    }
+    if (isNaN(contentArgs[1] || isNaN(contentArgs[2]))) {
+        ogmessage.channel.send('Please enter numbers');
+        return;
+    }
+    if (contentArgs[2] >= contentArgs[1] * contentArgs[1]) {
+        ogmessage.channel.send('Too Many Bombs');
+        return;
+    }
 
     randomize(contentArgs[1], contentArgs[2]); //Sets up GameField
 
@@ -119,15 +141,12 @@ class Field {
         this.isBomb = false;
         this.points = 0;
         this.isRevealed = false;
+        this.checked = false;
     }
 }
 
 function letterToNumber(letter) {   //A->0 B->1 C->3
     return letter.toLowerCase().charCodeAt(0) - 97;
-}
-
-function numberToLetter(number) {   //Reverse of letterToNumber
-    return String.fromCharCode(65 + number);
 }
 
 var listener = function (guess) {   //Processes Answers
@@ -146,38 +165,17 @@ var listener = function (guess) {   //Processes Answers
                     if (GameField[h][w].isBomb) {//GAME LOST
 
                         gamemessage.channel.send('You stepped on a Bomb');
-                        updateField(true);
-                        dcbot.removeListener('message', listener);
-                        dcbot = undefined;
-                        ogmessage = undefined;
-                        GameField = undefined;
-                        gamemessage = undefined;
-                        numberChecked = 0;
-                        GameSize = undefined;
-                        GameBombs = undefined;
+                        stop();
 
                     } else {    //Reveal Field
 
-                        console.log(GameField[h][w].points);
-                        GameField[h][w].isRevealed = true;
-                        numberChecked++;
-
+                        revealField(h, w);
                         updateField(false);
 
-                        if (numberChecked == GameSize * GameSize - GameBombs) {   //GAME WON
-
+                        if (numberRevealed == GameSize * GameSize - GameBombs) {   //GAME WON
                             gamemessage.channel.send('You won the Game');
-                            updateField(true);
-                            dcbot.removeListener('message', listener);
-                            dcbot = undefined;
-                            ogmessage = undefined;
-                            GameField = undefined;
-                            gamemessage = undefined;
-                            numberChecked = 0;
-                            GameSize = undefined;
-                            GameBombs = undefined;
+                            stop();
                         }
-
                     }
                 } else {//ALREADY CHECKED
                     ogmessage.channel.send('Already checked that Field').then(check => {
@@ -187,6 +185,29 @@ var listener = function (guess) {   //Processes Answers
             }
         }
     }
+}
+
+function revealField(h, w) {    //Reveals a Field and if its 0 it reveals its Neighbours
+    try {
+        GameField[h][w].isRevealed = true;
+
+        if (!GameField[h][w].checked) {
+            GameField[h][w].checked = true;
+            numberRevealed++;
+            if (GameField[h][w].points == 0) {
+
+                revealField(h + 1, w + 1);
+                revealField(h + 1, w);
+                revealField(h + 1, w - 1);
+                revealField(h, w + 1);
+                revealField(h, w - 1);
+                revealField(h - 1, w + 1);
+                revealField(h - 1, w);
+                revealField(h - 1, w - 1);
+            }
+        }
+
+    } catch (ignored) { }
 }
 
 function getIcon(FieldIcon, revAll) {   //Gets Icon to show in Message
@@ -205,13 +226,13 @@ function updateField(isFinished) {    //Updates the Message containing the GameF
     let FieldMessage = 'Minesweeper \n\n\n⬛';
 
     for (let i3 = 0; i3 < GameSize; i3++) { //First Row with A B C
-        FieldMessage = FieldMessage.concat(getEmoteLetter(i3)).concat(' ');
+        FieldMessage = FieldMessage.concat(getEmoteNumber(i3 + 1)).concat(' ');
     }
     FieldMessage = FieldMessage.concat('\n');
 
     for (let i1 = 0; i1 < GameSize; i1++) {
 
-        var row = getEmoteNumber(i1 + 1); //Numbers on the Left
+        var row = getEmoteLetter(i1); //Numbers on the Left
         for (let i2 = 0; i2 < GameSize; i2++) {
             row = row.concat(getIcon(GameField[i1][i2], isFinished)).concat(' ');
         }
@@ -243,6 +264,8 @@ function getEmoteNumber(number) { //Returns an Emoji
             return '8️⃣';
         case 9:
             return '9️⃣';
+        case 10:
+            return '0️⃣';
 
         default:
             return '👍';
@@ -274,4 +297,16 @@ function getEmoteLetter(letter) { //Returns an Emoji
         default:
             return '👍';
     }
+}
+
+function stop() {   //Stops the Game
+    updateField(true);
+    dcbot.removeListener('message', listener);
+    dcbot = undefined;
+    ogmessage = undefined;
+    GameField = undefined;
+    gamemessage = undefined;
+    numberRevealed = 0;
+    GameSize = undefined;
+    GameBombs = undefined;
 }
