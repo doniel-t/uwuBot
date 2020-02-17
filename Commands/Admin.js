@@ -3,11 +3,7 @@ const fs = require('fs');
 const version = require('./Files/version.json');
 
 module.exports = {
-    log: function(error) { //Only used by Program itself, is useless if called in Discord
-        console.log(error);
-        console.log('\n-------------------------------------------- \n\n');
-    },
-
+    
     getLogFile: function(message) { //Bot will give you the current LogFile
 
         var logFile;
@@ -41,7 +37,7 @@ module.exports = {
     update: function(message) { //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
         message.channel.send("Updating now");
 
-        let pro = spawn('start', ['cmd.exe', '/c', 'Updater.bat'], { shell: true });
+        let pro = spawn('start', ['cmd.exe', '/c', './Files/Updater.bat'], { shell: true });
 
         pro.on('exit', m => {
             process.exit(0);

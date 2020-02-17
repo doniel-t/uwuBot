@@ -2,7 +2,8 @@ const token = require('./Dependencies/botToken.json'); //Has DiscordToken under 
 const Discord = require('discord.js');
 const requireDir = require('require-dir');
 const bot = new Discord.Client();
-const Logger = require('./Admin.js');
+const Logger = require("./Logger.js");
+const Admin = require('./Commands/Admin.js');
 const BotID = require('./Dependencies/BotID.json');
 const version = require('./Files/version.json');
 
@@ -33,7 +34,7 @@ bot.on('message', (message) => { //When Message sent
 
     if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
         try {
-            if (Logger.isAdmin(message)) {
+            if (Admin.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Logger, message);
             } else {
                 message.channel.send('You are not an Admin');
@@ -50,7 +51,7 @@ bot.on('message', (message) => { //When Message sent
 
 bot.login(token.token); //Starts Bot
 
-function executeFunctionByName(functionName, context /*, args */ ) {
+function executeFunctionByName(functionName, context /*, args */ ) {    //Executes functionName at context with args
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
     var func = namespaces.pop();
