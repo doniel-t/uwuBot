@@ -1,4 +1,4 @@
-const Logger = require('../Admin.js');
+const Logger = require("./Logger.js");
 const RiotAPIKey = require('../Dependencies/RiotAPIKey.json'); //Has RiotAPIKey under RiotAPIKey.key
 const champions = require('../Files/champions.json');
 let LeagueAPI = require('leagueapiwrapper');

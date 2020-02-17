@@ -1,4 +1,4 @@
-const Logger = require('../Admin.js');
+const Logger = require("./Logger.js");
 const snoowrap = require('snoowrap');
 const apiKey = require('../Dependencies/RedditAPI.json');
 const redditAPI = new snoowrap({

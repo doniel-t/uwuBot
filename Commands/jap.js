@@ -1,4 +1,4 @@
-const Logger = require('../Admin.js');
+const Logger = require("./Logger.js");
 const translate = require('@vitalets/google-translate-api');
 
 module.exports = {

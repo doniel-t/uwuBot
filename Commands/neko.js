@@ -1,4 +1,4 @@
-const Logger = require('../Admin.js');
+const Logger = require("./Logger.js");
 const redditAPI = require('./rngsub.js');
 
 const talkedRecently = new Set();
@@ -28,30 +28,11 @@ module.exports = {
 }
 
 function execneko(message) {
+    
     if (Math.random() <= 0.5) {
-
         message.content = "con0 neko";
-
-        // redditAPI.getSubreddit("neko").getRandomSubmission().then(submission => {
-        //     message.channel.send("http://reddit.com" + submission.permalink);
-
-        // }).catch(error => {
-        //     Logger.log(error);
-        //     message.channel.send("An Error occured");
-        // })
     } else {
-
         message.content = "con0 nekomimi";
-
-
-
-        // redditAPI.getSubreddit("nekomimi").getRandomSubmission().then(submission => {
-        //     message.channel.send("http://reddit.com" + submission.permalink);
-
-        // }).catch(error => {
-        //     Logger.log(error);
-        //     message.channel.send("An Error occured");
-        // })
     }
     redditAPI.rngsub(message);
 }

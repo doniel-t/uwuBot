@@ -1,4 +1,4 @@
-const Logger = require('../Admin.js');
+const Logger = require("./Logger.js");
 const jsonFile = require('../Files/help.json');
 
 module.exports = {

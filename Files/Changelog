@@ -1,0 +1,185 @@
+1.4.2: 17.02.2020
+    -Refractored Files
+    -Moved log to Logger.js
+    -Moved Admin into Commands
+    -Moved Dependencies_Template.rar / Installer.bat / Updater.bat / README.md into ./Files
+    -Added Comments in botMain and hangman
+    -Added Changelog
+
+1.4.1: 17.02.2020
+    -Added HP Feedback to Hangman messages
+
+1.4.0: 17.02.2020
+    -Updated README.md
+    -Removed message Parameter from Admin.restart
+    -Added hangman Command
+    -Changed japs to jap
+    -Added shutdown Command
+    -Added hangman / jap / next / pause / resume / shutdown to help.json
+    -Changed run.bat so LogFile will work if Time is SingleDigit
+
+1.3.6: 16.02.2020
+    -Updated README.md    
+    -Cleared Musicdispatcher and Musicconnection when Bot leaves VoiceChannel
+    -Removed ReturnParameter in ytdl.getBasicInfo
+
+1.3.5: 15.02.2020
+    -Added LinkValidation in Music.play
+
+1.3.4: 15.02.2020
+    -Updated README.md
+    -Added Installer.bat
+
+1.3.3: 15.02.2020
+    -Added Translator English -> Japanese
+    -Added ffmpeg-static and @discord.js/opus to modules
+
+1.3.2: 15.02.2020
+    -Fixed Updater not working
+
+1.3.1: 15.02.2020
+    -Moved MusicCommands to Music.js
+    -Added next Command
+    -Added pause Command
+    -Added resume Command
+
+1.3.0: 14.02.2020
+    -Updated README.md
+    -Added play Command
+    -Added stop Command
+    -Added Music to dorime and padoru
+    -Added play and stop to help.json
+    -Updated Updater.bat to get new npm modules
+    -Added bot as Parameter in botMain
+    -Added Modules: @discordjs/uws / ffmpeg-binaries / ytdl-core-discord
+
+1.2.0: 14.02.2020
+    -Updated README.md
+    -Refractored Files
+    -Added japs Command
+    -Moved getosuName into both osuFiles
+    -Moved getleagueName into leaguegetgame
+    -Moved parseMods into osurecent.json
+    -Added Comments in rngsub and poll
+    -Added module @vitalets/google-translate-api
+    -Changed BotStatus to online
+
+1.1.11: 13.02.2020
+    -Renamed ransub to rngsub in help.json
+    -Changed rngsub
+
+1.1.10: 13.02.2020
+    -Removed consol.log in osurecent
+    -Renamed ransub to rngsub
+
+1.1.9: 13.02.2020
+    -Changed Emojis in osurecent
+
+1.1.8: 13.02.2020
+    -Added Emojis in osurecent
+
+1.1.7: 12.02.2020
+    -Cleaned osuplay
+    -Changed osurecent
+
+1.1.6: 12.02.2020
+    -Show NoMod instead of NM
+
+1.1.5: 12.02.2020
+    -Show NM if parseMods returns nothing in osurecent
+
+1.1.4: 12.02.2020
+    -Added Percentage Cleared in osurecent
+
+1.1.3: 12.02.2020
+    -Fixed Admin.update
+
+1.1.2: 12.02.2020
+    -Added random Selection in ransub if no Subreddit was given
+
+1.1.1: 12.02.2020
+    -Refractored README.md
+
+1.1.0: 12.02.2020
+    -Added Comments in Admin.js
+    -Added Admin.version Command
+    -Changed help.js to use help.json
+    -Refractored helptext.txt to help.json
+    -Added versionDisplay on DiscordPresence
+    -Added ransub Command
+    -Fixed OP.GG Links in leaguegetgame
+    -Removed eval in leaguegetgame
+    -Added Dependencies_Template.rar
+
+1.0.10: 11.02.2020
+    -Fixed Typo in neko.js
+
+1.0.9: 11.02.2020
+    -Updated README.md
+    -Fixed Typo in Admin.toggleneko
+    -Added SpamProtection to neko Command
+    -Changed get to getLogFile Command
+
+1.0.8: 10.02.2020
+    -Fixed Updater.bat
+
+1.0.7: 10.02.2020
+    -Updated README.md
+    -Changed Updater.bat
+    -Removed Admin.searchUpdate
+    -Changed Admin.applyUpdate to Admin.update
+
+1.0.6: 10.02.2020
+    -Changed Updater.bat
+
+1.0.5: 10.02.2020
+    -Removed test_ignore.txt
+
+1.0.4: 10.02.2020
+    -Changed Admin.applyUpdate
+    -Changed Admin.restart
+
+1.0.3: 10.02.2020
+    -Changed test_ignore.txt
+
+1.0.2: 10.02.2020
+    -Changed .gitignore
+    -Changed Admin.stop
+    -Changed Admin.restart
+    -Added module child_process
+    -Added Updater.bat
+    -Changed run.bat
+
+1.0.1: 10.02.2020
+    -Updated README.md
+    -Changed Logger.js to Admin.js
+    -Simplified neko.js
+    -Added module xmlhttprequest and snoowrap
+    -Added BotID.json
+    -Added test_ignore.txt
+    -Changed run.bat
+    -Added Admin.stop
+    -Added Admin.restart
+
+1.0.0: Everything before 10.02.2020
+    -Added ask Command
+    -Added dorime Command
+    -Added getleagueName
+    -Added getosuName
+    -Added help Command
+    -Added leaguegetgame Command
+    -Added neko Command
+    -Added osuplays Command
+    -Added osurecent Command
+    -Added padoru Command
+    -Added parseMods
+    -Added poll Command
+    -Added uwufy Command
+    -Added zins Command
+    -Added champions.json File
+    -Added helptext.txt File
+    -Added Logger.js
+    -Added botMain.js
+    -Added run.bat
+    -Added README.md
+    -Added .gitignore

@@ -1,6 +1,6 @@
 const ytdldc = require('ytdl-core-discord');
 const ytdl = require('ytdl-core');
-const Logger = require('../Admin.js');
+const Logger = require("./Logger.js");
 
 //This file is not reachable through Commands-only, method must be called through corresponded .js
 
