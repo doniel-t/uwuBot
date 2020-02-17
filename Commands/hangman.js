@@ -30,11 +30,11 @@ module.exports = { //!hangman starts the game
 
 
 
-var listener = function(inputLetter) { //Controlls game state
+var listener = function(inputLetter) { //Controls game state
     if (inputLetter.channel == ogMessage.channel) {
         if (inputLetter.content.length === 1) {
             checkLetter(inputLetter.content);
-            ogMessage.channel.send(hiddenMessage);
+            ogMessage.channel.send(hiddenMessage + "tries left" + hp);
             if (hp === 0) {
                 ogMessage.channel.send("You lose xD");
                 dcBot.removeListener('message', listener);
