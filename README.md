@@ -35,3 +35,4 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [ ] 2048 Game
 - [x] Hangman
 - [ ] RiotAPIKey replenish
+- [ ] Changelog
