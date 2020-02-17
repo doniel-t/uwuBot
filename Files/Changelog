@@ -1,3 +1,7 @@
+1.5.2: 18.02.2020
+    -Fixed Updater not working
+    -Fixed Updater removing FFMPEG
+
 1.5.1: 18.02.2020
     -Fixed MineSweeper
     -Added more Features to MineSweeper
