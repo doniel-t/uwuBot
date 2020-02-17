@@ -1,10 +1,10 @@
 const Logger = require("./Logger.js");
 
-var inputWord = "";
-var ogMessage;
-var hiddenMessage = "";
-var hp = 7;
 var dcBot;
+var ogMessage;
+var inputWord = "";
+var hiddenMessage = "";
+var hp = 7; //Amount of failed Tries
 
 module.exports = { //!hangman starts the game
     hangman: function (message, bot) {
