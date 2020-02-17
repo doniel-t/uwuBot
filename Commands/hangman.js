@@ -38,7 +38,6 @@ module.exports = { //!hangman starts the game
 }
 
 
-
 var listener = function (inputLetter) { //Listens to all Messages
 
     if (inputLetter.channel == ogMessage.channel) {// Only Messages in Channel where !hangman was called
@@ -84,6 +83,7 @@ function checkLetter(letter) { // checks if letter is in word
         hp--;
     }
 }
+
 
 function replaceAt(string, index, replace) { //Replaces a Character in string at index with replace
     return string.substring(0, index) + replace + string.substring(index + 1);
