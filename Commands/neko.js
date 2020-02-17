@@ -1,4 +1,4 @@
-const Logger = require("./Logger.js");
+const Admin = require('./Admin.js');
 const redditAPI = require('./rngsub.js');
 
 const talkedRecently = new Set();
@@ -6,7 +6,7 @@ const talkedRecently = new Set();
 module.exports = {
     neko: function(message) {
 
-        if (!Logger.canspamneko()) {
+        if (!Admin.canspamneko()) {
 
             if (talkedRecently.has(message.author.id)) {
                 message.channel.send("Wait 15 Seconds before typing this again. - " + message.author);

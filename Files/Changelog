@@ -1,3 +1,9 @@
+1.5.0: 17.02.2020
+    -Fixed AdminCommands
+    -Fixed neko Command
+    -Added MineSweeper Command
+    -Added MineSweeper to help.json
+
 1.4.2: 17.02.2020
     -Refractored Files
     -Moved log to Logger.js
