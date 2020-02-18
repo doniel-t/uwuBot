@@ -24,7 +24,7 @@ function minesweeper(message, bot) {    //Starts the Game
         return;
     }
 
-    if(isRunning) { //Doesnt start a Game if one is already running
+    if (isRunning) { //Doesnt start a Game if one is already running
         ogmessage.channel.send('A Game is already running');
         return;
     }
@@ -57,7 +57,7 @@ function minesweeper(message, bot) {    //Starts the Game
         }
 
     } else {    //AutoAdd Bombs if none were given
-        contentArgs[2] = contentArgs[1]*contentArgs[1]*0.21;
+        contentArgs[2] = contentArgs[1] * contentArgs[1] * 0.21;
     }
 
     randomize(contentArgs[1], contentArgs[2]); //Sets up GameField
@@ -169,7 +169,12 @@ class Field {
 }
 
 function letterToNumber(letter) {   //A->0 B->1 C->3
-    return letter.toLowerCase().charCodeAt(0) - 97;
+    let number = letter.toLowerCase().charCodeAt(0);
+    if (number < 97 || number > 122) {
+        return 'error'
+    } else {
+        return number - 97;
+    }
 }
 
 var listener = function (guess) {   //Processes Answers
