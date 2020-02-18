@@ -18,8 +18,6 @@ function minesweeper(message, bot) {    //Starts the Game
     ogmessage = message;
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    console.log(eval(Math.floor(2.8)));
-
     if (contentArgs[1] == 'stop') { //StopFunction
         ogmessage.channel.send('Minesweeper was stopped');
         stop();
@@ -77,8 +75,6 @@ function minesweeper(message, bot) {    //Starts the Game
 }
 
 function randomize(size, nBombs) {  //Inits GameField
-
-    console.log(size)
 
     isRunning = true;
 
