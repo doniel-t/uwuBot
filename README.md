@@ -14,7 +14,7 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 * Install git
 * Install node.js
 * Run Installer.bat
-* Extract Dependencies_Template.rar (uwuBot/Dependencies/botToken.json)
+* Extract Dependencies_Template.rar in uwuBot so 'uwuBot/Dependencies/botToken.json'
 * Fill all Dependencies
 * Start Bot with run.bat
 
@@ -31,8 +31,10 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] log get
 - [x] !headpat (included in rngsub)
 - [x] Music
-- [ ] Minesweeper
+- [x] Minesweeper
 - [ ] 2048 Game
 - [x] Hangman
 - [ ] RiotAPIKey replenish
 - [x] Changelog
+- [ ] Add Minesweeper support for bigger Fields
+- [ ] UNO
