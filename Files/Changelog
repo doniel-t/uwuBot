@@ -1,3 +1,6 @@
+1.5.4: 18.02.2020
+    -Fixed Bot crashing when Minesweeper got wrong format guess
+
 1.5.3: 18.02.2020
     -Fixed Minesweeper without Parameter
     -Added BombRatio if no BombNumber was given
