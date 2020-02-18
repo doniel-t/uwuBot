@@ -7,7 +7,7 @@ var hiddenMessage = "";
 var hp = 7; //Amount of failed Tries
 
 module.exports = { //!hangman starts the game
-    hangman: function (message, bot) {
+    hangman: function(message, bot) {
 
         dcBot = bot;
         ogMessage = message;
@@ -38,27 +38,30 @@ module.exports = { //!hangman starts the game
 }
 
 
-var listener = function (inputLetter) { //Listens to all Messages
+var listener = function(inputLetter) { //Listens to all Messages
 
-    if (inputLetter.channel == ogMessage.channel) {// Only Messages in Channel where !hangman was called
+    if (inputLetter.channel == ogMessage.channel) { // Only Messages in Channel where !hangman was called
 
-        if (inputLetter.content.length === 1) {// Only Message with one Character
+        if (inputLetter.content.length === 1) { // Only Message with one Character
 
-            checkLetter(inputLetter.content);  //Test Character
+            checkLetter(inputLetter.content); //Test Character
             ogMessage.channel.send(hiddenMessage + " tries left" + hp);
 
             if (hp === 0) { //Losing Condition
                 ogMessage.channel.send("You lose xD");
+                hp = 7;
                 dcBot.removeListener('message', listener);
             }
 
-            if (hiddenMessage === inputWord) {  //When guessed Letter by Letter
+            if (hiddenMessage === inputWord) { //When guessed Letter by Letter
+                hp = 7;
                 ogMessage.channel.send("You won!");
                 dcBot.removeListener('message', listener);
             }
         }
 
-        if (inputLetter.content === inputWord) {    //When whole Answer is given
+        if (inputLetter.content === inputWord) { //When whole Answer is given
+            hp = 7;
             ogMessage.channel.send("You won!");
             dcBot.removeListener('message', listener);
         }
