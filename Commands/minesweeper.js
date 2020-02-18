@@ -18,6 +18,8 @@ function minesweeper(message, bot) {    //Starts the Game
     ogmessage = message;
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
+    console.log(eval(Math.floor(2.8)));
+
     if (contentArgs[1] == 'stop') { //StopFunction
         ogmessage.channel.send('Minesweeper was stopped');
         stop();
@@ -42,12 +44,16 @@ function minesweeper(message, bot) {    //Starts the Game
         ogmessage.channel.send('This FieldSize is not supported');
         return;
     }
+    if (isNaN(contentArgs[1])) {
+        ogmessage.channel.send('Please enter numbers');
+        return;
+    }
     if (contentArgs.length == 3) { //If a number of Bombs is given
         if (contentArgs[2] < 1) {
             ogmessage.channel.send('The Number of Bombs is not supported');
             return;
         }
-        if (isNaN(contentArgs[1] || isNaN(contentArgs[2]))) {
+        if (isNaN(contentArgs[2])) {
             ogmessage.channel.send('Please enter numbers');
             return;
         }
@@ -71,6 +77,8 @@ function minesweeper(message, bot) {    //Starts the Game
 }
 
 function randomize(size, nBombs) {  //Inits GameField
+
+    console.log(size)
 
     isRunning = true;
 
