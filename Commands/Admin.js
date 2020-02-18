@@ -1,6 +1,7 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
+const Logger = require('./Logger.js');
 
 module.exports = {
     
@@ -16,7 +17,7 @@ module.exports = {
         }
 
         if (logFile == null) {
-            console.log("NO LOG FILE");
+            Logger.log("NO LOG FILE");
             message.channel.send("There is no LogFile");
         } else {
             message.channel.send("LogFile", { files: [logFile] }); //Send File
@@ -29,7 +30,7 @@ module.exports = {
         if (Admins.includes(message.author.id)) {
             return true;
         } else {
-            console.log(message.author.username + " executed an Admin command");
+            Logger.log(message.author.username + " executed an Admin command");
             return false;
         }
     },
@@ -37,7 +38,7 @@ module.exports = {
     update: function(message) { //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
         message.channel.send("Updating now");
 
-        let pro = spawn('start', ['cmd.exe', '/c', './Files/Updater.bat'], { shell: true });
+        let pro = spawn('start', ['cmd.exe', '/c', '.\\Files\\Updater.bat'], { shell: true });
 
         pro.on('exit', m => {
             process.exit(0);

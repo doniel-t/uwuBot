@@ -1,3 +1,9 @@
+1.5.3: 18.02.2020
+    -Fixed Minesweeper without Parameter
+    -Added BombRatio if no BombNumber was given
+    -Only one MinesweeperGame can run at once
+    -Fixed Admin.js
+
 1.5.2: 18.02.2020
     -Fixed Updater not working
     -Fixed Updater removing FFMPEG

@@ -5,6 +5,7 @@ var gamemessage;
 var numberRevealed = 0;
 var GameSize;
 var GameBombs;
+var isRunning = false;
 
 module.exports = {
     minesweeper: function (message, bot) {
@@ -18,25 +19,45 @@ function minesweeper(message, bot) {    //Starts the Game
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
     if (contentArgs[1] == 'stop') { //StopFunction
-        gamemessage.channel.send('Minesweeper was stopped');
+        ogmessage.channel.send('Minesweeper was stopped');
         stop();
+        return;
+    }
+
+    if(isRunning) { //Doesnt start a Game if one is already running
+        ogmessage.channel.send('A Game is already running');
+        return;
+    }
+
+    if (contentArgs.length == 1) {    //Start a Game with 5, 10 if no Size/Bombs are given
+        message.content = '!minesweeper 5';
+        minesweeper(message, bot);
         return;
     }
     if (contentArgs[1] > 9) {
         ogmessage.channel.send('Field too big, only a max of 9 is supported');
         return;
     }
-    if (contentArgs[1] < 1 || contentArgs[2] < 1) {
-        ogmessage.channel.send('Please dont use negative numbers');
+    if (contentArgs[1] < 2) {
+        ogmessage.channel.send('This FieldSize is not supported');
         return;
     }
-    if (isNaN(contentArgs[1] || isNaN(contentArgs[2]))) {
-        ogmessage.channel.send('Please enter numbers');
-        return;
-    }
-    if (contentArgs[2] >= contentArgs[1] * contentArgs[1]) {
-        ogmessage.channel.send('Too Many Bombs');
-        return;
+    if (contentArgs.length == 3) { //If a number of Bombs is given
+        if (contentArgs[2] < 1) {
+            ogmessage.channel.send('The Number of Bombs is not supported');
+            return;
+        }
+        if (isNaN(contentArgs[1] || isNaN(contentArgs[2]))) {
+            ogmessage.channel.send('Please enter numbers');
+            return;
+        }
+        if (contentArgs[2] >= contentArgs[1] * contentArgs[1]) {
+            ogmessage.channel.send('Too Many Bombs');
+            return;
+        }
+
+    } else {    //AutoAdd Bombs if none were given
+        contentArgs[2] = contentArgs[1]*contentArgs[1]*0.21;
     }
 
     randomize(contentArgs[1], contentArgs[2]); //Sets up GameField
@@ -51,6 +72,8 @@ function minesweeper(message, bot) {    //Starts the Game
 
 function randomize(size, nBombs) {  //Inits GameField
 
+    isRunning = true;
+
     GameSize = size;
     GameBombs = nBombs;
     GameField = new Array();
@@ -64,7 +87,7 @@ function randomize(size, nBombs) {  //Inits GameField
 
     var setBombs = 0;
 
-    while (setBombs != nBombs) {    //Plants Bombs in GameField
+    while (setBombs < nBombs) {    //Plants Bombs in GameField
 
         let a = Math.floor(Math.random() * size);
         let b = Math.floor(Math.random() * size);
@@ -309,4 +332,5 @@ function stop() {   //Stops the Game
     numberRevealed = 0;
     GameSize = undefined;
     GameBombs = undefined;
+    isRunning = false;
 }
