@@ -139,7 +139,7 @@ function checkGameState() { // checks end condition
     }
     if (!fieldString.includes("⬜")) { // if field is full stop the game
         playerInput.channel.send("Its a tie!");
-        dcBot.removeListener('message', listener); // finish game 
+        stop(); 
     }
     fieldString = ""; // resets fieldString
 }
