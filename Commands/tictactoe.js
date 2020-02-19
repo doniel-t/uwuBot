@@ -69,21 +69,21 @@ var listener = function(playerInput) { //Listens to all Messages and ends game
         if (playerInput.content.includes("stop")) {
             stop();
         } else {
-            if (playerInput.content.length == 1 && playerInput.author.bot == false && playerInput.content !== "join") {
-                try {
-                    if (playerInput.author.id == players[0].id && xTurn) { // Only Message with three Character 1,1
+            if (playerInput.content.length == 1 && playerInput.author.bot == false && playerInput.content !== "join") { 
+                try { //checks if player tries to give input before they joined
+                    if (playerInput.author.id == players[0].id && xTurn) { //Player 1's turn and message is from Player 1
                         fillFields(playerInput);
                         xTurn = false;
                         drawField();
                         checkGameState();
-                    } else if (playerInput.author.id == players[1].id && xTurn == false) {
+                    } else if (playerInput.author.id == players[1].id && xTurn == false) { //Player 2's turn and message is from Player 2
                         fillFields(playerInput);
                         xTurn = true;
                         drawField();
                         checkGameState();
                     }
-                } catch (ignored) {
-                    playerInput.channel.send("Try joining before writing something!");
+                } catch (ignored) { //runs if player gives wrong input (either didnt join -> NullPointerException) or input was not a number
+                    playerInput.channel.send("You didnt join or your input was not a number!");
                 }
             }
         }
@@ -159,7 +159,7 @@ function createPlayers(playerInput) {
 async function drawField() {
     let messageContent = "";
     var count = 0;
-    if (sent == false) { //draws the field a the first time
+    if (sent == false) { //draws the field the first time
         for (let field of gameField) {
             if (count == 3) {
                 messageContent += "\n";
@@ -169,7 +169,7 @@ async function drawField() {
             count++;
         }
         sent = true;
-        fieldMessage = await playerInput.channel.send(messageContent);
+        fieldMessage = await playerInput.channel.send(messageContent); //saves message to edit it later
     } else { // edits the field
         messageContent = "";
         for (let field of gameField) {
@@ -189,7 +189,7 @@ function fillFields(playerInput) {
         if (gameField[parseInt(playerInput) - 1].value === '⬜') {
             gameField[parseInt(playerInput) - 1].value = players[0].symbol;
         } else {
-            playerInput.channel.send("You lose your -1turn because you chose a tile that is already filled in pepega");
+            playerInput.channel.send("You lose your turn because you chose a tile that is already filled in pepega");
         }
     } else {
         if (gameField[parseInt(playerInput) - 1].value === '⬜') {
