@@ -36,5 +36,6 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] Hangman
 - [ ] RiotAPIKey replenish
 - [x] Changelog
+- [x] Tictactoe
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO

@@ -1,3 +1,7 @@
+1.7.0: 19.02.2020
+    -Added Tictactoe
+    -Fixed missing commands in help.json
+
 1.6.0: 19.02.2020
     -Fixed Comments in MineSweeper
     -Added 2048 Command

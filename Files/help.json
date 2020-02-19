@@ -1,4 +1,8 @@
 {
+    "2048": {
+        "usage": "!2048 <optional: stop>",
+        "does": "starts a Game of 2048 or stops it"
+    },
     "AdminCommands": {
         "usage": "|BotID| <command>",
         "does": "will executed given command, check Admin.js for commandlist"
@@ -78,6 +82,10 @@
     "stop": {
         "usage": "!stop",
         "does": "Stops the Music in your Channel"
+    },
+    "tictactoe": {
+        "usage": "!tictactoe",
+        "does": "play a game of tictactoe with a friend!"
     },
     "uwufy": {
         "usage": "!uwufy <message>",
