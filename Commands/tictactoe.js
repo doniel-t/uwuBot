@@ -43,7 +43,7 @@ function tictactoe(message, bot) {
         }
     }
     message.channel.send("Only two players can join!\nWrite join to join the game!");
-    dcBot.on('message', listener); //TODO: Cant start game after finishing the first 
+    dcBot.on('message', listener);
 }
 
 var listener = function(playerInput) { //Listens to all Messages and ends game
