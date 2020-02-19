@@ -1,201 +1,146 @@
 module.exports = {
-    tictactoe: function(message, bot) {
+    tictactoe: function (message, bot) {
         tictactoe(message, bot);
     }
 }
 
-class Field {
-    value;
-    constructor() {
-        this.value = '⬜';
-    }
-}
+var fieldMessage;
+var players = [];
+var ogMessage;
+var gameField = [];
+var xTurn = true;
+var dcBot;
+var isRunning = false;
+var nTurns = 0;
+const Emoji = ['❌', '⭕']
 
 class Player {
-    id;
-    symbol;
-    username;
     constructor(id, symbol, username) {
         this.id = id;
         this.symbol = symbol;
         this.username = username;
     }
 }
-var fieldMessage;
-var sent = false;
-var players = [];
-var playerInput;
-var gameField = [];
-var xTurn;
-var dcBot;
-var ogMessage;
-var isRunning;
 
 function stop() {
     dcBot.removeListener('message', listener); // finish game 
-    sent = false;
     isRunning = false;
-    xTurn = true;
-    playerInput = undefined;
+    xTurn = false;
     ogMessage = undefined;
+    fieldMessage = undefined;
+    players = [];
+    gameField = [];
+    dcBot = undefined;
+    nTurns = 0;
 }
 
 function tictactoe(message, bot) {
-    gameField = []; // initializing game from start
-    players = [];
-    xTurn = true;
+    
     dcBot = bot;
-    playerInput = message;
     ogMessage = message;
 
     if (isRunning) { //Doesnt start a Game if one is already running
         message.channel.send('A Game is already running');
         return;
     }
-    isRunning = true;
 
-    for (let i = 0; i < 9; i++) {
-        gameField.push(new Field());
+    if (message.content.substring(10) == 'stop') { //Stops game
+        message.channel.send('Stopped the Game of TictacToe');
+        stop();
+        return;
     }
+    
+    for (let i = 0; i < 9; i++) { //Inits GameField
+        gameField.push('⬜');
+    }
+    
+    isRunning = true;
     message.channel.send("Only two players can join!\nWrite join to join the game!");
     dcBot.on('message', listener);
 }
 
-var listener = function(playerInput) { //Listens to all Messages and ends game
-    if (players.length < 2) {
-        createPlayers(playerInput);
+var listener = function (input) { //Listens to all Messages and ends game
+    if (players.length < 2 && input.content == "join") {
+        createPlayers(input);
     }
-    if (playerInput.channel == ogMessage.channel) { // Only Messages in Channel where !tictactoe was called
-        if (playerInput.content.includes("stop")) {
-            stop();
-        } else {
-            if (playerInput.content.length == 1 && playerInput.author.bot == false && playerInput.content !== "join") { 
-                try { //checks if player tries to give input before they joined
-                    if (playerInput.author.id == players[0].id && xTurn) { //Player 1's turn and message is from Player 1
-                        fillFields(playerInput);
-                        xTurn = false;
-                        drawField();
-                        checkGameState();
-                    } else if (playerInput.author.id == players[1].id && xTurn == false) { //Player 2's turn and message is from Player 2
-                        fillFields(playerInput);
-                        xTurn = true;
-                        drawField();
-                        checkGameState();
-                    }
-                } catch (ignored) { //runs if player gives wrong input (either didnt join -> NullPointerException) or input was not a number
-                    playerInput.channel.send("You didnt join or your input was not a number!");
-                }
+    if (input.content.length == 1 && input.channel == ogMessage.channel && ogMessage.author.bot == false) { //Check for right format
+        try { //checks if player tries to give input before they joined
+            if ((input.author.id == players[0].id && xTurn) || (input.author.id == players[1].id && xTurn == false)) { //Player turn and message is from Player
+                fillFields(input);
+                drawField();
+                checkGameState();
+                xTurn = !xTurn;
             }
+        } catch (ignored) { //runs if player gives wrong input (either didnt join -> NullPointerException) or input was not a number
+            ogMessage.channel.send("You didnt join or your input was not a number!");
         }
     }
 }
 
 function checkGameState() { // checks end condition
-
-    for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination but the crosses for x and o
-        if (gameField[i].value === '❌' && gameField[i + 1].value === '❌' && gameField[i + 2].value === '❌') {
-            playerInput.channel.send(players[0].username + " won the game!");
-            stop();
-        } else if (gameField[i].value === '⭕' && gameField[i + 1].value === '⭕' && gameField[i + 2].value === '⭕') {
-            playerInput.channel.send(players[1].username + " won the game!");
-            stop();
-        }
-    }
-
-    for (let i = 0; i < 3; i++) { // checks every vertical combination of o and x
-        if (gameField[i].value === '❌' && gameField[i + 3].value === '❌' && gameField[i + 6].value === '❌') {
-            playerInput.channel.send(players[0].username + " won the game!");
-            stop();
-        } else if (gameField[i].value === '⭕' && gameField[i + 3].value === '⭕' && gameField[i + 6].value === '⭕') {
-            playerInput.channel.send(players[1].username + " won the game!");
-            stop();
-        }
-    }
-
-    //checks x diagonales
-    if (gameField[0].value === '❌' && gameField[4].value === '❌' && gameField[8].value === '❌') {
-        playerInput.channel.send(players[0].username + " won the game!");
-        stop();
-    }
-    if (gameField[2].value === '❌' && gameField[4].value === '❌' && gameField[6].value === '❌') {
-        playerInput.channel.send(players[0].username + " won the game!");
-        stop();
-    }
-
-    // Checks o's diagonales
-    if (gameField[0].value === '⭕' && gameField[4].value === '⭕' && gameField[8].value === '⭕') {
-        playerInput.channel.send(players[1].username + " won the game!");
-        stop();
-    }
-    if (gameField[2].value === '⭕' && gameField[4].value === '⭕' && gameField[6].value === '⭕') {
-        playerInput.channel.send(players[1].username + " won the game!");
-        stop();
-    }
-
-    /* Checks for ties! */
-    let fieldString = "";
-    for (let field of gameField) { // makes fieldValues as string
-        fieldString = fieldString.concat(field.value);
-    }
-    if (!fieldString.includes("⬜")) { // if field is full stop the game
-        playerInput.channel.send("Its a tie!");
-        stop(); 
-    }
-    fieldString = ""; // resets fieldString
-}
-
-function createPlayers(playerInput) {
-    if (playerInput.content == 'join' && players.length == 0) {
-        players.push(new Player(playerInput.author.id, '❌', playerInput.author.username));
-        playerInput.channel.send(playerInput.author.username + (" Has ❌ as his symbol!"));
-    } else
-    if (playerInput.content == 'join' && players.length == 1) {
-        players.push(new Player(playerInput.author.id, '⭕', playerInput.author.username));
-        playerInput.channel.send(playerInput.author.username + (" Has ⭕ as his symbol!"));
-        drawField();
-    }
-}
-
-async function drawField() {
-    let messageContent = "";
-    var count = 0;
-    if (sent == false) { //draws the field the first time
-        for (let field of gameField) {
-            if (count == 3) {
-                messageContent += "\n";
-                count = 0;
+    nTurns++;
+    for (let emoji of Emoji) {
+        for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
+            if (gameField[i] === emoji && gameField[i + 1] === emoji && gameField[i + 2] === emoji) {
+                ogMessage.channel.send(players[0].username + " won the game!");
+                stop();
             }
-            messageContent = messageContent.concat(field.value + " ");
-            count++;
         }
-        sent = true;
-        fieldMessage = await playerInput.channel.send(messageContent); //saves message to edit it later
-    } else { // edits the field
-        messageContent = "";
-        for (let field of gameField) {
-            if (count == 3) {
-                messageContent += "\n";
-                count = 0;
+        for (let i = 0; i < 3; i++) { // checks every vertical combination
+            if (gameField[i] === emoji && gameField[i + 3] === emoji && gameField[i + 6] === emoji) {
+                ogMessage.channel.send(players[0].username + " won the game!");
+                stop();
             }
-            messageContent = messageContent.concat(field.value + " ");
-            count++;
         }
-        fieldMessage.edit(messageContent);
+        //checks diagonales
+        if (gameField[0] === emoji && gameField[4] === emoji && gameField[8] === emoji) {
+            ogMessage.channel.send(players[0].username + " won the game!");
+            stop();
+        }
+        if (gameField[2] === emoji && gameField[4] === emoji && gameField[6] === emoji) {
+            ogMessage.channel.send(players[0].username + " won the game!");
+            stop();
+        }
+    }
+
+    if (nTurns == 9) { // if field is full stop the game
+        ogMessage.channel.send("Its a tie!");
+        stop();
     }
 }
 
-function fillFields(playerInput) {
-    if (xTurn) {
-        if (gameField[parseInt(playerInput) - 1].value === '⬜') {
-            gameField[parseInt(playerInput) - 1].value = players[0].symbol;
-        } else {
-            playerInput.channel.send("You lose your turn because you chose a tile that is already filled in pepega");
-        }
+function createPlayers(playerm) { //Creates Player
+    if (playerm.content == 'join' && players.length == 0) {
+        players.push(new Player(playerm.author.id, Emoji[0], playerm.author.username));
+        playerm.channel.send(playerm.author.username + (" Has " + Emoji[0] + " as his symbol!"));
     } else {
-        if (gameField[parseInt(playerInput) - 1].value === '⬜') {
-            gameField[parseInt(playerInput) - 1].value = players[1].symbol;
-        } else {
-            playerInput.channel.send("You lose your turn because you chose a tile that is already filled in pepega");
-        }
+        players.push(new Player(playerm.author.id, Emoji[1], playerm.author.username));
+        playerm.channel.send(playerm.author.username + (" Has " + Emoji[1] + " as his symbol!"));
+
+        ogMessage.channel.send('Starting a Game of TicTacToe').then(m => {
+            fieldMessage = m;
+            drawField();
+        });
+    }
+}
+
+function drawField() { //Edits Message containing TicTacToe Field
+    let messageContent = ''
+        .concat(gameField[0]).concat(gameField[1]).concat(gameField[2]).concat('\n')
+        .concat(gameField[3]).concat(gameField[4]).concat(gameField[5]).concat('\n')
+        .concat(gameField[6]).concat(gameField[7]).concat(gameField[8]).concat('\n');
+
+    fieldMessage.edit(messageContent);
+}
+
+function fillFields(fieldm) { //Writes x or o into gameField
+    let int = 0;
+    if (!xTurn) {
+        int = 1;
+    }
+    if (gameField[parseInt(fieldm.content) - 1] === '⬜') {
+        gameField[parseInt(fieldm.content) - 1] = players[int].symbol;
+    } else {
+        ogMessage.channel.send("You lose your turn because you chose a tile that is already filled in");
     }
 }
