@@ -84,8 +84,8 @@
         "does": "Stops the Music in your Channel"
     },
     "tictactoe": {
-        "usage": "!tictactoe",
-        "does": "play a game of tictactoe with a friend!"
+        "usage": "!tictactoe <optional: stop>",
+        "does": "play a game of tictactoe with a friend or stop it"
     },
     "uwufy": {
         "usage": "!uwufy <message>",
