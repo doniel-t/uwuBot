@@ -1,3 +1,6 @@
+1.7.1: 19.02.2020
+    -Fixed Issues in MineSweeper
+
 1.7.0: 19.02.2020
     -Added Tictactoe
     -Fixed missing commands in help.json
