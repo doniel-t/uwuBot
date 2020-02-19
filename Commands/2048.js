@@ -210,9 +210,6 @@ function calcMove(dir) {    //DOWN -> RIGHT
         case '⬇️': //down
             for (let x = 0; x < 4; x++) { //For all 3 rows
                 for (let y = 3; y > -1; y--) {
-                    console.log(x);
-                    console.log(y);
-                    console.log(GameField[y][x]);
                     if (GameField[y][x] != 0) {
                         let m = y;
                         while (m < 3) {  //Moves Square next is zero
@@ -238,7 +235,7 @@ function calcMove(dir) {    //DOWN -> RIGHT
             break;
         case '⬅️': //left
             for (let x = 0; x < 4; x++) { //For all 3 rows
-                for (let y = 3; y > -1; y--) {
+                for (let y = 0; y < 4; y++) {
                     if (GameField[x][y] != 0) {
                         let m = y;
                         while (m > 0) {  //Moves Square next is zero
@@ -259,16 +256,15 @@ function calcMove(dir) {    //DOWN -> RIGHT
                             }
                         }
                     }
-
                 }
             }
             break;
         case '➡️': //right
             for (let x = 0; x < 4; x++) { //For all 3 rows
-                for (let y = 0; y < 4; y++) {
+                for (let y = 3; y > -1; y--) {
                     if (GameField[x][y] != 0) {
                         let m = y;
-                        while (m < 3) {  //Moves Square next is zero
+                        while (m < 4) {  //Moves Square next is zero
                             if (GameField[x][m + 1] == 0) {
                                 GameField[x][m + 1] = GameField[x][m];
                                 GameField[x][m] = 0;
@@ -286,7 +282,6 @@ function calcMove(dir) {    //DOWN -> RIGHT
                             }
                         }
                     }
-
                 }
             }
             break;
