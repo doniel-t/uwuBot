@@ -21,21 +21,38 @@ class Player {
         this.username = username;
     }
 }
-
+var fieldMessage;
+var sent = false;
 var players = [];
-var playerCount = 0;
 var playerInput;
 var gameField = [];
 var xTurn;
 var dcBot;
+var ogMessage;
+var isRunning;
+
+function stop() {
+    dcBot.removeListener('message', listener); // finish game 
+    sent = false;
+    isRunning = false;
+    xTurn = true;
+    playerInput = undefined;
+    ogMessage = undefined;
+}
 
 function tictactoe(message, bot) {
     gameField = []; // initializing game from start
+    players = [];
     xTurn = true;
-    playerCount = 0;
     dcBot = bot;
     playerInput = message;
     ogMessage = message;
+
+    if (isRunning) { //Doesnt start a Game if one is already running
+        message.channel.send('A Game is already running');
+        return;
+    }
+    isRunning = true;
 
     for (let i = 0; i < 9; i++) {
         gameField.push(new Field());
@@ -45,26 +62,32 @@ function tictactoe(message, bot) {
 }
 
 var listener = function(playerInput) { //Listens to all Messages and ends game
-    if (playerCount < 2) {
+    if (players.length < 2) {
         createPlayers(playerInput);
     }
     if (playerInput.channel == ogMessage.channel) { // Only Messages in Channel where !tictactoe was called
-        if (playerInput.content.length != 3 && playerInput.author.bot == false && playerInput.content !== "join") {
-            playerInput.channel.send("Your input was wrong! Try to use it like this \"x,y\"");
-        }
-        if (playerInput.content.length === 3 && playerInput.author.id == players[0].id && xTurn) { // Only Message with three Character 1,1
-            fillFields(playerInput);
-            xTurn = false;
-            drawField();
+        if (playerInput.content.includes("stop")) {
+            stop();
         } else {
-            if (playerInput.content.length === 3 && playerInput.author.id == players[1].id && xTurn == false) {
-                fillFields(playerInput);
-                xTurn = true;
-                drawField();
+            if (playerInput.content.length == 1 && playerInput.author.bot == false && playerInput.content !== "join") {
+                try {
+                    if (playerInput.author.id == players[0].id && xTurn) { // Only Message with three Character 1,1
+                        fillFields(playerInput);
+                        xTurn = false;
+                        drawField();
+                        checkGameState();
+                    } else if (playerInput.author.id == players[1].id && xTurn == false) {
+                        fillFields(playerInput);
+                        xTurn = true;
+                        drawField();
+                        checkGameState();
+                    }
+                } catch (ignored) {
+                    playerInput.channel.send("Try joining before writing something!");
+                }
             }
         }
     }
-    checkGameState();
 }
 
 function checkGameState() { // checks end condition
@@ -72,42 +95,41 @@ function checkGameState() { // checks end condition
     for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination but the crosses for x and o
         if (gameField[i].value === '❌' && gameField[i + 1].value === '❌' && gameField[i + 2].value === '❌') {
             playerInput.channel.send(players[0].username + " won the game!");
-            dcBot.removeListener('message', listener); // finish game 
+            stop();
         } else if (gameField[i].value === '⭕' && gameField[i + 1].value === '⭕' && gameField[i + 2].value === '⭕') {
             playerInput.channel.send(players[1].username + " won the game!");
-            dcBot.removeListener('message', listener); // finish game 
+            stop();
         }
     }
 
     for (let i = 0; i < 3; i++) { // checks every vertical combination of o and x
         if (gameField[i].value === '❌' && gameField[i + 3].value === '❌' && gameField[i + 6].value === '❌') {
             playerInput.channel.send(players[0].username + " won the game!");
-            dcBot.removeListener('message', listener); // finish game 
+            stop();
         } else if (gameField[i].value === '⭕' && gameField[i + 3].value === '⭕' && gameField[i + 6].value === '⭕') {
             playerInput.channel.send(players[1].username + " won the game!");
-            dcBot.removeListener('message', listener); // finish game 
+            stop();
         }
     }
 
     //checks x diagonales
-
     if (gameField[0].value === '❌' && gameField[4].value === '❌' && gameField[8].value === '❌') {
         playerInput.channel.send(players[0].username + " won the game!");
-        dcBot.removeListener('message', listener);
+        stop();
     }
     if (gameField[2].value === '❌' && gameField[4].value === '❌' && gameField[6].value === '❌') {
         playerInput.channel.send(players[0].username + " won the game!");
-        dcBot.removeListener('message', listener);
+        stop();
     }
 
     // Checks o's diagonales
     if (gameField[0].value === '⭕' && gameField[4].value === '⭕' && gameField[8].value === '⭕') {
         playerInput.channel.send(players[1].username + " won the game!");
-        dcBot.removeListener('message', listener);
+        stop();
     }
     if (gameField[2].value === '⭕' && gameField[4].value === '⭕' && gameField[6].value === '⭕') {
         playerInput.channel.send(players[1].username + " won the game!");
-        dcBot.removeListener('message', listener);
+        stop();
     }
 
     /* Checks for ties! */
@@ -123,129 +145,57 @@ function checkGameState() { // checks end condition
 }
 
 function createPlayers(playerInput) {
-    if (playerInput.content == 'join' && playerCount == 0) {
+    if (playerInput.content == 'join' && players.length == 0) {
         players.push(new Player(playerInput.author.id, '❌', playerInput.author.username));
-        playerCount++;
         playerInput.channel.send(playerInput.author.username + (" Has ❌ as his symbol!"));
     } else
-    if (playerInput.content == 'join' && playerCount == 1) {
+    if (playerInput.content == 'join' && players.length == 1) {
         players.push(new Player(playerInput.author.id, '⭕', playerInput.author.username));
-        playerCount++;
         playerInput.channel.send(playerInput.author.username + (" Has ⭕ as his symbol!"));
         drawField();
     }
 }
 
-function drawField() {
-    let fieldMessage = "";
+async function drawField() {
+    let messageContent = "";
     var count = 0;
-    for (let field of gameField) {
-        if (count == 3) {
-            fieldMessage += "\n";
-            count = 0;
+    if (sent == false) { //draws the field a the first time
+        for (let field of gameField) {
+            if (count == 3) {
+                messageContent += "\n";
+                count = 0;
+            }
+            messageContent = messageContent.concat(field.value + " ");
+            count++;
         }
-        fieldMessage = fieldMessage.concat(field.value + " ");
-        count++;
+        sent = true;
+        fieldMessage = await playerInput.channel.send(messageContent);
+    } else { // edits the field
+        messageContent = "";
+        for (let field of gameField) {
+            if (count == 3) {
+                messageContent += "\n";
+                count = 0;
+            }
+            messageContent = messageContent.concat(field.value + " ");
+            count++;
+        }
+        fieldMessage.edit(messageContent);
     }
-    playerInput.channel.send(fieldMessage);
 }
 
 function fillFields(playerInput) {
     if (xTurn) {
-        switch (playerInput.content) {
-            case '1,1':
-                if (gameField[0].value === '⬜') {
-                    gameField[0].value = players[0].symbol;
-                }
-                break;
-            case '1,2':
-                if (gameField[3].value === '⬜') {
-                    gameField[3].value = players[0].symbol;
-                }
-                break;
-            case '1,3':
-                if (gameField[6].value === '⬜') {
-                    gameField[6].value = players[0].symbol;
-                }
-                break;
-            case '2,1':
-                if (gameField[1].value === '⬜') {
-                    gameField[1].value = players[0].symbol;
-                }
-                break;
-            case '2,2':
-                if (gameField[4].value === '⬜') {
-                    gameField[4].value = players[0].symbol;
-                }
-                break;
-            case '2,3':
-                if (gameField[7].value === '⬜') {
-                    gameField[7].value = players[0].symbol;
-                }
-                break;
-            case '3,1':
-                if (gameField[2].value === '⬜') {
-                    gameField[2].value = players[0].symbol;
-                }
-                break;
-            case '3,2':
-                if (gameField[5].value === '⬜') {
-                    gameField[5].value = players[0].symbol;
-                }
-                break;
-            case '3,3':
-                if (gameField[8].value === '⬜') {
-                    gameField[8].value = players[0].symbol;
-                }
-                break;
+        if (gameField[parseInt(playerInput) - 1].value === '⬜') {
+            gameField[parseInt(playerInput) - 1].value = players[0].symbol;
+        } else {
+            playerInput.channel.send("You lose your -1turn because you chose a tile that is already filled in pepega");
         }
     } else {
-        switch (playerInput.content) {
-            case '1,1':
-                if (gameField[0].value === '⬜') {
-                    gameField[0].value = players[1].symbol;
-                }
-                break;
-            case '1,2':
-                if (gameField[3].value === '⬜') {
-                    gameField[3].value = players[1].symbol;
-                }
-                break;
-            case '1,3':
-                if (gameField[6].value === '⬜') {
-                    gameField[6].value = players[1].symbol;
-                }
-                break;
-            case '2,1':
-                if (gameField[1].value === '⬜') {
-                    gameField[1].value = players[1].symbol;
-                }
-                break;
-            case '2,2':
-                if (gameField[4].value === '⬜') {
-                    gameField[4].value = players[1].symbol;
-                }
-                break;
-            case '2,3':
-                if (gameField[7].value === '⬜') {
-                    gameField[7].value = players[1].symbol;
-                }
-                break;
-            case '3,1':
-                if (gameField[2].value === '⬜') {
-                    gameField[2].value = players[1].symbol;
-                }
-                break;
-            case '3,2':
-                if (gameField[5].value === '⬜') {
-                    gameField[5].value = players[1].symbol;
-                }
-                break;
-            case '3,3':
-                if (gameField[8].value === '⬜') {
-                    gameField[8].value = players[1].symbol;
-                }
-                break;
+        if (gameField[parseInt(playerInput) - 1].value === '⬜') {
+            gameField[parseInt(playerInput) - 1].value = players[1].symbol;
+        } else {
+            playerInput.channel.send("You lose your turn because you chose a tile that is already filled in pepega");
         }
     }
 }
