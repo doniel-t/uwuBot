@@ -37,10 +37,8 @@ function tictactoe(message, bot) {
     playerInput = message;
     ogMessage = message;
 
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            gameField.push(new Field());
-        }
+    for (let i = 0; i < 9; i++) {
+        gameField.push(new Field());
     }
     message.channel.send("Only two players can join!\nWrite join to join the game!");
     dcBot.on('message', listener);
