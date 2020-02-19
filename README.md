@@ -32,7 +32,7 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] !headpat (included in rngsub)
 - [x] Music
 - [x] Minesweeper
-- [ ] 2048 Game
+- [x] 2048 Game
 - [x] Hangman
 - [ ] RiotAPIKey replenish
 - [x] Changelog

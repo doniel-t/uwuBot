@@ -42,12 +42,16 @@ function minesweeper(message, bot) {    //Starts the Game
         ogmessage.channel.send('This FieldSize is not supported');
         return;
     }
+    if (isNaN(contentArgs[1])) {
+        ogmessage.channel.send('Please enter numbers');
+        return;
+    }
     if (contentArgs.length == 3) { //If a number of Bombs is given
         if (contentArgs[2] < 1) {
             ogmessage.channel.send('The Number of Bombs is not supported');
             return;
         }
-        if (isNaN(contentArgs[1] || isNaN(contentArgs[2]))) {
+        if (isNaN(contentArgs[2])) {
             ogmessage.channel.send('Please enter numbers');
             return;
         }
@@ -253,14 +257,14 @@ function getIcon(FieldIcon, revAll) {   //Gets Icon to show in Message
 function updateField(isFinished) {    //Updates the Message containing the GameField
     let FieldMessage = 'Minesweeper \n\n\n⬛';
 
-    for (let i3 = 0; i3 < GameSize; i3++) { //First Row with A B C
+    for (let i3 = 0; i3 < GameSize; i3++) { //First Row with 1 2 3
         FieldMessage = FieldMessage.concat(getEmoteNumber(i3 + 1)).concat(' ');
     }
     FieldMessage = FieldMessage.concat('\n');
 
     for (let i1 = 0; i1 < GameSize; i1++) {
 
-        var row = getEmoteLetter(i1); //Numbers on the Left
+        var row = getEmoteLetter(i1); //Letters on the Left
         for (let i2 = 0; i2 < GameSize; i2++) {
             row = row.concat(getIcon(GameField[i1][i2], isFinished)).concat(' ');
         }
