@@ -37,6 +37,7 @@ var Musicdispatcher;
 var Musicconnection;
 var MusicQueue = [];
 var inChannel = false;
+var Channel;
 
 async function playSong() { //Plays a Song
 
@@ -60,8 +61,9 @@ function join(message, bot) { //Joins VoiceChannel of Caller
 
     dcbot = bot;
     ogmessage = message;
+    Channel = dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID);
 
-    dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID).join().then(connection => {
+    Channel.join().then(connection => {
 
         Musicconnection = connection;
         inChannel = true;
@@ -114,7 +116,8 @@ function stop() {       //Stops Music, cleares Queue and leaves Channel
 
     MusicQueue = [];
     inChannel = false;
-    dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID).leave();
+    Channel.leave();
+    Channel = undefined;
     ogmessage = undefined;
     Musicdispatcher = undefined;
     Musicconnection = undefined;
