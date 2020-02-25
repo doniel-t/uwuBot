@@ -1,8 +1,15 @@
 module.exports = {
-    emoji: function(message,bot) {
+    emoji: function (message, bot) {
 
-        var split = message.content.split(':'); //Split message
-        var emoji = bot.emojis.find(e => e.name == split[1]);   //get Emoji from Server
+        let contentArgs = message.content.split(" "); //Split Message for simpler Access
+
+        var emoji = bot.emojis.find(e => e.name == contentArgs[1]);   //get Emoji from Server
+
+        if (emoji == null) { //Error detection
+            message.channel.send('No Emoji found with this name');
+            return;
+        }
+
         var emojiname = '';
 
         if (emoji.animated) { //Difference between animated and still
