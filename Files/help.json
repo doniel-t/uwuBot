@@ -15,6 +15,10 @@
         "usage": "!dorime",
         "does": "answers your Prayers"
     },
+    "emoji": {
+        "usage": "!emoji <EmojiName>",
+        "does": "Sends Emoji with given name"
+    },
     "hangman": {
         "usage": "!hangman",
         "does": "plays a game of hangman with the word from users PM"

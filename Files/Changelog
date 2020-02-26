@@ -1,3 +1,9 @@
+1.8.0: 25.02.2020
+    -Added emoji Command
+
+1.7.3: 25.02.2020
+    -Fixed stop not working under some conditions
+
 1.7.2: 19.02.2020
     -Changed TicTacToe in help.json
     -Fixed TicTacToe
