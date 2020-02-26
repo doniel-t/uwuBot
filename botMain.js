@@ -19,8 +19,14 @@ bot.on('message', (message) => { //When Message sent
 
     if (contentArgs[0].charAt(0) == '!') { //Call Method
 
-        let command = contentArgs[0].substring(1);
-        command = command.concat('.').concat(command);
+        let command = contentArgs[0].substring(1); //Get commandName
+
+        if (command.length == 1) {  //Go to Shortcut
+            command = 'Shortcuts.'.concat(command);
+        } else {    //Normal Command
+            command = command.concat('.').concat(command);
+        }
+
         try {
             executeFunctionByName(command, commands, message, bot); //Calls function
         } catch (error) {
@@ -51,7 +57,7 @@ bot.on('message', (message) => { //When Message sent
 
 bot.login(token.token); //Starts Bot
 
-function executeFunctionByName(functionName, context /*, args */ ) {    //Executes functionName at context with args
+function executeFunctionByName(functionName, context /*, args */) {    //Executes functionName at context with args
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
     var func = namespaces.pop();
