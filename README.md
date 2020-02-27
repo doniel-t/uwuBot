@@ -34,8 +34,10 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] Minesweeper
 - [x] 2048 Game
 - [x] Hangman
-- [ ] RiotAPIKey replenish
+- [x] RiotAPIKey replenish
 - [x] Changelog
 - [x] Tictactoe
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO
+- [ ] ayayay Command
+- [ ] Emoji Detect in Messages
