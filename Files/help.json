@@ -95,9 +95,8 @@
         "usage": "!uwufy <message>",
         "does": "uwufies your message"
     },
-
-    "weebyfy": {
-        "usage": "weebyfy <messsage>",
+    "weebiefy": {
+        "usage": "!weebiefy <messsage> || !w <messsage>",
         "does": "returns retarded weebyfied message"
     },
     "zins": {

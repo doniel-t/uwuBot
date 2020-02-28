@@ -1,5 +1,5 @@
 module.exports = {
-    weebyfy: function(message) {
+    weebiefy: function(message) {
         let returnString = "";
 
         let words = message.content.split(' ');

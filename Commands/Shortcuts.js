@@ -21,7 +21,7 @@ module.exports = { //Redirects Shortcuts to Commands
         call('stop', message, bot);
     },
     w: function(message, bot) {
-        call('weebyfy', message, bot);
+        call('weebiefy', message, bot);
     }
 
 }

@@ -15,6 +15,8 @@ bot.on('ready', () => { //At Startup
 
 bot.on('message', (message) => { //When Message sent
 
+    if (message.author.bot) { return; } //If Author is Bot himself return
+
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
     if (contentArgs[0].charAt(0) == '!') { //Call Method
