@@ -1,5 +1,6 @@
 const ytdldc = require('ytdl-core-discord');
 const ytdl = require('ytdl-core');
+const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
 //This file is not reachable through Commands-only, method must be called through corresponded .js
@@ -90,23 +91,61 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         var Link = message.content.substring(6);
 
-        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
-            MusicQueue.push(Link);
+        if (Link.includes('www.youtube.com/watch?v=')) { //Check if VideoLink
 
-            if (Musicdispatcher != undefined) {
-                if (Musicdispatcher.time != 0) {
-                    message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
-                }
-            }
+            ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
-            if (MusicQueue.length == 1) {
-                if (!inChannel) {
-                    join(message, bot);
+                MusicQueue.push(Link);
+
+                if (Musicdispatcher != undefined) {
+                    if (Musicdispatcher.time != 0) {
+                        message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
+                    }
                 }
+
+                if (MusicQueue.length == 1) {
+                    if (!inChannel) {
+                        join(message, bot);
+                    }
+                }
+
+            }).catch(() => {
+                message.channel.send('Not a valid Link');
+            })
+        } else {
+            if (Link.includes('www.youtube.com/playlist?list=')) { //Check if Playlist
+
+                if (ytpl.validateURL(Link)) { //validate Playlist
+
+                    ytpl(Link).then(playlist => { //Get Playlist
+
+                        var ReverseQueue = [];
+
+                        for (var song of playlist.items) { //Iterate through Songs in Playlist
+                            ReverseQueue.push(song.url_simple);
+                        }
+                        
+                        while (ReverseQueue.length > 0) {   //Makes Playlist play from start to end
+                            MusicQueue.push(ReverseQueue.pop());
+                        }
+
+                        if (Musicdispatcher != undefined) {
+                            if (Musicdispatcher.time != 0) {
+                                message.channel.send("Added Playlist to Queue");
+                            }
+                        }
+
+                        if (!inChannel) {
+                            join(message, bot);
+                        }
+                    }).catch(() => {
+                        message.channel.send('Playlist couldn`t be resolved');
+                    })
+                }
+            } else { //When neither Video or Playlist
+                message.channel.send('Not a valid Link');
             }
-        }).catch(() => {
-            message.channel.send('Not a valid Link');
-        })
+        }
     } else {
         message.channel.send('Please join a VoiceChannel');
     }

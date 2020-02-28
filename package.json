@@ -21,7 +21,8 @@
     "node-osu": "^2.2.0",
     "require-dir": "^1.2.0",
     "snoowrap": "^1.21.0",
-    "ytdl-core-discord": "^1.1.0"
+    "ytdl-core-discord": "^1.1.0",
+    "ytpl": "^0.1.20"
   },
   "devDependencies": {},
   "repository": {
