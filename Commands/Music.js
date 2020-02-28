@@ -91,7 +91,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         var Link = message.content.substring(6);
 
-        if (Link.includes('www.youtube.com/watch?v=')) { //Check if VideoLink
+        if (true) {//Link.includes('www.youtube.com/watch?v=')) { //Check if VideoLink
 
             ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
@@ -109,11 +109,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                     }
                 }
 
-            }).catch(() => {
-                message.channel.send('Not a valid Link');
-            })
-        } else {
-            if (Link.includes('www.youtube.com/playlist?list=')) { //Check if Playlist
+            }).catch(() => { //Not a Video
 
                 if (ytpl.validateURL(Link)) { //validate Playlist
 
@@ -124,7 +120,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                         for (var song of playlist.items) { //Iterate through Songs in Playlist
                             ReverseQueue.push(song.url_simple);
                         }
-                        
+
                         while (ReverseQueue.length > 0) {   //Makes Playlist play from start to end
                             MusicQueue.push(ReverseQueue.pop());
                         }
@@ -141,10 +137,10 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                     }).catch(() => {
                         message.channel.send('Playlist couldn`t be resolved');
                     })
+                } else { //When neither Video or Playlist
+                    message.channel.send('Not a valid Link');
                 }
-            } else { //When neither Video or Playlist
-                message.channel.send('Not a valid Link');
-            }
+            })
         }
     } else {
         message.channel.send('Please join a VoiceChannel');
