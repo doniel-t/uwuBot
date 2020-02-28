@@ -8,15 +8,15 @@
         "does": "will executed given command, check Admin.js for commandlist"
     },
     "ask": {
-        "usage": "!ask <question>",
+        "usage": "!ask <question> || !a <question>",
         "does": "answers your question with 100% accuracy"
     },
     "dorime": {
-        "usage": "!dorime",
+        "usage": "!dorime || !d",
         "does": "answers your Prayers"
     },
     "emoji": {
-        "usage": "!emoji <EmojiName>",
+        "usage": "!emoji <EmojiName> || !e <EmojiName>",
         "does": "Sends Emoji with given name"
     },
     "hangman": {
@@ -24,7 +24,7 @@
         "does": "plays a game of hangman with the word from users PM"
     },
     "jap": {
-        "usage": "!jap <sentence>",
+        "usage": "!jap <sentence> || !j <sentence>",
         "does": "translates sentence to japanese, or english if it was japanese"
     },
     "leaguegetgame": {
@@ -60,7 +60,7 @@
         "does": "pauses the song that is currently playing"
     },
     "play": {
-        "usage": "!play <YT-URL>",
+        "usage": "!play <YT-URL> || !p <YT-URL>",
         "does": "plays a YT-Video in your Channel"
     },
     "poll1": {
@@ -84,7 +84,7 @@
         "does": "annoys people in your channel"
     },
     "stop": {
-        "usage": "!stop",
+        "usage": "!stop || !s",
         "does": "Stops the Music in your Channel"
     },
     "tictactoe": {
