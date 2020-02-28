@@ -109,7 +109,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                     }
                 }
 
-            }).catch(() => {
+            }).catch(() => { //Not a Video
 
                 if (ytpl.validateURL(Link)) { //validate Playlist
 
