@@ -4,7 +4,6 @@ module.exports = {
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
         let returnString = "";
         let index = 0;
-        if (message.author.bot) { return; } //No uwu if Author is Bot himself
         for (let arg of contentArgs) {
             if (index != 0) {
                 arg = uwufyS(arg);

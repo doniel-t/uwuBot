@@ -1,3 +1,6 @@
+1.9.3: 28.02.2020
+    -Bot won't process own messages
+
 1.9.2: 28.02.2020
     -Fixed Formatting in help
     -Changed weebyfy to weebiefy
