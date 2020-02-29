@@ -16,6 +16,9 @@ module.exports = {
             case 'john':
                 message.contents = '!play https://www.youtube.com/watch?v=__owglEs2qE';
                 break;
+            case 'papa':
+                message.contents = '!play https://www.youtube.com/watch?v=T-FrH49c_f0';
+                break;
             default:
                 break;
         }
