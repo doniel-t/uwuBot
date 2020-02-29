@@ -3,25 +3,29 @@ const Music = require('./Music.js');
 module.exports = {
     play: function (message, bot) {
 
-        switch (message.contents) { //AutoComplete for certain KeyWords
+        let song = message.content.substring(message.content.indexOf(' ')+1);
+
+        switch (song) { //AutoComplete for certain KeyWords
             case 'akari':
-                message.contents = '!play https://www.youtube.com/watch?v=3EEtoN8KOSI';
+                message.content = '!play https://www.youtube.com/watch?v=3EEtoN8KOSI';
                 break;
             case 'ayaya':
-                message.contents = '!play https://www.youtube.com/watch?v=D0q0QeQbw9U';
+                message.content = '!play https://www.youtube.com/watch?v=D0q0QeQbw9U';
                 break;
             case 'bruh':
-                message.contents = '!play https://www.youtube.com/watch?v=2ZIpFytCSVc';
+                message.content = '!play https://www.youtube.com/watch?v=2ZIpFytCSVc';
                 break;
             case 'john':
-                message.contents = '!play https://www.youtube.com/watch?v=__owglEs2qE';
+                message.content = '!play https://www.youtube.com/watch?v=__owglEs2qE';
                 break;
             case 'papa':
-                message.contents = '!play https://www.youtube.com/watch?v=T-FrH49c_f0';
+                message.content = '!play https://www.youtube.com/watch?v=T-FrH49c_f0';
                 break;
             default:
                 break;
         }
+
+        console.log(message.content);console.log(song);
 
         Music.play(message, bot); //All Logic is in Music
     }

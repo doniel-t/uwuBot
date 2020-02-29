@@ -1,3 +1,7 @@
+1.9.8: 29.02.2020
+    -Fixed KeyWords
+    -Fixed some String splitters
+
 1.9.7: 29.02.2020
     -Added KeyWords in play
 
