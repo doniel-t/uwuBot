@@ -1,5 +1,6 @@
 const requireDir = require('require-dir');
 const commands = requireDir('.');
+const Logger = require('./Logger');
 
 module.exports = { //Redirects Shortcuts to Commands
     a: function(message, bot) {

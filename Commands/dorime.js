@@ -5,7 +5,7 @@ module.exports = {
 
         message.channel.send("Dorime\nInterimo, adapare Dorime \nAmeno Ameno Latire \nLatiremo \nDorime.. ");
 
-        message.content = 'https://www.youtube.com/watch?v=zQ4LiyFF8RU';
+        message.content = '!play https://www.youtube.com/watch?v=zQ4LiyFF8RU';
         Music.play(message,bot);
     }
 }
