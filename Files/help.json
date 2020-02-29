@@ -99,6 +99,10 @@
         "usage": "!weebiefy <messsage> || !w <messsage>",
         "does": "returns retarded weebyfied message"
     },
+    "whatToDraw": {
+        "usage": "!whatToDraw",
+        "does": "returns a random Anime Character and its MAL link"
+    },
     "zins": {
         "usage": "!zins <startMoney> <number_of_months> <percentage>",
         "does": "calculates the end money"
