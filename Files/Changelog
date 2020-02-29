@@ -1,3 +1,6 @@
+1.9.7: 29.02.2020
+    -Added KeyWords in play
+
 1.9.6: 29.02.2020
     -Added Logger to Shortcuts
     -Fixed Music not working under certain conditions
@@ -20,7 +23,7 @@
     -Updated README.md
 
 1.9.0: 26.02.2020
-    -Added Shortcuts a,d,e,j,p,s
+    -Added Shortcuts a,d,e,j,p,s,w
     -updated snoowrap to 1.21
     -Added weebyfy Command
 
