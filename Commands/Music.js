@@ -89,59 +89,57 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
-        var Link = message.content.substring(6);
+        var Link = message.content.substring(message.content.indexOf(' ')); //Remove command
 
-        if (true) {//Link.includes('www.youtube.com/watch?v=')) { //Check if VideoLink
+        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
-            ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
+            MusicQueue.push(Link);
 
-                MusicQueue.push(Link);
-
-                if (Musicdispatcher != undefined) {
-                    if (Musicdispatcher.time != 0) {
-                        message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
-                    }
+            if (Musicdispatcher != undefined) {
+                if (Musicdispatcher.time != 0) {
+                    message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
                 }
+            }
 
-                if (MusicQueue.length == 1) {
+            if (MusicQueue.length == 1) {
+                if (!inChannel) {
+                    join(message, bot);
+                }
+            }
+
+        }).catch(() => { //Not a Video
+
+            if (ytpl.validateURL(Link)) { //validate Playlist
+
+                ytpl(Link).then(playlist => { //Get Playlist
+
+                    var ReverseQueue = [];
+
+                    for (var song of playlist.items) { //Iterate through Songs in Playlist
+                        ReverseQueue.push(song.url_simple);
+                    }
+
+                    while (ReverseQueue.length > 0) {   //Makes Playlist play from start to end
+                        MusicQueue.push(ReverseQueue.pop());
+                    }
+
+                    if (Musicdispatcher != undefined) {
+                        if (Musicdispatcher.time != 0) {
+                            message.channel.send("Added Playlist to Queue");
+                        }
+                    }
+
                     if (!inChannel) {
                         join(message, bot);
                     }
-                }
+                }).catch(() => {
+                    message.channel.send('Playlist couldn`t be resolved');
+                })
+            } else { //When neither Video or Playlist
+                message.channel.send('Not a valid Link');
+            }
+        })
 
-            }).catch(() => { //Not a Video
-
-                if (ytpl.validateURL(Link)) { //validate Playlist
-
-                    ytpl(Link).then(playlist => { //Get Playlist
-
-                        var ReverseQueue = [];
-
-                        for (var song of playlist.items) { //Iterate through Songs in Playlist
-                            ReverseQueue.push(song.url_simple);
-                        }
-
-                        while (ReverseQueue.length > 0) {   //Makes Playlist play from start to end
-                            MusicQueue.push(ReverseQueue.pop());
-                        }
-
-                        if (Musicdispatcher != undefined) {
-                            if (Musicdispatcher.time != 0) {
-                                message.channel.send("Added Playlist to Queue");
-                            }
-                        }
-
-                        if (!inChannel) {
-                            join(message, bot);
-                        }
-                    }).catch(() => {
-                        message.channel.send('Playlist couldn`t be resolved');
-                    })
-                } else { //When neither Video or Playlist
-                    message.channel.send('Not a valid Link');
-                }
-            })
-        }
     } else {
         message.channel.send('Please join a VoiceChannel');
     }

@@ -4,7 +4,7 @@ const translate = require('@vitalets/google-translate-api');
 module.exports = {
     jap: function(message) {
 
-        translate(message.content.substring(6), { to: 'ja' }).then(res => { //Translate from x to Japanese
+        translate(message.content.substring(message.content.indexOf(' ')), { to: 'ja' }).then(res => { //Translate from x to Japanese
 
             if (res.from.language.iso == 'ja') { //If Language was Japanese translate to English
                 translate(message.content.substring(6), { to: 'en' }).then(res => { //Translate
