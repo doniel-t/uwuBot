@@ -41,3 +41,4 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [ ] UNO
 - [ ] ayayay Command
 - [ ] Emoji Detect in Messages
+- [ ] make MusicShortcuts to array for print
