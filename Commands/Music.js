@@ -89,7 +89,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
-        var Link = message.content.substring(message.content.indexOf(' ')+1); //Remove command
+        var Link = message.content.substring(message.content.indexOf(' ') + 1); //Remove command
 
         ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 

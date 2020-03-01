@@ -30,14 +30,21 @@ bot.on('message', (message) => { //When Message sent
         }
 
         try {
+
             executeFunctionByName(command, commands, message, bot); //Calls function
-        } catch (error) {
-            Logger.log(error);
-            message.channel.send('Command not Found, use !help for help');
+
+        } catch (error) {//Checks if command is shortcut for music
+
+            message.content = message.content.substring(1);
+            if (!commands.play.playKey(message, bot)) {
+                Logger.log(error);
+                message.channel.send('Command not Found, use !help for help');
+            }
+
         }
 
         //So you have to call the .js and your function like the command you want to execute at.
-        //Example !osurecent calls commands.osurecent.osurecent(message)
+        //Example !osurecent calls commands.osurecent.osurecent(message,bot)
     }
 
     if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands

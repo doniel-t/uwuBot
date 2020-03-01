@@ -7,7 +7,8 @@ module.exports = { //Redirects Shortcuts to Commands
         call('ask', message, bot);
     },
     d: function(message, bot) {
-        call('dorime', message, bot);
+        message.content = 'dorime';
+        call('play', message, bot);
     },
     e: function(message, bot) {
         call('emoji', message, bot);
