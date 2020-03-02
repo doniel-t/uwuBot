@@ -22,9 +22,11 @@ module.exports = {
                 message.content = 'https://www.youtube.com/watch?v=T-FrH49c_f0';
                 break;
             case 'dorime':
+                message.channel.send("Dorime\nInterimo, adapare Dorime \nAmeno Ameno Latire \nLatiremo \nDorime.. ");
                 message.content = 'https://www.youtube.com/watch?v=zQ4LiyFF8RU';
                 break;
             case 'padoru':
+                message.channel.send("HASHIRE SORIYO KAZE NO YOU NI TSUKIMIHARAWO PADORU PADORU");
                 message.content = 'https://www.youtube.com/watch?v=dQ_d_VKrFgM';
                 break;
             case 'shutdown':

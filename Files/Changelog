@@ -1,5 +1,6 @@
 1.10.2: 02.03.2020
     -Added !SONGNAME support
+    -Updated README.md
 
 1.10.1: 01.03.2020
     -Updated discord.js to 11.6.1
