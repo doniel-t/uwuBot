@@ -136,7 +136,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                     message.channel.send('Playlist couldn`t be resolved');
                 })
             } else { //When neither Video or Playlist
-                message.channel.send('Not a valid Link');
+                message.channel.send('Not a valid Link or use !help music');
             }
         })
 
