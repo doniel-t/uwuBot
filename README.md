@@ -39,6 +39,6 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] Tictactoe
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO
-- [ ] ayayay Command
+- [x] ayayay Command
 - [ ] Emoji Detect in Messages
-- [ ] make MusicShortcuts to array for print
+- [x] make MusicShortcuts to array for print
