@@ -4,10 +4,16 @@ const Shortcuts = require('../Files/MusicShortcut.json');
 module.exports = {
     play: function (message, bot) {
 
-        let song = message.content.substring(message.content.indexOf(' ') + 1);
+        let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-        if (Shortcuts[song] != undefined) {
-            message.content = Shortcuts[song];
+        if (Shortcuts[contentArgs[1]] != undefined) {
+            if (contentArgs[2] != undefined) { //Handling with number
+                message.content = contentArgs[1] + ' ' + contentArgs[2];
+            } else {
+                message.content = contentArgs[1];
+            }
+            this.playKey(message,bot);
+            return;
         }
         
         Music.play(message, bot); //All Logic is in Music
@@ -16,15 +22,25 @@ module.exports = {
     playKey: function (message, bot) {
 
         var notShortcut = false;
+        let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-        if (Shortcuts[message.content] != undefined) {
-            message.content = Shortcuts[message.content];
+        if (Shortcuts[contentArgs[0]] != undefined) {
+            message.content = Shortcuts[contentArgs[0]];
         } else {
             notShortcut = true;
         }
 
         if (!notShortcut) { //Handling for botMain
-            Music.play(message, bot); //All Logic is in Music
+
+            if (!isNaN(contentArgs[1])) {
+
+                for (let x = 0; x<contentArgs[1];x++) { //Plays Shortcut given amount of times
+                    Music.play(message, bot); //All Logic is in Music
+                }
+            } else {
+                Music.play(message, bot); //All Logic is in Music
+            }
+            
             return true;            
         } else {
             return false;
