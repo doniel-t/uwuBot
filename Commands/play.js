@@ -34,6 +34,10 @@ module.exports = {
 
             if (!isNaN(contentArgs[1])) {
 
+                if (contentArgs[1] > 100) {
+                    contentArgs[1] = 100;
+                }
+
                 for (let x = 0; x<contentArgs[1];x++) { //Plays Shortcut given amount of times
                     Music.play(message, bot); //All Logic is in Music
                 }
