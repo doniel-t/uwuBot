@@ -23,7 +23,7 @@ function normalhelp(message) { //prints all Commands in help.json
             helpMessage = helpMessage.concat("Command:   ").concat(com)
                 .concat('\nUsage:           ').concat(comm.usage)
                 .concat('\nDoes:             ').concat(comm.does)
-                .concat("\n-----------------------------------");
+                .concat("\n-----------------------------------\n");
             if (helpMessage.length > 1500) {
                 message.channel.send(helpMessage);
                 helpMessage = '';
@@ -41,6 +41,10 @@ function musichelp(message) { //prints all Shortcuts in MusicShortcut.json
         var helpMessage = '';
         for (var com in musicShortcut) {
             helpMessage = helpMessage.concat("Shortcut:   ").concat(com).concat("\n-----------------------------------\n");
+            if (helpMessage.length > 1500) {
+                message.channel.send(helpMessage);
+                helpMessage = '';
+            }
         }
         message.channel.send(helpMessage);
     } catch (error) {
