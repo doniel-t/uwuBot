@@ -2,8 +2,15 @@ const prompts = require('../Files/prompt.json');
 const fs = require('fs');
 
 
-function addPrompt(data) {
+function addPrompt(data, message) {
     var promptList = prompts;
+    let linkString = data.split('https://');
+    for (let animeChar of promptList) {
+        if (animeChar.includes(linkString[1])) {
+            message.channel.send("Your Character is already in there!");
+            return;
+        }
+    }
     promptList.push(data);
     var jsonString = JSON.stringify(promptList);
     deleteJSON();
@@ -26,13 +33,15 @@ function writeJSON(promtsJsonString) {
     }
 }
 
-function removeLatest() {
+function removeLatest(message) {
     var promptList = prompts;
     if (promptList.length > 0) {
+        var removedCharacter = promptList[promptList.length - 1];
         promptList.pop();
         var jsonString = JSON.stringify(promptList);
         deleteJSON();
         writeJSON(jsonString);
+        message.channel.send(removedCharacter + " Was removed!");
     }
 }
 
@@ -44,13 +53,13 @@ module.exports = {
                 message.channel.send("Could not add this Character! You gave the wrong Arguments");
             } else {
                 let dataString = contentArgs[2].concat("\n").concat(contentArgs[3]);
-                addPrompt(dataString);
+                addPrompt(dataString, message);
             }
         } else if (contentArgs.length == 1) {
             var promtList = prompts;
             message.channel.send(promtList[Math.floor(Math.random() * promtList.length)]);
         } else if (contentArgs[1] == 'remove') {
-            removeLatest();
+            removeLatest(message);
         }
     }
 }
