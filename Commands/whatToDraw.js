@@ -15,7 +15,7 @@ function addPrompt(data, message) {
     var jsonString = JSON.stringify(promptList);
     deleteJSON();
     writeJSON(jsonString);
-    message.channel.send(data + "Has been added!")
+    message.channel.send(data + " Has been added!")
 }
 
 function deleteJSON() {
