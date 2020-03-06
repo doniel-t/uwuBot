@@ -8,10 +8,14 @@ var List;   // Combined List of localList and characters
 module.exports = {
     whatToDraw: function (message) {
 
-        try { //Get Local CharacterList, create it if not present
+        try { //Creates local dir if it doesn't exist
             fs.mkdirSync('Files/local');
+        } catch (err) { }
+
+        try { //Get Local CharacterList, create it if doesn't exist
             localList = require('../' + localFile);
         } catch (error) {
+            Logger.log(error);
             localList = [];
         }
 
@@ -34,6 +38,7 @@ module.exports = {
         }
 
         if (contentArgs[1] == 'remove') { //Remove Call
+            Logger.log('sfsfsfs');
             removeLatest(message);
         }
     }
@@ -62,16 +67,18 @@ function addPrompt(data, message) { //Adds entry to list
 
 function removeLatest(message) { //Removes last entry in list
 
+    Logger.log(localList.length);
+
     if (localList.length > 0) {
+        message.channel.send(localList[localList.length - 1] + " was removed!");
         localList.pop();
         writeJSON(JSON.stringify(localList));
-        message.channel.send(localList[localList.length - 1] + " was removed!");
     }
 }
 
 function writeJSON(promptsJsonString) { //Overwrites whatToDraw.json
+    Logger.log('aadadadadad');
     try {
-        Logger.log(promptsJsonString);
         fs.writeFileSync(localFile, promptsJsonString);
     } catch (err) {
         Logger.log(err);
