@@ -107,14 +107,6 @@
         "usage": "!whatToDraw",
         "does": "returns a random Anime Character and its MAL link"
     },
-    "whatToDraw add": {
-        "usage": "!whatToDraw add <Character> <MAL Link>",
-        "does": "Adds the character to the list"
-    },
-    "whatToDraw remove": {
-        "usage": "!whatToDraw remove",
-        "does": "Removes the top character from the list"
-    },
     "zins": {
         "usage": "!zins <startMoney> <number_of_months> <percentage>",
         "does": "calculates the end money"
