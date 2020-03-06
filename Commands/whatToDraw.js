@@ -1,66 +1,79 @@
-const prompts = require('../Files/prompt.json');
+const characters = require('../Files/characters.json');
 const fs = require('fs');
+const Logger = require('./Logger');
+const localFile = 'Files/local/whatToDraw.json';
+var localList; // represents whatToDraw.json
+var List;   // Combined List of localList and characters
 
+module.exports = {
+    whatToDraw: function (message) {
 
-function addPrompt(data, message) {
-    var promptList = prompts;
+        try { //Get Local CharacterList, create it if not present
+            fs.mkdirSync('Files/local');
+            localList = require('../' + localFile);
+        } catch (error) {
+            localList = [];
+        }
+
+        List = localList.concat(characters);
+        Logger.log(List);
+
+        var contentArgs = message.content.split(' ');
+
+        if (contentArgs.length == 1) { //Normal Call
+            message.channel.send(List[Math.floor(Math.random() * List.length)]);  //Returns random Character
+        }
+
+        if (contentArgs[1] == 'add') { //Add Call
+            if (contentArgs.length < 4) {
+                message.channel.send("Could not add this Character! You gave the wrong Arguments");
+            } else {
+                let dataString = contentArgs[2].concat(" \n").concat(contentArgs[3]);
+                addPrompt(dataString, message);
+            }
+        }
+
+        if (contentArgs[1] == 'remove') { //Remove Call
+            removeLatest(message);
+        }
+    }
+}
+
+function addPrompt(data, message) { //Adds entry to list
+
+    if (!data.includes('https://')) {
+        message.channel.send("The Link is not valid");
+        return;
+    }
+
     let linkString = data.split('https://');
-    for (let animeChar of promptList) {
+
+    for (let animeChar of List) {
         if (animeChar.includes(linkString[1])) {
             message.channel.send("Your Character is already in there!");
             return;
         }
     }
-    promptList.push(data);
-    var jsonString = JSON.stringify(promptList);
-    deleteJSON();
-    writeJSON(jsonString);
-    message.channel.send(data + " Has been added!")
+
+    localList.push(data);
+    writeJSON(JSON.stringify(localList));
+    message.channel.send(data + " has been added!")
 }
 
-function deleteJSON() {
+function removeLatest(message) { //Removes last entry in list
+
+    if (localList.length > 0) {
+        localList.pop();
+        writeJSON(JSON.stringify(localList));
+        message.channel.send(localList[localList.length - 1] + " was removed!");
+    }
+}
+
+function writeJSON(promptsJsonString) { //Overwrites whatToDraw.json
     try {
-        fs.unlinkSync('Files/prompt.json');
+        Logger.log(promptsJsonString);
+        fs.writeFileSync(localFile, promptsJsonString);
     } catch (err) {
-        console.log(err);
-    }
-}
-
-function writeJSON(promtsJsonString) {
-    try {
-        fs.writeFileSync('Files/prompt.json', promtsJsonString);
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-function removeLatest(message) {
-    var promptList = prompts;
-    if (promptList.length > 0) {
-        var removedCharacter = promptList[promptList.length - 1];
-        promptList.pop();
-        var jsonString = JSON.stringify(promptList);
-        deleteJSON();
-        writeJSON(jsonString);
-        message.channel.send(removedCharacter + " Was removed!");
-    }
-}
-
-module.exports = {
-    whatToDraw: function(message) {
-        var contentArgs = message.content.split(' ');
-        if (contentArgs[1] == 'add') {
-            if (contentArgs.length < 4) {
-                message.channel.send("Could not add this Character! You gave the wrong Arguments");
-            } else {
-                let dataString = contentArgs[2].concat("\n").concat(contentArgs[3]);
-                addPrompt(dataString, message);
-            }
-        } else if (contentArgs.length == 1) {
-            var promtList = prompts;
-            message.channel.send(promtList[Math.floor(Math.random() * promtList.length)]);
-        } else if (contentArgs[1] == 'remove') {
-            removeLatest(message);
-        }
+        Logger.log(err);
     }
 }

@@ -1,0 +1,10 @@
+{
+    "add": {
+        "usage": "!whatToDraw add <Name> <Character Link>",
+        "does": "addeds Character to List"
+    },
+    "remove": {
+        "usage": "!whatToDraw remove",
+        "does": "Removes the top character from the list"
+    }
+}

@@ -1,21 +1,25 @@
 const Logger = require("./Logger.js");
-const helpFile = require('../Files/help.json');
+const helpFile = require('../Files/helpFiles/help.json');
 const musicShortcut = require('../Files/MusicShortcut.json');
+const whatToDraw = require('../Files/helpFiles/whatToDrawHelp.json');
 
 module.exports = {
     help: function (message) {
         switch (message.content.substring(6)) {
             case 'music':
-                musichelp(message);
+                musicHelp(message);
+                break;
+            case 'whatToDraw':
+                whatToDrawHelp(message);
                 break;
             default:
-                normalhelp(message);
+                normalHelp(message);
                 break;
         }
     }
 }
 
-function normalhelp(message) { //prints all Commands in help.json
+function normalHelp(message) { //prints all Commands in help.json
     try {
         var helpMessage = '';
         for (var com in helpFile) {
@@ -36,7 +40,7 @@ function normalhelp(message) { //prints all Commands in help.json
     }
 }
 
-function musichelp(message) { //prints all Shortcuts in MusicShortcut.json
+function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
     try {
         var helpMessage = '';
         for (var com in musicShortcut) {
@@ -50,5 +54,26 @@ function musichelp(message) { //prints all Shortcuts in MusicShortcut.json
     } catch (error) {
         Logger.log(error);
         message.channel.send("Error in MusicShortcut.json");
+    }
+}
+
+function whatToDrawHelp(message) {
+    try {
+        var helpMessage = '';
+        for (var com in whatToDraw) {
+            var comm = whatToDraw[com];
+            helpMessage = helpMessage.concat("Command:   ").concat(com)
+            .concat('\nUsage:           ').concat(comm.usage)
+            .concat('\nDoes:             ').concat(comm.does)
+            .concat("\n-----------------------------------\n");
+            if (helpMessage.length > 1500) {
+                message.channel.send(helpMessage);
+                helpMessage = '';
+            }
+        }
+        message.channel.send(helpMessage);
+    } catch (error) {
+        Logger.log(error);
+        message.channel.send("Error in whatToDrawHelp.json");
     }
 }

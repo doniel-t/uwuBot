@@ -1,5 +1,6 @@
 Dependencies/
 node_modules/
+Files/local/
 *.log
 Commands/nhentai.js
 Commands/nhentaiprint.js
