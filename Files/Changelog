@@ -1,3 +1,11 @@
+1.11.5: 07.03.2020
+    -Fixed compatibility with Emoji Detection and !emoji
+
+1.11.4: 07.03.2020
+    -Changed MusicQueue from Stack to Set
+    -Created settings.json for local settings
+    -Added Emoji Detection in every message (with toggle)
+
 1.11.3: 07.03.2020
     -Fixed whatToDraw remove not working
 
