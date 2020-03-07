@@ -36,19 +36,19 @@ var dcbot;
 var ogmessage;
 var Musicdispatcher;
 var Musicconnection;
-var MusicQueue = [];
+var MusicQueue = new Set();
 var inChannel = false;
 var Channel;
 
 async function playSong() { //Plays a Song
 
-    let Song = MusicQueue.pop();
+    let Song = getNextSong();
     ogmessage.channel.send("Now playing " + Song);
 
     playyt(Musicconnection, Song).then(dispatcher => { //Throws error in console if url isnt valid
         Musicdispatcher = dispatcher;
         Musicdispatcher.on('end', () => {
-            if (MusicQueue.length > 0) {
+            if (MusicQueue.size > 0) {
                 playSong();
             } else {
                 ogmessage.channel.send('End of Queue');
@@ -68,13 +68,13 @@ function join(message, bot) { //Joins VoiceChannel of Caller
 
         Musicconnection = connection;
         inChannel = true;
-        playyt(connection, MusicQueue.pop()).then(dispatcher => { //Has to be called here so the Promise is returned
+        playyt(connection, getNextSong()).then(dispatcher => { //Has to be called here so the Promise is returned
 
             Musicdispatcher = dispatcher;
 
             dispatcher.on('end', () => {
 
-                if (MusicQueue.length > 0) {
+                if (MusicQueue.size > 0) {
                     playSong();
                 } else {
                     ogmessage.channel.send('End of Queue');
@@ -93,15 +93,15 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
-            MusicQueue.push(Link);
+            MusicQueue.add(Link);
 
             if (Musicdispatcher != undefined) {
                 if (Musicdispatcher.time != 0) {
-                    message.channel.send("Added Song to Queue at Position " + MusicQueue.length);
+                    message.channel.send("Added Song to Queue at Position " + MusicQueue.size);
                 }
             }
 
-            if (MusicQueue.length == 1) {
+            if (MusicQueue.size == 1) {
                 if (!inChannel) {
                     join(message, bot);
                 }
@@ -113,14 +113,8 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
                 ytpl(Link).then(playlist => { //Get Playlist
 
-                    var ReverseQueue = [];
-
                     for (var song of playlist.items) { //Iterate through Songs in Playlist
-                        ReverseQueue.push(song.url_simple);
-                    }
-
-                    while (ReverseQueue.length > 0) {   //Makes Playlist play from start to end
-                        MusicQueue.push(ReverseQueue.pop());
+                        MusicQueue.add(song.url_simple);
                     }
 
                     if (Musicdispatcher != undefined) {
@@ -147,7 +141,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
 function stop() {       //Stops Music, cleares Queue and leaves Channel
 
-    MusicQueue = [];
+    MusicQueue = new Set();
     inChannel = false;
     Channel.leave();
     Channel = undefined;
@@ -175,4 +169,10 @@ async function playyt(connection, url) {    //Plays the URL
         Logger.log(error);
     }
     return connection.playOpusStream(YTStream);
+}
+
+function getNextSong() { //Returns next Song on MusicQueue and deletes it from Queue
+    var ret = Array.from(MusicQueue)[0];
+    MusicQueue.delete(ret);
+    return ret;
 }

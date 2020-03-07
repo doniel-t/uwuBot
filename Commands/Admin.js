@@ -2,10 +2,11 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
+const Settings = require('../Files/settings.json');
 
 module.exports = {
-    
-    getLogFile: function(message) { //Bot will give you the current LogFile
+
+    getLogFile: function (message) { //Bot will give you the current LogFile
 
         var logFile;
         let array = fs.readdirSync('.');
@@ -26,7 +27,7 @@ module.exports = {
 
     },
 
-    isAdmin: function(message) { //Checks if User that called an AdminCommand is an Admin, is useless if called in Discord
+    isAdmin: function (message) { //Checks if User that called an AdminCommand is an Admin, is useless if called in Discord
         if (Admins.includes(message.author.id)) {
             return true;
         } else {
@@ -35,7 +36,7 @@ module.exports = {
         }
     },
 
-    update: function(message) { //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
+    update: function (message) { //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
         message.channel.send("Updating now");
 
         let pro = spawn('start', ['cmd.exe', '/c', '.\\Files\\Updater.bat'], { shell: true });
@@ -46,7 +47,7 @@ module.exports = {
 
     },
 
-    stop: function(message) { //Stops the Bot if called twice within 10 Seconds
+    stop: function (message) { //Stops the Bot if called twice within 10 Seconds
 
         if (stopvar) {
 
@@ -56,11 +57,11 @@ module.exports = {
 
             message.channel.send("If you really want to stop the Bot call this function again within 10 sec");
             stopvar = true;
-            setTimeout(function() { stopvar = false; }, 10000);
+            setTimeout(function () { stopvar = false; }, 10000);
         }
     },
 
-    restart: function() { //Restarts the Bot, will delete the LogFile until now so be careful
+    restart: function () { //Restarts the Bot, will delete the LogFile until now so be careful
 
         let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
 
@@ -70,25 +71,39 @@ module.exports = {
 
     },
 
-    toggleneko: function(message) { //Toggles !neko Spamability
+    toggleNeko: function (message) { //Toggles !neko Spamability
 
-        spamneko = !spamneko;
+        Settings.canspamneko = !Settings.canspamneko;
 
-        if (spamneko) {
-            message.channel.send("Can spam now");
+        if (saveSettings()) {
+            if (Settings.canspamneko) {
+                message.channel.send("Can spam now");
+            } else {
+                message.channel.send("Can't spam now");
+            }
         } else {
-            message.channel.send("Can't spam now");
+            message.channel.send('An Error occured while saving Settings');
         }
     },
 
-    canspamneko: function() { //Only here to get the Variable, is useless if called in Discord
-        return spamneko;
+    version: function (message) { //returns current version
+        message.channel.send(version.version);
     },
 
-    version: function(message) { //returns current version
-        message.channel.send(version.version);
-    }
+    toggleEmojiDetection: function (message) { //Toggles if bot searches for emojis in every message
 
+        Settings.emojiDetection = !Settings.emojiDetection;
+
+        if (saveSettings()) {
+            if (Settings.emojiDetection) {
+                message.channel.send("Will detect Emojis");
+            } else {
+                message.channel.send("Won't detect Emojis");
+            }
+        } else {
+            message.channel.send('An Error occured while saving Settings');
+        }
+    },
 }
 
 var Admins = [ //Add DiscordID for AdminAccess
@@ -96,5 +111,14 @@ var Admins = [ //Add DiscordID for AdminAccess
     '222398053703876628' //Human Daniel
 ]
 
-var spamneko = true;
 var stopvar = false;
+
+function saveSettings() { //Saves values to settings.json
+    try {
+        fs.writeFileSync('Files/settings.json', JSON.stringify(Settings));
+        return true;
+    } catch (error) {
+        Logger.log(error);
+        return false;
+    }
+}

@@ -6,6 +6,7 @@ const Logger = require("./Commands/Logger.js");
 const Admin = require('./Commands/Admin.js');
 const BotID = require('./Dependencies/BotID.json');
 const version = require('./Files/version.json');
+const Settings = require('./Files/settings.json');
 
 const commands = requireDir('./Commands');
 
@@ -29,7 +30,7 @@ bot.on('message', (message) => { //When Message sent
             command = command.concat('.').concat(command);
         }
 
-        try {
+        try {//Example !osurecent calls commands.osurecent.osurecent(message,bot)
 
             executeFunctionByName(command, commands, message, bot); //Calls function
 
@@ -40,11 +41,18 @@ bot.on('message', (message) => { //When Message sent
                 Logger.log(error);
                 message.channel.send('Command not Found, use !help for help');
             }
-
         }
+    }
 
-        //So you have to call the .js and your function like the command you want to execute at.
-        //Example !osurecent calls commands.osurecent.osurecent(message,bot)
+    if (Settings.emojiDetection) { //Emoji detection in plain Text
+        for (var word of contentArgs) { 
+            let emoji = bot.emojis.find(e => e.name == word);
+            if (emoji) {
+                let sendMessage = message;
+                sendMessage.content = '!e ' + emoji.name;
+                executeFunctionByName("emoji.emoji", commands, sendMessage, bot);
+            }
+        }
     }
 
     if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
@@ -61,7 +69,6 @@ bot.on('message', (message) => { //When Message sent
         }
 
     }
-
 });
 
 bot.login(token.token); //Starts Bot

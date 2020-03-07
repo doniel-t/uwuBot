@@ -22,7 +22,6 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] TODO im Repo
 - [x] League Support
 - [x] Polls
-- [ ] Strawpoll
 - [x] japanese translator
 - [x] !neko
 - [x] add SelfUpdate-Command for Servers
@@ -37,10 +36,10 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] RiotAPIKey replenish
 - [x] Changelog
 - [x] Tictactoe
+- [x] ayayay Command
+- [x] Emoji Detect in Messages
+- [x] make MusicShortcuts to array for print
+- [x] MusicQueue as List not Stack
+- [ ] Twitch Stream Notification
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO
-- [x] ayayay Command
-- [ ] Emoji Detect in Messages
-- [x] make MusicShortcuts to array for print
-- [ ] MusicQueue as List not Stack
-- [ ] Twitch Stream Notification

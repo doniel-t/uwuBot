@@ -1,12 +1,12 @@
-const Admin = require('./Admin.js');
+const settings = require('../Files/settings.json');
 const redditAPI = require('./rngsub.js');
 
 const talkedRecently = new Set();
 
 module.exports = {
-    neko: function(message) {
+    neko: function (message) {
 
-        if (!Admin.canspamneko()) {
+        if (!settings.canspamneko) {
 
             if (talkedRecently.has(message.author.id)) {
                 message.channel.send("Wait 15 Seconds before typing this again. - " + message.author);
@@ -28,7 +28,7 @@ module.exports = {
 }
 
 function execneko(message) {
-    
+
     if (Math.random() <= 0.5) {
         message.content = "con0 neko";
     } else {
