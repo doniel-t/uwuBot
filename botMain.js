@@ -45,7 +45,15 @@ bot.on('message', (message) => { //When Message sent
     }
 
     if (Settings.emojiDetection) { //Emoji detection in plain Text
-        for (var word of contentArgs) { 
+
+        var contentArgsTMP = contentArgs;
+
+        if (contentArgsTMP[0] == '!e') {
+            contentArgsTMP.shift(); //Remove first emoji if !e is called
+        }
+
+        contentArgsTMP.shift(); //Removes first array index
+        for (var word of contentArgsTMP) {
             let emoji = bot.emojis.find(e => e.name == word);
             if (emoji) {
                 let sendMessage = message;
