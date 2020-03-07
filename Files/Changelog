@@ -1,3 +1,6 @@
+2.0.1: 08.03.2020
+    -Fixed Installer.bat
+
 2.0.0: 08.03.2020
     YOU NEED TO REINSTALL THE BOT WITH THE NEW Installer.bat
     -Added local settings.json

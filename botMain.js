@@ -49,10 +49,11 @@ bot.on('message', (message) => { //When Message sent
         var contentArgsTMP = contentArgs;
 
         if (contentArgsTMP[0] == '!e') {
+            contentArgsTMP.shift();
             contentArgsTMP.shift(); //Remove first emoji if !e is called
         }
 
-        contentArgsTMP.shift(); //Removes first array index
+        
         for (var word of contentArgsTMP) {
             let emoji = bot.emojis.find(e => e.name == word);
             if (emoji) {

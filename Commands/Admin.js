@@ -115,7 +115,7 @@ var stopvar = false;
 
 function saveSettings() { //Saves values to settings.json
     try {
-        fs.writeFileSync('Files/settings.json', JSON.stringify(Settings));
+        fs.writeFileSync('Files/local/settings.json', JSON.stringify(Settings));
         return true;
     } catch (error) {
         Logger.log(error);

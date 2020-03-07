@@ -3,5 +3,4 @@ cd uwuBot
 call npm install
 cd Files
 mkdir local
-cd local
-copy /y NUL settings.json >NUL
+copy .\initsettings.json .\local\settings.json
