@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
-const Settings = require('../Files/settings.json');
+const Settings = require('../Files/local/settings.json');
 
 module.exports = {
 

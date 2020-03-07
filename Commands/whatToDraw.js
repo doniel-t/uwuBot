@@ -8,10 +8,6 @@ var List;   // Combined List of localList and characters
 module.exports = {
     whatToDraw: function (message) {
 
-        try { //Creates local dir if it doesn't exist
-            fs.mkdirSync('Files/local');
-        } catch (err) { }
-
         try { //Get Local CharacterList, create it if doesn't exist
             localList = require('../' + localFile);
         } catch (error) {
@@ -20,7 +16,6 @@ module.exports = {
         }
 
         List = localList.concat(characters);
-        Logger.log(List);
 
         var contentArgs = message.content.split(' ');
 
@@ -38,7 +33,6 @@ module.exports = {
         }
 
         if (contentArgs[1] == 'remove') { //Remove Call
-            Logger.log('sfsfsfs');
             removeLatest(message);
         }
     }
