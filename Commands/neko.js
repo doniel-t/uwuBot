@@ -1,4 +1,4 @@
-const settings = require('../Files/settings.json');
+const settings = require('../Files/local/settings.json');
 const redditAPI = require('./rngsub.js');
 
 const talkedRecently = new Set();

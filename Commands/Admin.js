@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
-const Settings = require('../Files/settings.json');
+const Settings = require('../Files/local/settings.json');
 
 module.exports = {
 
@@ -115,7 +115,7 @@ var stopvar = false;
 
 function saveSettings() { //Saves values to settings.json
     try {
-        fs.writeFileSync('Files/settings.json', JSON.stringify(Settings));
+        fs.writeFileSync('Files/local/settings.json', JSON.stringify(Settings));
         return true;
     } catch (error) {
         Logger.log(error);

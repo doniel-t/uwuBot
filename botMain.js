@@ -6,8 +6,8 @@ const Logger = require("./Commands/Logger.js");
 const Admin = require('./Commands/Admin.js');
 const BotID = require('./Dependencies/BotID.json');
 const version = require('./Files/version.json');
-const Settings = require('./Files/settings.json');
-
+const fs = require('fs');
+const Settings = initsettings();
 const commands = requireDir('./Commands');
 
 bot.on('ready', () => { //At Startup
@@ -49,10 +49,11 @@ bot.on('message', (message) => { //When Message sent
         var contentArgsTMP = contentArgs;
 
         if (contentArgsTMP[0] == '!e') {
+            contentArgsTMP.shift();
             contentArgsTMP.shift(); //Remove first emoji if !e is called
         }
 
-        contentArgsTMP.shift(); //Removes first array index
+        
         for (var word of contentArgsTMP) {
             let emoji = bot.emojis.find(e => e.name == word);
             if (emoji) {
@@ -89,4 +90,18 @@ function executeFunctionByName(functionName, context /*, args */) {    //Execute
         context = context[namespaces[i]];
     }
     return context[func].apply(context, args);
+}
+
+function initsettings() {
+    try {
+        return require('./Files/local/settings.json');
+    } catch (ignored) {
+        try {
+            fs.writeFileSync('Files/local/settings.json', JSON.stringify(require('./Files/initsettings.json')));
+            return require('./Files/local/settings.json');
+        } catch (error) {
+            Logger.log(error);
+            return undefined;
+        }
+    }
 }

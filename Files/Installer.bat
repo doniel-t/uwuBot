@@ -1,3 +1,6 @@
 git clone https://github.com/danieltheil/uwuBot.git
 cd uwuBot
-npm install
+call npm install
+cd Files
+mkdir local
+copy .\initsettings.json .\local\settings.json
