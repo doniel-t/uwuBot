@@ -94,10 +94,13 @@ function executeFunctionByName(functionName, context /*, args */) {    //Execute
 
 function initsettings() {
     try {
-        return require('./Files/local/settings.json');
+        return require('./Files/local/settings.json'); //Test if settings.json is valid
     } catch (ignored) {
         try {
-            fs.writeFileSync('Files/local/settings.json', JSON.stringify(require('./Files/initsettings.json')));
+            try {   //Try to create the local Folder
+                fs.mkdirSync('Files/local');
+            } catch (ignored) {Logger.log(ignored);}
+            fs.writeFileSync('Files/local/settings.json', JSON.stringify(require('./Files/initsettings.json'))); //Create settings.json
             return require('./Files/local/settings.json');
         } catch (error) {
             Logger.log(error);

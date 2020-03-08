@@ -2,7 +2,6 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
-const Settings = require('../Files/local/settings.json');
 
 module.exports = {
 
@@ -73,10 +72,10 @@ module.exports = {
 
     toggleNeko: function (message) { //Toggles !neko Spamability
 
-        Settings.canspamneko = !Settings.canspamneko;
+        getSettings().canspamneko = !getSettings().canspamneko;
 
         if (saveSettings()) {
-            if (Settings.canspamneko) {
+            if (getSettings().canspamneko) {
                 message.channel.send("Can spam now");
             } else {
                 message.channel.send("Can't spam now");
@@ -92,10 +91,10 @@ module.exports = {
 
     toggleEmojiDetection: function (message) { //Toggles if bot searches for emojis in every message
 
-        Settings.emojiDetection = !Settings.emojiDetection;
+        getSettings().emojiDetection = !getSettings().emojiDetection;
 
         if (saveSettings()) {
-            if (Settings.emojiDetection) {
+            if (getSettings().emojiDetection) {
                 message.channel.send("Will detect Emojis");
             } else {
                 message.channel.send("Won't detect Emojis");
@@ -121,4 +120,8 @@ function saveSettings() { //Saves values to settings.json
         Logger.log(error);
         return false;
     }
+}
+
+function getSettings() {
+    return require('../Files/local/settings.json');
 }
