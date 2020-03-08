@@ -2,7 +2,6 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
-const Settings = getSettings();
 
 module.exports = {
 
