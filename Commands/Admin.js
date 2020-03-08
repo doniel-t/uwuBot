@@ -2,7 +2,6 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
-const Settings = getSettings();
 
 module.exports = {
 
@@ -73,9 +72,11 @@ module.exports = {
 
     toggleNeko: function (message) { //Toggles !neko Spamability
 
-        Settings.canspamneko = !Settings.canspamneko;
+        var Settings = getSettings(); //Get Settings
 
-        if (saveSettings()) {
+        Settings.canspamneko = !Settings.canspamneko; //Change Setting
+        
+        if (saveSettings(Settings)) { //Save Settings to settings.json
             if (Settings.canspamneko) {
                 message.channel.send("Can spam now");
             } else {
@@ -92,9 +93,11 @@ module.exports = {
 
     toggleEmojiDetection: function (message) { //Toggles if bot searches for emojis in every message
 
-        Settings.emojiDetection = !Settings.emojiDetection;
+        var Settings = getSettings(); //Get Settings
 
-        if (saveSettings()) {
+        Settings.emojiDetection = !Settings.emojiDetection; //Change Setting
+
+        if (saveSettings(Settings)) { //Save Settings to settings.json
             if (Settings.emojiDetection) {
                 message.channel.send("Will detect Emojis");
             } else {
@@ -113,7 +116,7 @@ var Admins = [ //Add DiscordID for AdminAccess
 
 var stopvar = false;
 
-function saveSettings() { //Saves values to settings.json
+function saveSettings(Settings) { //Saves values to settings.json
     try {
         fs.writeFileSync('Files/local/settings.json', JSON.stringify(Settings));
         return true;

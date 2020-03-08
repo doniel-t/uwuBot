@@ -53,7 +53,7 @@ bot.on('message', (message) => { //When Message sent
             contentArgsTMP.shift(); //Remove first emoji if !e is called
         }
 
-        
+
         for (var word of contentArgsTMP) {
             let emoji = bot.emojis.find(e => e.name == word);
             if (emoji) {
@@ -94,17 +94,42 @@ function executeFunctionByName(functionName, context /*, args */) {    //Execute
 
 function initsettings() {
     try {
-        return require('./Files/local/settings.json'); //Test if settings.json is valid
-    } catch (ignored) {
+
+        var set = require('./Files/local/settings.json'); //Test if settings.json is valid
+
+    } catch (ignored) { //No settings.json
+
         try {
+
             try {   //Try to create the local Folder
+
                 fs.mkdirSync('Files/local');
-            } catch (ignored) {Logger.log(ignored);}
+            } catch (ignored) { }
+
             fs.writeFileSync('Files/local/settings.json', JSON.stringify(require('./Files/initsettings.json'))); //Create settings.json
             return require('./Files/local/settings.json');
+
         } catch (error) {
             Logger.log(error);
             return undefined;
         }
     }
+
+    var initset = require('./Files/initsettings.json');
+
+    for (var setting in initset) {
+        Logger.log(initset[setting]);
+        Logger.log(set[setting]);
+        if (set[setting] == undefined) {
+            set[setting] = initset[setting];
+        }
+    }
+
+    try {
+    fs.writeFileSync('Files/local/settings.json', JSON.stringify(set));        
+    } catch (error) {
+        Logger.log(error);
+    }
+
+    return set;
 }
