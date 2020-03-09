@@ -1,3 +1,6 @@
+2.1.0: 09.03.2020
+    -added notify
+
 2.0.3: 08.03.2020
     -settings.json will now init new settings from initsettings.json
 
