@@ -71,7 +71,6 @@ function removeLatest(message) { //Removes last entry in list
 }
 
 function writeJSON(promptsJsonString) { //Overwrites whatToDraw.json
-    Logger.log('aadadadadad');
     try {
         fs.writeFileSync(localFile, promptsJsonString);
     } catch (err) {
