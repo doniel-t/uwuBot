@@ -16,6 +16,28 @@ module.exports = {
         }
 
         message.channel.send(getEmojiString(emoji)); //Send Message
+    },
+
+    emojiDetection(message,bot) {
+        let contentArgs = message.content.replace(/:/g,' ').split(" "); //Replace : with Space and split Message
+
+        if (contentArgs[0] == '!e' || contentArgs[0] == '!emoji') {
+            contentArgs.shift(); //Remove first emoji and command if !emoji / !e is called
+            contentArgs.shift(); 
+        }
+
+        for (var word of contentArgs) {
+            if (word[0] == ':' && word[word.length-1] == ':') { //Remove : if needed
+                word = word.substring(1,word.length-1);
+            }
+            let emoji = bot.emojis.find(e => e.name == word);   //Find emoji
+            if (emoji) {
+                let sendMessage = message;
+                sendMessage.content = '!e ' + emoji.name;
+                this.emoji(sendMessage,bot);
+            }
+        }
+
     }
 }
 
