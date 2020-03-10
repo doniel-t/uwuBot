@@ -44,11 +44,25 @@ bot.on('message', (message) => { //When Message sent
         }
     }
 
+    if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
+        try {
+            if (Admin.isAdmin(message)) {
+                executeFunctionByName(contentArgs[1], Admin, message);
+            } else {
+                message.channel.send('You are not an Admin');
+            }
+
+        } catch (error) {
+            Logger.log(error);
+            message.channel.send('Not a admin command');
+        }
+    }
+
     if (Settings.emojiDetection) { //Emoji detection in plain Text
 
         var contentArgsTMP = contentArgs;
 
-        if (contentArgsTMP[0] == '!e') {
+        if (contentArgsTMP[0] == '!e' || contentArgsTMP[0] == '!emoji') {
             contentArgsTMP.shift();
             contentArgsTMP.shift(); //Remove first emoji if !e is called
         }
@@ -62,21 +76,6 @@ bot.on('message', (message) => { //When Message sent
                 executeFunctionByName("emoji.emoji", commands, sendMessage, bot);
             }
         }
-    }
-
-    if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
-        try {
-            if (Admin.isAdmin(message)) {
-                executeFunctionByName(contentArgs[1], Admin, message);
-            } else {
-                message.channel.send('You are not an Admin');
-            }
-
-        } catch (error) {
-            Logger.log(error);
-            message.channel.send('Not a admin command');
-        }
-
     }
 });
 
@@ -118,8 +117,6 @@ function initsettings() {
     var initset = require('./Files/initsettings.json');
 
     for (var setting in initset) {
-        Logger.log(initset[setting]);
-        Logger.log(set[setting]);
         if (set[setting] == undefined) {
             set[setting] = initset[setting];
         }
