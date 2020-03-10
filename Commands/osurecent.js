@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const Logger = require("./Logger.js");
 const osu = require('node-osu');
 const osuAPIKey = require('../Dependencies/osuAPIKey.json'); //Has APIKey under osuAPIKEY.key
@@ -10,21 +11,14 @@ const osuAPI = new osu.Api(osuAPIKey.key, {
 
 module.exports = {
 
-    osurecent: async function(message) { //Gets most recent Play(passed or unpassed)
+    osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
         name = getosuName(message);
 
-        let emojiIds = ["<:hit300:677469703798521881>", //300
-            "<:hit100:677469559875305473>", //100
-            "<:hit50:677469611725422625>", //50
-            "<:hit0:677469777274601491>" //miss
-        ];
-
-        s = osuAPI.getUserRecent({ u: name }).then( //osuAPI-Call
-            async result => {
+        osuAPI.getUserRecent({ u: name }).then( //osuAPI-Call
+            result => {
                 recentScore = result[0];
 
-                var Acc = recentScore.accuracy * 100;
                 let ObjectCount = Number.parseInt(recentScore.beatmap.objects.normal) +
                     Number.parseInt(recentScore.beatmap.objects.slider) +
                     Number.parseInt(recentScore.beatmap.objects.spinner);
@@ -34,56 +28,56 @@ module.exports = {
                     Number.parseInt(recentScore.counts["300"]) +
                     Number.parseInt(recentScore.counts["miss"]);
 
+                let Acc = recentScore.accuracy * 100;
                 let percentagePassed = (ScoreCount / ObjectCount) * 100;
-
-                let endMessage = "Score:    ".concat(recentScore.score)
-                    .concat("\nCombo:    ").concat(recentScore.maxCombo)
-                    .concat("\nTitle:    ").concat(recentScore.beatmap.title)
-                    .concat("\nLink:      ").concat("https://osu.ppy.sh/beatmapsets/").concat(recentScore.beatmap.beatmapSetId)
-                    .concat("\nDiff:     ").concat(recentScore.beatmap.version)
-                    .concat("\nStarDiff: ").concat(recentScore.beatmap.difficulty.rating)
-                    .concat("\nBPM:      ").concat(recentScore.beatmap.bpm)
-                    .concat("\nAcc:      ").concat(Acc.toFixed(2)).concat("%\n")
-                    .concat(recentScore.counts["300"]).concat(emojiIds[0] + " ")
-                    .concat(recentScore.counts["100"]).concat(emojiIds[1] + " ")
-                    .concat(recentScore.counts["50"]).concat(emojiIds[2] + " ")
-                    .concat(recentScore.counts["miss"]).concat(emojiIds[3] + " ");
-
                 let parsedMods = parseMods(recentScore.mods);
 
+                var emb = new Discord.RichEmbed()
+                    .setTitle(recentScore.beatmap.artist + ' - ' + recentScore.beatmap.title)
+                    .setURL('https://osu.ppy.sh/beatmapsets/' + recentScore.beatmap.beatmapSetId + '#osu/' + recentScore.beatmap.id)
+                    .setColor('#0099ff')
+                    .setFooter(recentScore.date)
+                    .addField('Score', recentScore.score, true)
+                    .addField('Combo', recentScore.maxCombo, true)
+                    .addField('BPM', recentScore.beatmap.bpm, true)
+                    .addField('Status', recentScore.beatmap.approvalStatus)
+                    .addField('Difficulty', recentScore.beatmap.version, true)
+                    .addField('StarRating', parseFloat(recentScore.beatmap.difficulty.rating).toFixed(2), true)
+
                 if (!(parsedMods === "" || parsedMods == null)) {
-                    endMessage = endMessage.concat("\nMods:     ").concat(parsedMods);
-                } else {
-                    endMessage = endMessage.concat("\nMods:     NoMod");
+                    emb.addField('Mods', parsedMods, true)
                 }
-                if (recentScore.pp != null) {
-                    endMessage = endMessage.concat("\nPP:       ").concat(recentScore.pp);
-                }
+
                 if (percentagePassed !== 100) {
-                    endMessage = endMessage.concat("\nPassed:    ").concat(percentagePassed.toFixed(2)).concat("%");
+                    emb.addField('Passed', percentagePassed.toFixed(2).concat("%"))
+                } else {
+                    emb.addBlankField()
                 }
-                return endMessage;
+
+                emb.addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
+                    .concat(recentScore.counts["100"]).concat(getEmoji('hit100', bot) + " ")
+                    .concat(recentScore.counts["50"]).concat(getEmoji('hit50', bot) + " ")
+                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "))
+
+                message.channel.send(emb);
             }
         ).catch((error) => {
             Logger.log(error);
             message.channel.send("Username not found or this user has not played today!");
         });
-
-        let result = await s; //wait for PromiseResolve
-        message.channel.send(result);
     }
 }
 
 function parseMods(mods) {
     let result = "";
-    for (let x = 0;x<mods.length;x++) {
+    for (let x = 0; x < mods.length; x++) {
 
         if (mods[x] != 'FreeModAllowed' && mods[x] != 'ScoreIncreaseMods') {
             result += mods[x] + ',';
         }
     }
 
-    result = result.substring(0,result.length-1);
+    result = result.substring(0, result.length - 1);
     return result;
 }
 
@@ -93,21 +87,30 @@ function getosuName(message) {       //Gives back a NameString
 
     if (contentArgs[1] == null) {   //Hardcoded Names
         switch (message.author.username) {
-            
+
             case "ackhack":         //Discordname
                 return "ackh4ck";   //osuname
 
             case "Human Daniel":
-                return "daninator";
+                return "Human Daniel";
 
             case "DragonHunter428":
                 return "DH428";
+
+            case 'Yalina':
+                return 'IIAleII';
 
             default:
                 return "No User given";
         }
     }
     else {
-        return contentArgs[1];  //When Name given
+        contentArgs.shift();
+        return contentArgs.join().replace(/,/g, ' ');  //When Name given
     }
+}
+
+function getEmoji(emojiName, bot) {
+    var emoji = bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
+    return '<:' + emoji.name + ':' + emoji.id + '>'; //Build emojiString
 }
