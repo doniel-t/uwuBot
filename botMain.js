@@ -69,7 +69,10 @@ bot.on('message', (message) => { //When Message sent
 
 
         for (var word of contentArgsTMP) {
-            let emoji = bot.emojis.find(e => e.name == word);
+            if (word[0] == ':' && word[word.length-1] == ':') { //Remove : if needed
+                word = word.substring(1,word.length-1);
+            }
+            let emoji = bot.emojis.find(e => e.name == word);   //Find emoji
             if (emoji) {
                 let sendMessage = message;
                 sendMessage.content = '!e ' + emoji.name;
