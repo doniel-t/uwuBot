@@ -16,7 +16,7 @@
         "does": "answers your Prayers"
     },
     "emoji": {
-        "usage": "!emoji <EmojiName> or !e <EmojiName>",
+        "usage": "!emoji <EmojiName / all> or !e <EmojiName / all>",
         "does": "Sends Emoji with given name"
     },
     "hangman": {
@@ -46,6 +46,10 @@
     "next": {
         "usage": "!next",
         "does": "plays the next song in queue, if the queue is empty stops"
+    },
+    "notify": {
+        "usage": "!notify <Your Message (Allows spaces)> , <time in minutes> : <time in seconds>",
+        "does": "Notifies you on your set time"
     },
     "osuplays": {
         "usage": "!osuplays <optional: osuName>",
@@ -94,10 +98,6 @@
     "tictactoe": {
         "usage": "!tictactoe <optional: stop>",
         "does": "play a game of tictactoe with a friend or stop it"
-    },
-    "notify": {
-        "usage": "!notify <Your Message (Allows spaces)> , <time in minutes> : <time in seconds>",
-        "does": "Notifies you on your set time"
     },
     "uwufy": {
         "usage": "!uwufy <message>",

@@ -1,5 +1,8 @@
+2.1.1: 10.03.2020
+    -Added !emoji all
+
 2.1.0: 09.03.2020
-    -added notify
+    -added notify Command
 
 2.0.3: 08.03.2020
     -settings.json will now init new settings from initsettings.json
