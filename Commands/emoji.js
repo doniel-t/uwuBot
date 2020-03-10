@@ -34,11 +34,14 @@ function getEmojiString(emoji) {
 
 function printAll(message,bot) {
     var sendMessage = '';
+    var counter = 0;
     for (var val of bot.emojis) {
         sendMessage = sendMessage.concat(getEmojiString(val[1]));
-        if (sendMessage.length > 1800) {
+        counter++;
+        if (counter == 27) {
             message.channel.send(sendMessage); //Send Message
             sendMessage = '';
+            counter = 0;
         }      
     }
     message.channel.send(sendMessage);
