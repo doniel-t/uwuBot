@@ -31,9 +31,7 @@ module.exports = {
         var sendMessage = '';
 
         for (var word of contentArgs) {
-            if (word[0] == ':' && word[word.length - 1] == ':') { //Remove : if needed
-                word = word.substring(1, word.length - 1);
-            }
+
             let emoji = bot.emojis.find(e => e.name == word);   //Find emoji
 
             if (emoji) {
