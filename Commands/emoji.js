@@ -20,24 +20,6 @@ module.exports = {
 
     emojiDetection(message, bot) {
 
-        while (message.content.includes('<') && message.content.includes('>')) {
-
-            var charS = message.content.indexOf('<');
-            var charB = message.content.indexOf('>');
-
-            if (message.content.charAt(charS + 1) == ':') { //NonAnimated
-                if (!isNaN(message.content.substring(charS + 1, charB - 1).split(':')[1])) {
-                    return;
-                }
-            }
-
-            if (message.content.charAt(charS + 1) == 'a' && message.content.charAt(charS + 2) == ':') { //Animated
-                if (!isNaN(message.content.substring(charS + 2, charB - 1).split(':')[1])) {
-                    return;
-                }
-            }
-        }
-
         let contentArgs = message.content.replace(/:/g, ' ').split(" "); //Replace : with Space and split Message
 
         if (contentArgs[0] == '!e' || contentArgs[0] == '!emoji') {
