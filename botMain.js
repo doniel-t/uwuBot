@@ -59,23 +59,7 @@ bot.on('message', (message) => { //When Message sent
     }
 
     if (Settings.emojiDetection) { //Emoji detection in plain Text
-
-        var contentArgsTMP = contentArgs;
-
-        if (contentArgsTMP[0] == '!e' || contentArgsTMP[0] == '!emoji') {
-            contentArgsTMP.shift();
-            contentArgsTMP.shift(); //Remove first emoji if !e is called
-        }
-
-
-        for (var word of contentArgsTMP) {
-            let emoji = bot.emojis.find(e => e.name == word);
-            if (emoji) {
-                let sendMessage = message;
-                sendMessage.content = '!e ' + emoji.name;
-                executeFunctionByName("emoji.emoji", commands, sendMessage, bot);
-            }
-        }
+        executeFunctionByName("emoji.emojiDetection", commands, message, bot);
     }
 });
 

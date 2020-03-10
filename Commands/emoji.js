@@ -4,7 +4,7 @@ module.exports = {
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
         if (contentArgs[1] == 'all') {
-            printAll(message,bot);
+            printAll(message, bot);
             return;
         }
 
@@ -16,6 +16,55 @@ module.exports = {
         }
 
         message.channel.send(getEmojiString(emoji)); //Send Message
+    },
+
+    emojiDetection(message, bot) {
+
+        while (message.content.includes('<') && message.content.includes('>')) {
+
+            var charS = message.content.indexOf('<');
+            var charB = message.content.indexOf('>');
+
+            if (message.content.charAt(charS + 1) == ':') { //NonAnimated
+                if (!isNaN(message.content.substring(charS + 1, charB - 1).split(':')[1])) {
+                    return;
+                }
+            }
+
+            if (message.content.charAt(charS + 1) == 'a' && message.content.charAt(charS + 2) == ':') { //Animated
+                if (!isNaN(message.content.substring(charS + 2, charB - 1).split(':')[1])) {
+                    return;
+                }
+            }
+        }
+
+        let contentArgs = message.content.replace(/:/g, ' ').split(" "); //Replace : with Space and split Message
+
+        if (contentArgs[0] == '!e' || contentArgs[0] == '!emoji') {
+            contentArgs.shift(); //Remove first emoji and command if !emoji / !e is called
+            contentArgs.shift();
+        }
+
+        var counter = 0;
+        var sendMessage = '';
+
+        for (var word of contentArgs) {
+
+            let emoji = bot.emojis.find(e => e.name == word);   //Find emoji
+
+            if (emoji) {
+                sendMessage = sendMessage.concat(getEmojiString(emoji));
+                counter++;
+                if (counter == 27) {
+                    message.channel.send(sendMessage); //Send Message
+                    sendMessage = '';
+                    counter = 0;
+                }
+            }
+        }
+        if (sendMessage.length > 0) {
+            message.channel.send(sendMessage);
+        }
     }
 }
 
@@ -32,7 +81,7 @@ function getEmojiString(emoji) {
     return emojiname;
 }
 
-function printAll(message,bot) {
+function printAll(message, bot) {
     var sendMessage = '';
     var counter = 0;
     for (var val of bot.emojis) {
@@ -42,7 +91,7 @@ function printAll(message,bot) {
             message.channel.send(sendMessage); //Send Message
             sendMessage = '';
             counter = 0;
-        }      
+        }
     }
     message.channel.send(sendMessage);
 }
