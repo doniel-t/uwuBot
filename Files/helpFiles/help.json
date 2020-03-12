@@ -11,6 +11,10 @@
         "usage": "!ask <question> or !a <question>",
         "does": "answers your question with 100% accuracy"
     },
+    "choose": {
+        "usage": "!choose <option1> <option2>",
+        "does": "chooses a random option for you"
+    },
     "dorime": {
         "usage": "!dorime or !d",
         "does": "answers your Prayers"
