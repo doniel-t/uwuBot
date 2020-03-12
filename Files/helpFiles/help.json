@@ -12,7 +12,7 @@
         "does": "answers your question with 100% accuracy"
     },
     "choose": {
-        "usage": "!choose <option1> <option2>",
+        "usage": "!choose <option1> , <option2> , ... , <option n>",
         "does": "chooses a random option for you"
     },
     "dorime": {
