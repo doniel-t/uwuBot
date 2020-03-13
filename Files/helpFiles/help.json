@@ -24,8 +24,8 @@
         "does": "Sends Emoji with given name"
     },
     "hangman": {
-        "usage": "!hangman",
-        "does": "plays a game of hangman with the word from users PM"
+        "usage": "!hangman <optional: stop>",
+        "does": "plays a game of hangman with the word from users PM or stops it"
     },
     "help": {
         "usage": "!help <optional: command>",
@@ -43,13 +43,14 @@
         "usage": "!minesweeper <FieldSize/stop> <optional:BombNumber>",
         "does": "creates a Game of Minesweeper with FieldSize² Squares or stops current game"
     },
+    "Music": {
+        "usage": "N/A",
+        "does": "Can play YT-Videos",
+        "hasOwnHelp" : true
+    },
     "neko": {
         "usage": "!neko",
         "does": "gives you a random Post from r/neko!"
-    },
-    "next": {
-        "usage": "!next",
-        "does": "plays the next song in queue, if the queue is empty stops"
     },
     "notify": {
         "usage": "!notify <Your Message (Allows spaces)> , <time in minutes> : <time in seconds>",
@@ -67,14 +68,6 @@
         "usage": "!padoru",
         "does": "answers your Callings for the almighty Being"
     },
-    "pause": {
-        "usage": "!pause",
-        "does": "pauses the song that is currently playing"
-    },
-    "play": {
-        "usage": "!play <YT-URL> or !p <YT-URL>",
-        "does": "plays a YT-Video in your Channel"
-    },
     "poll1": {
         "usage": "!poll <title>",
         "does": "gives you a reaction poll"
@@ -87,17 +80,9 @@
         "usage": "!rngsub optional:<subreddit>",
         "does": "gives you a random Post (of the subreddit)"
     },
-    "resume": {
-        "usage": "!resume",
-        "does": "resumes a paused song"
-    },
     "shutdown": {
         "usage": "!shutdown",
         "does": "annoys people in your channel"
-    },
-    "stop": {
-        "usage": "!stop or !s",
-        "does": "Stops the Music in your Channel"
     },
     "tictactoe": {
         "usage": "!tictactoe <optional: stop>",
@@ -113,7 +98,8 @@
     },
     "whatToDraw": {
         "usage": "!whatToDraw",
-        "does": "returns a random Anime Character and its MAL link"
+        "does": "returns a random Anime Character and its MAL link",
+        "hasOwnHelp": true
     },
     "zins": {
         "usage": "!zins <startMoney> <number_of_months> <percentage>",

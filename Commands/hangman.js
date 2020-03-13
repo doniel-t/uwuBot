@@ -7,10 +7,17 @@ var hiddenMessage = "";
 var hp = 7; //Amount of failed Tries
 
 module.exports = { //!hangman starts the game
-    hangman: function(message, bot) {
+    hangman: function (message, bot) {
 
+        let contentArgs = message.content.split(" "); //Split Message for simpler Access
         dcBot = bot;
         ogMessage = message;
+
+        if (contentArgs[1] == 'stop') {
+            message.channel.send('Hangman was stopped');
+            stop();
+            return;
+        }
 
         message.author.createDM().then(dmChannel => { //asks for word in private channel
 
@@ -38,34 +45,43 @@ module.exports = { //!hangman starts the game
 }
 
 
-var listener = function(inputLetter) { //Listens to all Messages
+var listener = function (inputLetter) { //Listens to all Messages
+
+    if (ogMessage == undefined) { //Game stopped
+        return;
+    }
 
     if (inputLetter.channel == ogMessage.channel) { // Only Messages in Channel where !hangman was called
 
         if (inputLetter.content.length === 1) { // Only Message with one Character
 
             checkLetter(inputLetter.content); //Test Character
-            ogMessage.channel.send(hiddenMessage + " tries left" + hp);
+            ogMessage.channel.send(hiddenMessage + " | Tries left: " + hp);
 
             if (hp === 0) { //Losing Condition
-                ogMessage.channel.send("You lose xD");
-                hp = 7;
-                dcBot.removeListener('message', listener);
+                ogMessage.channel.send("You lose!");
+                stop();
             }
 
             if (hiddenMessage === inputWord) { //When guessed Letter by Letter
-                hp = 7;
                 ogMessage.channel.send("You won!");
-                dcBot.removeListener('message', listener);
+                stop();
             }
         }
 
-        if (inputLetter.content === inputWord) { //When whole Answer is given
-            hp = 7;
+        if (inputLetter.content === inputWord) { //When whole Answer is given  
             ogMessage.channel.send("You won!");
-            dcBot.removeListener('message', listener);
+            stop();
         }
     }
+}
+
+function stop() {
+    hp = 7;
+    dcBot.removeListener('message', listener);
+    ogMessage = undefined;
+    inputWord = "";
+    hiddenMessage = "";
 }
 
 

@@ -11,8 +11,7 @@ module.exports = {
                     message.channel.send(res.text); //English Text
                 })
             } else {
-                message.channel.send(res.text); //Japanese Symbols
-                message.channel.send(res.pronunciation); //Japanese Pronunciation 
+                message.channel.send(res.text + '\n' + res.pronunciation); //Japanese Symbols + Japanese Pronunciation 
             }
         }).catch(error => {
             Logger.log(error);

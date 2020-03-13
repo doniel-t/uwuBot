@@ -6,7 +6,7 @@ module.exports = {
             let splitTime = contentArgs[1].split(":");
             let time = parseInt(splitTime[0]) * 60000 + parseInt(splitTime[1]) * 1000;
             if (time < 0) {
-                message.channel.send("Negative time kekW");
+                message.channel.send("Negative time");
                 return;
             }
             if (Number.isNaN(time)) {
@@ -16,7 +16,7 @@ module.exports = {
             let userId = message.author.id;
             setTimeout(() => { message.channel.send("<@" + userId + "> " + notification) }, time);
         } catch (ignored) {
-            message.channel.send("You used the wrong syntax! Use help for help");
+            message.channel.send("You used the wrong syntax! Use !help for help");
         }
     }
 }
