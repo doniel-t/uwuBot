@@ -1,3 +1,6 @@
+2.2.2: 13.03.2020
+    -Fixed leaguegetgame not working whenname has spaces
+
 2.2.1: 13.03.2020
     -Added Comments to botMain
     -Added More: to help
