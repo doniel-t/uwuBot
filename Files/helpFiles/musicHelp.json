@@ -1,0 +1,22 @@
+{
+    "next": {
+        "usage": "!next",
+        "does": "plays the next song in queue, if the queue is empty stops"
+    },
+    "pause": {
+        "usage": "!pause",
+        "does": "pauses the song that is currently playing"
+    },
+    "play": {
+        "usage": "!play <YT-URL> or !p <YT-URL>",
+        "does": "plays a YT-Video in your Channel"
+    },
+    "resume": {
+        "usage": "!resume",
+        "does": "resumes a paused song"
+    },
+    "stop": {
+        "usage": "!stop or !s",
+        "does": "Stops the Music in your Channel"
+    }
+}

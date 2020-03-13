@@ -1,4 +1,5 @@
 const Logger = require("./Logger.js");
+const Discord = require('discord.js');
 const RiotAPIKey = require('../Dependencies/RiotAPIKey.json'); //Has RiotAPIKey under RiotAPIKey.key
 const champions = require('../Files/champions.json');
 let LeagueAPI = require('leagueapiwrapper');
@@ -17,21 +18,14 @@ module.exports = {
             }).catch()
             .then(function (activeGames) {
 
-                let res = 'LEAGUE GAME \n';
+                let mes = new Discord.RichEmbed();
+                mes.setTitle('LEAGUE GAME');
 
                 for (var x = 0; x < activeGames.participants.length; x++) {
-                    res = res.concat(activeGames.participants[x].summonerName).concat(' plays as ').concat(getChamp(activeGames.participants[x].championId)).concat('\n');
+                    let Link = '[' + activeGames.participants[x].summonerName + '](' + 'https://euw.op.gg/summoner/userName=' + activeGames.participants[x].summonerName.replace(/ /g,'_') + ')';
+                    mes.addField(getChamp(activeGames.participants[x].championId), Link);
                 }
-                message.channel.send(res);
-
-
-                let opgg= "OP.GG LINKS:\n";
-
-                for (var y = 0; y < activeGames.participants.length; y++) {
-                    opgg = opgg.concat('https://euw.op.gg/summoner/userName=').concat(activeGames.participants[y].summonerName.replace(/ /g,'_')).concat('\n');
-                }
-                message.channel.send(opgg);
-
+                message.channel.send(mes);
             })
             .catch(error => {
                 message.channel.send('An Error occured');

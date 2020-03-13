@@ -1,3 +1,16 @@
+2.2.1: 13.03.2020
+    -Added Comments to botMain
+    -Added More: to help
+    -Moved next,pause,play,resume,stop to !help music
+    -Changed leaguegetgame to EmbedMessage
+    -Refractored ask.js
+    -Removed getosuName.js
+    -Added stop() to hangman
+    -Changed jap answer to one message
+    -Added Comments to play
+    -Refractored uwufy.js
+    -Minor Changes to notify,weebiefy,zins
+
 2.2.0: 12.03.2020
     -Added choose Command
 

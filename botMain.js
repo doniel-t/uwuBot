@@ -16,11 +16,11 @@ bot.on('ready', () => { //At Startup
 
 bot.on('message', (message) => { //When Message sent
 
-    if (message.author.bot) { return; } //If Author is Bot himself return
+    if (message.author.bot) { return; } //If Author is a Bot, return
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    if (contentArgs[0].charAt(0) == '!') { //Call Method
+    if (contentArgs[0].charAt(0) == '!') {
 
         let command = contentArgs[0].substring(1); //Get commandName
 
@@ -100,13 +100,13 @@ function initsettings() {
 
     var initset = require('./Files/initsettings.json');
 
-    for (var setting in initset) {
+    for (var setting in initset) { //Test for new Settings in initsettings.json
         if (set[setting] == undefined) {
             set[setting] = initset[setting];
         }
     }
 
-    try {
+    try { //Write new Settings into settings.json
     fs.writeFileSync('Files/local/settings.json', JSON.stringify(set));        
     } catch (error) {
         Logger.log(error);

@@ -13,7 +13,7 @@ module.exports = {
         Music.play(message, bot); //All Logic is in Music
     },
 
-    playKey: function (message, bot) {
+    playKey: function (message, bot) { //Handling for !<shortcut>
 
         var notShortcut = false;
 

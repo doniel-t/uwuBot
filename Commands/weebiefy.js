@@ -5,7 +5,6 @@ module.exports = {
         let words = message.content.split(' ');
         words.splice(0, 1);
 
-        if (message.author.bot) { return; }
         for (let word of words) {
             let wordSplit = word.match(/.{1,2}/g);
             word = "";
