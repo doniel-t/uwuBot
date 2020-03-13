@@ -19,7 +19,7 @@ module.exports = {
             "You may rely on it"
         ];
         try {
-            message.channel.send(Answers[Math.floor(Math.random() * 16)]);
+            message.channel.send(Answers[Math.floor(Math.random() * Answers.length)]);
         }catch (ignored) {
             message.channel.send("There was a problem, please try again");
         }
