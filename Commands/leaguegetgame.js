@@ -67,7 +67,6 @@ function getleagueName(message) { //Gives back a NameString
                 return "No User given";
         }
     } else {
-        contentArgs.shift();
-        return contentArgs.join().replace(/,/g, ' ');  //When Name given
+        return message.content.substring(contentArgs[0].length+1);  //When Name given
     }
 }
