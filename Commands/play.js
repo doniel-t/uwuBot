@@ -15,6 +15,8 @@ module.exports = {
 
     playKey: function (message, bot) { //Handling for !<shortcut>
 
+        message.content = message.content.substring(1); //Remove !
+
         var notShortcut = false;
 
         if (Shortcuts[message.content] != undefined) {
