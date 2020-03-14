@@ -16,6 +16,7 @@
     "ffmpeg-static": "^4.0.1",
     "fs": "0.0.1-security",
     "leagueapiwrapper": "^1.1.0",
+    "minimist": "^1.2.5",
     "nhentai-api": "^2.0.4",
     "nhentai-api-js": "^1.1.2",
     "node-osu": "^2.2.0",
