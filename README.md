@@ -41,4 +41,4 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO
 - [ ] Add WebSocket Error Handling
-- [ ] Add !rngQutoe
+- [ ] Add !rngQuote
