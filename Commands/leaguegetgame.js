@@ -8,9 +8,11 @@ module.exports = {
 
         const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
 
+        name = getleagueName(message);
+
         ws.on('open', function open() { //Request
 
-            ws.send('LeagueAPI ' + message.content.substring(message.content.indexOf(' ') + 1));
+            ws.send('LeagueAPI ' + name);
 
         });
 
@@ -41,5 +43,32 @@ function getChamp(ID) {
         if (c.key == ID) {
             return c.id;
         }
+    }
+}
+
+function getleagueName(message) { //Gives back a NameString 
+
+    let contentArgs = message.content.split(" ");
+
+    if (contentArgs[1] == null) { //Hardcoded Names
+        switch (message.author.username) {
+
+            case "ackhack": //Discordname
+                return "ackhack"; //leaguename
+
+            case "Human Daniel":
+                return "Epicly Bad Gamer";
+
+            case "LeftDoge":
+                return "JohnTheVirtuoso";
+
+            case "HST_Tutorials":
+                return "HST KZSZ";
+
+            default:
+                return "No User given";
+        }
+    } else {
+        return message.content.substring(contentArgs[0].length+1);  //When Name given
     }
 }
