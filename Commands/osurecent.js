@@ -1,84 +1,75 @@
 const Discord = require('discord.js');
-const Logger = require("./Logger.js");
-const osu = require('node-osu');
-const osuAPIKey = require('../Dependencies/osuAPIKey.json'); //Has APIKey under osuAPIKEY.key
-const osuAPI = new osu.Api(osuAPIKey.key, {
-    // baseUrl: sets the base api url (default: https://osu.ppy.sh/api)
-    notFoundAsError: true, // Throw an error on not found instead of returning nothing. (default: true)
-    completeScores: true, // When fetching scores also fetch the beatmap they are for (Allows getting accuracy) (default: false)
-    parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
-});
+const WebSocket = require('ws');
 
 module.exports = {
 
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
+        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        
         name = getosuName(message);
 
-        osuAPI.getUserRecent({ u: name }).then( //osuAPI-Call
-            result => {
-                recentScore = result[0];
+        ws.on('open', function open() { //Request
 
-                let ObjectCount = Number.parseInt(recentScore.beatmap.objects.normal) +
-                    Number.parseInt(recentScore.beatmap.objects.slider) +
-                    Number.parseInt(recentScore.beatmap.objects.spinner);
+            ws.send('osuAPI recent ' + name);
 
-                let ScoreCount = Number.parseInt(recentScore.counts["50"]) +
-                    Number.parseInt(recentScore.counts["100"]) +
-                    Number.parseInt(recentScore.counts["300"]) +
-                    Number.parseInt(recentScore.counts["miss"]);
+        });
 
-                let Acc = recentScore.accuracy * 100;
-                let percentagePassed = (ScoreCount / ObjectCount) * 100;
-                let parsedMods = parseMods(recentScore.mods);
+        ws.on('message', function incoming(data) { //Answer
 
-                var emb = new Discord.RichEmbed()
-                    .setTitle(recentScore.beatmap.artist + ' - ' + recentScore.beatmap.title)
-                    .setURL('https://osu.ppy.sh/beatmapsets/' + recentScore.beatmap.beatmapSetId + '#osu/' + recentScore.beatmap.id)
-                    .setColor('#0099ff')
-                    .setFooter(recentScore.date)
-                    .addField('Score', recentScore.score, true)
-                    .addField('Combo', recentScore.maxCombo, true)
-                    .addField('BPM', recentScore.beatmap.bpm, true)
-                    .addField('Status', recentScore.beatmap.approvalStatus)
-                    .addField('Difficulty', recentScore.beatmap.version, true)
-                    .addField('StarRating', parseFloat(recentScore.beatmap.difficulty.rating).toFixed(2), true)
+            if (data == 'ERROR') {
+                message.channel.send('Username not found or this user has not played today!');
+                return;
+            }
+            
+            result = JSON.parse(data);   
+            recentScore = result[0];
 
-                if (!(parsedMods === "" || parsedMods == null)) {
-                    emb.addField('Mods', parsedMods, true)
-                }
+            let ObjectCount = Number.parseInt(recentScore._beatmap.objects.normal) +
+                Number.parseInt(recentScore._beatmap.objects.slider) +
+                Number.parseInt(recentScore._beatmap.objects.spinner);
 
-                if (percentagePassed !== 100) {
-                    emb.addField('Passed', percentagePassed.toFixed(2).concat("%"))
-                } else {
-                    emb.addBlankField()
-                }
+            let ScoreCount = Number.parseInt(recentScore.counts["50"]) +
+                Number.parseInt(recentScore.counts["100"]) +
+                Number.parseInt(recentScore.counts["300"]) +
+                Number.parseInt(recentScore.counts["miss"]);
 
-                emb.addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
+            let Acc = parseFloat(result[2] * 100).toFixed(2);
+            let percentagePassed = (ScoreCount / ObjectCount) * 100;
+            let parsedMods = result[1];
+
+            var emb = new Discord.RichEmbed()
+                .setTitle(recentScore._beatmap.artist + ' - ' + recentScore._beatmap.title)
+                .setURL('https://osu.ppy.sh/beatmapsets/' + recentScore._beatmap.beatmapSetId + '#osu/' + recentScore._beatmap.id)
+                .setColor('#0099ff')
+                .setFooter(recentScore.raw_date)
+                .addField('Score', recentScore.score, true)
+                .addField('Combo', recentScore.maxCombo, true)
+                .addField('BPM', recentScore._beatmap.bpm, true)
+                .addField('Status', recentScore._beatmap.approvalStatus)
+                .addField('Difficulty', recentScore._beatmap.version, true)
+                .addField('StarRating', parseFloat(recentScore._beatmap.difficulty.rating).toFixed(2), true)
+
+            if (!(parsedMods === "" || parsedMods == null)) {
+                emb.addField('Mods', parsedMods, true)
+            }
+
+            if (percentagePassed !== 100) {
+                emb.addField('Passed', percentagePassed.toFixed(2).concat("%"))
+            } else {
+                emb.addBlankField()
+            }
+
+            emb.addField('Accuracy', Acc + '%', true)
+                .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
                     .concat(recentScore.counts["100"]).concat(getEmoji('hit100', bot) + " ")
                     .concat(recentScore.counts["50"]).concat(getEmoji('hit50', bot) + " ")
-                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "))
+                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "), true)
 
-                message.channel.send(emb);
-            }
-        ).catch((error) => {
-            Logger.log(error);
-            message.channel.send("Username not found or this user has not played today!");
+            message.channel.send(emb);
+
         });
     }
-}
-
-function parseMods(mods) {
-    let result = "";
-    for (let x = 0; x < mods.length; x++) {
-
-        if (mods[x] != 'FreeModAllowed' && mods[x] != 'ScoreIncreaseMods') {
-            result += mods[x] + ',';
-        }
-    }
-
-    result = result.substring(0, result.length - 1);
-    return result;
 }
 
 function getosuName(message) {       //Gives back a NameString 
@@ -105,7 +96,7 @@ function getosuName(message) {       //Gives back a NameString
         }
     }
     else {
-        return message.content.substring(contentArgs[0].length+1);  //When Name given
+        return message.content.substring(contentArgs[0].length + 1);  //When Name given
     }
 }
 

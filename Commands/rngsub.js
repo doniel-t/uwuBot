@@ -1,49 +1,36 @@
 const Logger = require("./Logger.js");
-const snoowrap = require('snoowrap');
-const apiKey = require('../Dependencies/RedditAPI.json');
-const redditAPI = new snoowrap({
-    userAgent: 'my user-agent',
-    clientId: apiKey.clientId,
-    clientSecret: apiKey.clientSecret,
-    username: apiKey.username,
-    password: apiKey.password
-});
+const WebSocket = require('ws');
+
 
 module.exports = {
 
-    rngsub: function(message) {
+    rngsub: function (message) {
+        
+        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-        if (contentArgs[1] === "" || contentArgs[1] == null) {  //Get Random Subreddit if none is given
+        ws.on('open', function open() { //Request
 
-            redditAPI.getSubreddit('Random').getRandomSubmission().then(submission => {
+            if (contentArgs[1] === "" || contentArgs[1] == null) {  //Get Random Subreddit if none is given
+                ws.send('RedditAPI Random');
+            } else {
+                ws.send('RedditAPI ' + contentArgs[1]);
+            }
+        });
 
-                if (submission.permalink == undefined) {    //Can return Listing of Hot for some subreddit, dont know why
-                    message.channel.send('Reddit returned undefined (can happen for some subreddits)');
-                } else {
-                    message.channel.send("http://reddit.com" + submission.permalink);
-                }
+        ws.on('message', function incoming(data) { //Answer
 
-            }).catch(error => {
-                Logger.log(error);
-                message.channel.send("An Error occured");
-            });
-
-        } else {
-
-            redditAPI.getSubreddit(contentArgs[1]).getRandomSubmission().then(submission => {
-
-                if (submission.permalink == undefined) {    //Can return Listing of Hot for some subreddit, dont know why
-                    message.channel.send('Reddit returned undefined (can happen for some subreddits)');
-                } else {
-                    message.channel.send("http://reddit.com" + submission.permalink);
-                }
-
-            }).catch(error => {
-                Logger.log(error);
-                message.channel.send("An Error occured");
-            });
-        }
+            if (data == 'ERROR') {
+                message.channel.send('An Error occured');
+                return;
+            }
+            let submission = JSON.parse(data);
+            if (submission.permalink == undefined) {    //Can return Listing of Hot for some subreddit, dont know why
+                message.channel.send('Reddit returned undefined (can happen for some subreddits)');
+            } else {
+                message.channel.send("http://reddit.com" + submission.permalink);
+            }
+        });
     }
 }
