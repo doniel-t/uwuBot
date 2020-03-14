@@ -1,32 +1,39 @@
 const Discord = require('discord.js');
-const Logger = require("./Logger.js");
-const osu = require('node-osu');
-const osuAPIKey = require('../Dependencies/osuAPIKey.json'); //Has APIKey under osuAPIKEY.key
-const osuAPI = new osu.Api(osuAPIKey.key, {
-    // baseUrl: sets the base api url (default: https://osu.ppy.sh/api)
-    notFoundAsError: true, // Throw an error on not found instead of returning nothing. (default: true)
-    completeScores: true, // When fetching scores also fetch the beatmap they are for (Allows getting accuracy) (default: false)
-    parseNumeric: false // Parse numeric values into numbers/floats, excluding ids
-});
+const WebSocket = require('ws');
 
 module.exports = {
     osuplays: function (message) { //Gets Top 5 PP Plays!
 
+        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        
         name = getosuName(message);
 
-        osuAPI.getUserBest({ u: name }).then(scores => {
+        ws.on('open', function open() { //Request
+
+            ws.send('osuAPI plays ' + name);
+
+        });
+
+        ws.on('message', function incoming(data) { //Answer
+
+            if (data == 'ERROR') {
+                message.channel.send('Username not found or this user has no TopPlays!');
+                return;
+            }
+            
+            result = JSON.parse(data);
+            scores = result[0];
+            AccArray = result[1];
+            
             var emb = new Discord.RichEmbed()
                 .setTitle(name + '`s Top 5 Plays');
             for (let index = 0; index < 5; index++) {
-                let Link = '[' + [scores[index].beatmap.title] + '](https://osu.ppy.sh/beatmapsets/' + scores[index].beatmap.beatmapSetId + '#osu/' + scores[index].beatmap.id + ')';
+                let Link = '[' + [scores[index]._beatmap.title] + '](https://osu.ppy.sh/beatmapsets/' + scores[index]._beatmap.beatmapSetId + '#osu/' + scores[index]._beatmap.id + ')';
                 let n = index+1;
                 emb.addField('#' + n,
-                    Link.concat("\nAcc: ").concat(scores[index].accuracy * 100).concat("\nPP: ").concat(scores[index].pp));
+                    Link.concat("\nAcc: ").concat(parseFloat(AccArray[index] * 100).toFixed(2)).concat(" %\nPP: ").concat(scores[index].pp));
             }
             message.channel.send(emb);
-        }).catch((error) => {
-            Logger.log(error);
-            message.channel.send("An Error occured");
         });
     }
 }
