@@ -24,20 +24,19 @@ bot.on('message', (message) => { //When Message sent
 
         let command = contentArgs[0].substring(1); //Get commandName
 
-        if (command.length == 1) {  //Go to Shortcut
-            command = 'Shortcuts.'.concat(command);
-        } else {    //Normal Command
-            command = command.concat('.').concat(command);
-        }
+        if (!commands.play.playKey(message, bot)) { //Checks if command is shortcut for music and plays it
 
-        try {//Example !osurecent calls commands.osurecent.osurecent(message,bot)
+            if (command.length == 1) {  //Go to Shortcut for command
+                command = 'Shortcuts.'.concat(command);
+            } else {    //Normal Command
+                command = command.concat('.').concat(command);
+            }
 
-            executeFunctionByName(command, commands, message, bot); //Calls function
+            try {//Example !osurecent calls commands.osurecent.osurecent(message,bot)
 
-        } catch (error) {//Checks if command is shortcut for music
+                executeFunctionByName(command, commands, message, bot); //Calls function
 
-            message.content = message.content.substring(1);
-            if (!commands.play.playKey(message, bot)) {
+            } catch (error) {
                 Logger.log(error);
                 message.channel.send('Command not Found, use !help for help');
             }
@@ -83,9 +82,7 @@ function initsettings() {
     } catch (ignored) { //No settings.json
 
         try {
-
             try {   //Try to create the local Folder
-
                 fs.mkdirSync('Files/local');
             } catch (ignored) { }
 
@@ -107,7 +104,7 @@ function initsettings() {
     }
 
     try { //Write new Settings into settings.json
-    fs.writeFileSync('Files/local/settings.json', JSON.stringify(set));        
+        fs.writeFileSync('Files/local/settings.json', JSON.stringify(set));
     } catch (error) {
         Logger.log(error);
     }

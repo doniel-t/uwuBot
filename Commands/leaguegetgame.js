@@ -22,7 +22,7 @@ module.exports = {
                 mes.setTitle('LEAGUE GAME');
 
                 for (var x = 0; x < activeGames.participants.length; x++) {
-                    let Link = '[' + activeGames.participants[x].summonerName + '](' + 'https://euw.op.gg/summoner/userName=' + activeGames.participants[x].summonerName.replace(/ /g,'_') + ')';
+                    let Link = '[' + activeGames.participants[x].summonerName + '](' + 'https://euw.op.gg/summoner/userName=' + activeGames.participants[x].summonerName.replace(/ /g, '_') + ')';
                     mes.addField(getChamp(activeGames.participants[x].championId), Link);
                 }
                 message.channel.send(mes);
@@ -67,6 +67,6 @@ function getleagueName(message) { //Gives back a NameString
                 return "No User given";
         }
     } else {
-        return contentArgs[1]; //When Name given
+        return message.content.substring(contentArgs[0].length+1);  //When Name given
     }
 }

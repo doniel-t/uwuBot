@@ -55,7 +55,6 @@ function getosuName(message) {       //Gives back a NameString
         }
     }
     else {
-        contentArgs.shift();
-        return contentArgs.join().replace(/,/g, ' ');  //When Name given
+        return message.content.substring(contentArgs[0].length+1);  //When Name given
     }
 }
