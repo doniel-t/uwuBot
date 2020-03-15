@@ -1,5 +1,6 @@
 3.0.2: 15.03.2020
     -Added get function in whatToDraw.js
+    -fixed help.js
 
 3.0.1: 14.03.2020
     -Moved getleagueName to Clientside

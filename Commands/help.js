@@ -1,9 +1,10 @@
 const Logger = require("./Logger.js");
 
 module.exports = {
-    help: function (message) {
-        switch (message.content.substring(6)) {
+    help: function(message) {
+        switch (message.content.substring(5)) {
             case 'music':
+                console.log("XD");
                 musicHelp(message);
                 break;
             case 'whatToDraw':
@@ -27,7 +28,7 @@ function normalHelp(message) { //prints all Commands in help.json
             helpMessage = helpMessage.concat("Command:   ").concat(com)
                 .concat('\nUsage:           ').concat(comm.usage)
                 .concat('\nDoes:             ').concat(comm.does);
-            
+
             if (comm.hasOwnHelp) {
                 helpMessage = helpMessage.concat('\nMore:            !help ' + com.toLocaleLowerCase() + ' for more info')
             }
