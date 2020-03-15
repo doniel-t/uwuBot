@@ -39,9 +39,8 @@ module.exports = {
 
 function getChamp(ID) {
     for (var champ in champions.data) {
-        c = champions.data[champ];
-        if (c.key == ID) {
-            return c.id;
+        if (champions.data[champ].key == ID) {
+            return champ;
         }
     }
 }
