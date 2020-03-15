@@ -6,5 +6,9 @@
     "remove": {
         "usage": "!whatToDraw remove",
         "does": "Removes the top character from the list"
+    },
+    "get": {
+        "usage": "!whatToDraw get",
+        "does": "Dm's you all characters as a json file"
     }
 }
