@@ -4,7 +4,6 @@ module.exports = {
     help: function(message) {
         switch (message.content.substring(5)) {
             case 'music':
-                console.log("XD");
                 musicHelp(message);
                 break;
             case 'whatToDraw':
