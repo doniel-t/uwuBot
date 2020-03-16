@@ -50,23 +50,7 @@ function getleagueName(message) { //Gives back a NameString
     let contentArgs = message.content.split(" ");
 
     if (contentArgs[1] == null) { //Hardcoded Names
-        switch (message.author.username) {
-
-            case "ackhack": //Discordname
-                return "ackhack"; //leaguename
-
-            case "Human Daniel":
-                return "Epicly Bad Gamer";
-
-            case "LeftDoge":
-                return "JohnTheVirtuoso";
-
-            case "HST_Tutorials":
-                return "HST KZSZ";
-
-            default:
-                return "No User given";
-        }
+        return require('./name').getName('lol',message.author.username); //Get name from local/names.json
     } else {
         return message.content.substring(contentArgs[0].length+1);  //When Name given
     }

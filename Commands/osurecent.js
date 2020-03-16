@@ -6,7 +6,7 @@ module.exports = {
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
         const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
-        
+
         name = getosuName(message);
 
         ws.on('open', function open() { //Request
@@ -21,8 +21,8 @@ module.exports = {
                 message.channel.send('Username not found or this user has not played today!');
                 return;
             }
-            
-            result = JSON.parse(data);   
+
+            result = JSON.parse(data);
             recentScore = result[0];
 
             let ObjectCount = Number.parseInt(recentScore._beatmap.objects.normal) +
@@ -76,24 +76,8 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    if (contentArgs[1] == null) {   //Hardcoded Names
-        switch (message.author.username) {
-
-            case "ackhack":         //Discordname
-                return "ackh4ck";   //osuname
-
-            case "Human Daniel":
-                return "Human Daniel";
-
-            case "DragonHunter428":
-                return "DH428";
-
-            case 'Yalina':
-                return 'IIAleII';
-
-            default:
-                return "No User given";
-        }
+    if (contentArgs[1] == null) {
+        return require('./name').getName('osu', message.author.username); //Get name from local/names.json
     }
     else {
         return message.content.substring(contentArgs[0].length + 1);  //When Name given

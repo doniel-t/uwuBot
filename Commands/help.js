@@ -9,6 +9,9 @@ module.exports = {
             case 'whatToDraw':
                 whatToDrawHelp(message);
                 break;
+            case 'name':
+                nameHelp(message);
+                break;
             default:
                 normalHelp(message);
                 break;
@@ -107,5 +110,31 @@ function whatToDrawHelp(message) {
     } catch (error) {
         Logger.log(error);
         message.channel.send("Error in whatToDrawHelp.json");
+    }
+}
+
+function nameHelp(message) {
+    try {
+        var names = require('../Files/helpFiles/nameHelp.json'); //Get File
+        var helpMessage = '';
+
+        for (var com in names) {
+            var comm = names[com];
+            helpMessage = helpMessage.concat("Command:   ").concat(com)
+                .concat('\nUsage:           ').concat(comm.usage)
+                .concat('\nDoes:             ').concat(comm.does)
+                .concat("\n-----------------------------------\n");
+            if (helpMessage.length > 1500) {
+                message.channel.send(helpMessage);
+                helpMessage = '';
+            }
+        }
+
+        if (helpMessage.length > 0) {
+            message.channel.send(helpMessage);
+        }
+    } catch (error) {
+        Logger.log(error);
+        message.channel.send("Error in nameHelp.json");
     }
 }
