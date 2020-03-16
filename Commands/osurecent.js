@@ -51,20 +51,20 @@ module.exports = {
                 .addField('StarRating', parseFloat(recentScore._beatmap.difficulty.rating).toFixed(2), true)
 
             if (!(parsedMods === "" || parsedMods == null)) {
-                emb.addField('Mods', parsedMods, true)
-            }
-
-            if (percentagePassed !== 100) {
-                emb.addField('Passed', percentagePassed.toFixed(2).concat("%"))
+                emb.addField('Mods', parsedMods, true);
             } else {
-                emb.addBlankField()
+               // emb.addBlankField(true);
             }
 
-            emb.addField('Accuracy', Acc + '%', true)
+            emb.addField('Passed', percentagePassed.toFixed(2).concat("%"))
+                .addField('Accuracy', Acc + '%', true)
                 .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
                     .concat(recentScore.counts["100"]).concat(getEmoji('hit100', bot) + " ")
                     .concat(recentScore.counts["50"]).concat(getEmoji('hit50', bot) + " ")
                     .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "), true)
+                //.addBlankField(true)
+
+                .setImage('https://assets.ppy.sh/beatmaps/' + recentScore._beatmap.beatmapSetId + '/covers/cover.jpg');
 
             message.channel.send(emb);
 
