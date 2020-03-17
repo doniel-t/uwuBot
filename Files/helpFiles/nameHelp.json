@@ -1,0 +1,18 @@
+{
+    "add": {
+        "usage": "!name add <GAME> <NAME>",
+        "does": "adds NAME to MESSAGESENDERS NameList at GAME"
+    },
+    "remove": {
+        "usage": "!name remove <GAME>",
+        "does": "removes name from MESSAGESENDERS NameList at GAME"
+    },
+    "get": {
+        "usage": "!name get  <GAME>",
+        "does": "returns name from MESSAGESENDERS NameList at GAME"
+    },
+    "validGames": {
+        "usage": "All valid Games that can be added to the List",
+        "does": "lol,osu"
+    }
+}
