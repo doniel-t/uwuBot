@@ -5,7 +5,7 @@ module.exports = {
 
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
-        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         name = getosuName(message);
 
@@ -14,6 +14,10 @@ module.exports = {
             ws.send('osuAPI recent ' + name);
 
         });
+
+        ws.on('error', function error(){
+            message.channel.send('Websocket-Server is unreachable');
+        })
 
         ws.on('message', function incoming(data) { //Answer
 

@@ -8,8 +8,12 @@ module.exports = {
 
     league: function (message) {
 
-        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         var name = getleagueName(message);
+        
+        ws.on('error', function error(){
+            message.channel.send('Websocket-Server is unreachable');
+        })
 
         ws.on('open', function open() { //Request
             ws.send('LeagueAPI ' + name);
@@ -83,7 +87,7 @@ function autoCheck(bot) {
         let leaguechannelid = require('../Files/local/LeagueChannel.json');
         leaguechannel = bot.channels.get(leaguechannelid);
         Names = require('../Files/local/names.json');
-        ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
     } catch (error) {
         Logger.log('No LeagueChannel or names .json Files or WebSocket-Server is unreachable');
@@ -92,6 +96,10 @@ function autoCheck(bot) {
     if (!require('../Files/local/settings.json').checkForLOLGames || leaguechannel == undefined) { //Stop loop if boolean is false or leaguechannel is undefined
         return;
     }
+    
+    ws.on('error', function error(){
+        message.channel.send('Websocket-Server is unreachable');
+    })
 
     ws.on('open', function open() { 
 
