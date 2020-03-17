@@ -1,5 +1,5 @@
 module.exports = {
-    tictactoe: function (message, bot) {
+    tictactoe: function(message, bot) {
         tictactoe(message, bot);
     }
 }
@@ -35,7 +35,7 @@ function stop() {
 }
 
 function tictactoe(message, bot) {
-    
+
     dcBot = bot;
     ogMessage = message;
 
@@ -49,17 +49,17 @@ function tictactoe(message, bot) {
         stop();
         return;
     }
-    
+
     for (let i = 0; i < 9; i++) { //Inits GameField
         gameField.push('⬜');
     }
-    
+
     isRunning = true;
     message.channel.send("Only two players can join!\nWrite join to join the game!");
     dcBot.on('message', listener);
 }
 
-var listener = function (input) { //Listens to all Messages and ends game
+var listener = function(input) { //Listens to all Messages and ends game
     if (players.length < 2 && input.content == "join") {
         createPlayers(input);
     }
@@ -72,37 +72,58 @@ var listener = function (input) { //Listens to all Messages and ends game
                 xTurn = !xTurn;
             }
         } catch (ignored) { //runs if player gives wrong input (either didnt join -> NullPointerException) or input was not a number
-            ogMessage.channel.send("You didnt join or your input was not a number!");
+            if (isRunning == true) input.channel.send("You didnt join or your input was not a number!");
         }
     }
 }
 
 function checkGameState() { // checks end condition
     nTurns++;
-    for (let emoji of Emoji) {
-        for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
-            if (gameField[i] === emoji && gameField[i + 1] === emoji && gameField[i + 2] === emoji) {
-                ogMessage.channel.send(players[0].username + " won the game!");
-                stop();
-            }
-        }
-        for (let i = 0; i < 3; i++) { // checks every vertical combination
-            if (gameField[i] === emoji && gameField[i + 3] === emoji && gameField[i + 6] === emoji) {
-                ogMessage.channel.send(players[0].username + " won the game!");
-                stop();
-            }
-        }
-        //checks diagonales
-        if (gameField[0] === emoji && gameField[4] === emoji && gameField[8] === emoji) {
-            ogMessage.channel.send(players[0].username + " won the game!");
-            stop();
-        }
-        if (gameField[2] === emoji && gameField[4] === emoji && gameField[6] === emoji) {
+    for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
+        if (gameField[i] === players[0].symbol && gameField[i + 1] === players[0].symbol && gameField[i + 2] === players[0].symbol) {
             ogMessage.channel.send(players[0].username + " won the game!");
             stop();
         }
     }
+    for (let i = 0; i < 3; i++) { // checks every vertical combination
+        if (gameField[i] === players[0].symbol && gameField[i + 3] === players[0].symbol && gameField[i + 6] === players[0].symbol) {
+            ogMessage.channel.send(players[0].username + " won the game!");
+            stop();
+        }
+    }
+    //checks diagonales
+    if (gameField[0] === players[0].symbol && gameField[4] === players[0].symbol && gameField[8] === players[0].symbol) {
+        ogMessage.channel.send(players[0].username + " won the game!");
+        stop();
+    }
+    if (gameField[2] === players[0].symbol && gameField[4] === players[0].symbol && gameField[6] === players[0].symbol) {
+        ogMessage.channel.send(players[0].username + " won the game!");
+        stop();
+    }
 
+    //xD
+
+    for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
+        if (gameField[i] === players[1].symbol && gameField[i + 1] === players[1].symbol && gameField[i + 2] === players[1].symbol) {
+            ogMessage.channel.send(players[1].username + " won the game!");
+            stop();
+        }
+    }
+    for (let i = 0; i < 3; i++) { // checks every vertical combination
+        if (gameField[i] === players[1].symbol && gameField[i + 3] === players[1].symbol && gameField[i + 6] === players[1].symbol) {
+            ogMessage.channel.send(players[1].username + " won the game!");
+            stop();
+        }
+    }
+    //checks diagonales
+    if (gameField[0] === players[1].symbol && gameField[4] === players[1].symbol && gameField[8] === players[1].symbol) {
+        ogMessage.channel.send(players[1].username + " won the game!");
+        stop();
+    }
+    if (gameField[2] === players[1].symbol && gameField[4] === players[1].symbol && gameField[6] === players[1].symbol) {
+        ogMessage.channel.send(players[1].username + " won the game!");
+        stop();
+    }
     if (nTurns == 9) { // if field is full stop the game
         ogMessage.channel.send("Its a tie!");
         stop();
