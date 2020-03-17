@@ -107,6 +107,29 @@ module.exports = {
             message.channel.send('An Error occured while saving Settings');
         }
     },
+
+    setLeagueChannel: function(message) {
+        fs.writeFileSync('Files/local/LeagueChannel.json',JSON.stringify(message.channel.id));
+        message.channel.send('This is now the Standard LoL Channel');
+    },
+
+    toggleLeagueGameDetection: function (message,bot) {
+        
+        var Settings = getSettings(); //Get Settings
+
+        Settings.checkForLOLGames = !Settings.checkForLOLGames; //Change Setting
+
+        if (saveSettings(Settings)) { //Save Settings to settings.json
+            if (Settings.checkForLOLGames) {
+                message.channel.send("Will detect LoLGames");
+                require('./league').checkForLOLGames(bot);
+            } else {
+                message.channel.send("Won't detect LoLGames");
+            }
+        } else {
+            message.channel.send('An Error occured while saving Settings');
+        }
+    }
 }
 
 var Admins = [ //Add DiscordID for AdminAccess

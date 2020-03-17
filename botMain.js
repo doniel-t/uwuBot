@@ -12,6 +12,7 @@ const commands = requireDir('./Commands');
 
 bot.on('ready', () => { //At Startup
     bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
+    commands.league.checkForLOLGames(bot);
 });
 
 bot.on('message', (message) => { //When Message sent
@@ -46,7 +47,7 @@ bot.on('message', (message) => { //When Message sent
     if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
         try {
             if (Admin.isAdmin(message)) {
-                executeFunctionByName(contentArgs[1], Admin, message);
+                executeFunctionByName(contentArgs[1], Admin, message, bot);
             } else {
                 message.channel.send('You are not an Admin');
             }
