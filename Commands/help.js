@@ -1,4 +1,5 @@
 const Logger = require("./Logger.js");
+const fh = require('./FileHandler');
 
 module.exports = {
     help: function(message) {
@@ -21,7 +22,7 @@ module.exports = {
 
 function normalHelp(message) { //prints all Commands in help.json
     try {
-        var helpFile = require('../Files/helpFiles/help.json'); //Get File
+        var helpFile = fh.get('../Files/helpFiles/help.json'); //Get File
         var helpMessage = '';
 
         for (var com in helpFile) {
@@ -52,8 +53,8 @@ function normalHelp(message) { //prints all Commands in help.json
 
 function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
     try {
-        var musicShortcut = require('../Files/MusicShortcut.json'); //Get File
-        var music = require('../Files/helpFiles/musicHelp.json');
+        var musicShortcut = fh.get('../Files/MusicShortcut.json'); //Get File
+        var music = fh.get('../Files/helpFiles/musicHelp.json');
         var helpMessage = '';
 
         for (var com in music) {
@@ -89,7 +90,7 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
 
 function whatToDrawHelp(message) {
     try {
-        var whatToDraw = require('../Files/helpFiles/whatToDrawHelp.json'); //Get File
+        var whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
         var helpMessage = '';
 
         for (var com in whatToDraw) {
@@ -115,7 +116,7 @@ function whatToDrawHelp(message) {
 
 function nameHelp(message) {
     try {
-        var names = require('../Files/helpFiles/nameHelp.json'); //Get File
+        var names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
         var helpMessage = '';
 
         for (var com in names) {

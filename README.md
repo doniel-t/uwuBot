@@ -40,5 +40,5 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [ ] Twitch Stream Notification
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO
-- [ ] Add WebSocket Error Handling
+- [x] Add WebSocket Error Handling
 - [ ] Add !rngQuote

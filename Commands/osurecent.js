@@ -5,7 +5,7 @@ module.exports = {
 
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
-        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         name = getosuName(message);
 
@@ -14,6 +14,10 @@ module.exports = {
             ws.send('osuAPI recent ' + name);
 
         });
+
+        ws.on('error', function error(){
+            message.channel.send('Websocket-Server is unreachable');
+        })
 
         ws.on('message', function incoming(data) { //Answer
 
@@ -46,23 +50,26 @@ module.exports = {
                 .addField('Score', recentScore.score, true)
                 .addField('Combo', recentScore.maxCombo, true)
                 .addField('BPM', recentScore._beatmap.bpm, true)
-                .addField('Status', recentScore._beatmap.approvalStatus)
-                .addField('Difficulty', recentScore._beatmap.version, true)
-                .addField('StarRating', parseFloat(recentScore._beatmap.difficulty.rating).toFixed(2), true)
+
+                .addField('Status', recentScore._beatmap.approvalStatus, true)
+                .addField('Passed', percentagePassed.toFixed(2).concat("%"), true)
 
             if (!(parsedMods === "" || parsedMods == null)) {
                 emb.addField('Mods', parsedMods, true);
             } else {
-               // emb.addBlankField(true);
+                emb.addBlankField(true);
             }
 
-            emb.addField('Passed', percentagePassed.toFixed(2).concat("%"))
-                .addField('Accuracy', Acc + '%', true)
+            emb.addField('Difficulty', recentScore._beatmap.version, true)
+                .addField('StarRating', parseFloat(recentScore._beatmap.difficulty.rating).toFixed(2), true)
+                .addBlankField(true)
+
+
+            emb.addField('Accuracy', Acc + '%', true)
                 .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
                     .concat(recentScore.counts["100"]).concat(getEmoji('hit100', bot) + " ")
                     .concat(recentScore.counts["50"]).concat(getEmoji('hit50', bot) + " ")
                     .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "), true)
-                //.addBlankField(true)
 
                 .setImage('https://assets.ppy.sh/beatmaps/' + recentScore._beatmap.beatmapSetId + '/covers/cover.jpg');
 

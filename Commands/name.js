@@ -1,5 +1,4 @@
-const fs = require('fs');
-const Logger = require('./Logger');
+const fh = require('./FileHandler');
 const localFile = 'Files/local/names.json';
 var localNames; // represents whatToDraw.json
 const games = [
@@ -8,13 +7,8 @@ const games = [
 ]
 
 module.exports = {
-    name: function (message, bot) {
-        try { //Get Local nameList, create it if doesn't exist
-            localNames = require('../' + localFile);
-        } catch (error) {
-            Logger.log(error);
-            localNames = {};
-        }
+    name: function (message) {
+        localNames = fh.get('../' + localFile);
 
         let contentArgs = message.content.split(' ');
 
@@ -24,14 +18,14 @@ module.exports = {
         }
 
         if (contentArgs[1] == 'add') { //Add Person
-            add(message,contentArgs[2]);
+            add(message, contentArgs[2]);
         }
 
         if (contentArgs[1] == 'remove') { //Remove Person
-            remove(message,contentArgs[2]);
+            remove(message, contentArgs[2]);
         }
         if (contentArgs[1] == 'get') {  //Get Name
-            get(message,contentArgs[2]);
+            get(message, contentArgs[2]);
         }
     },
 
@@ -40,23 +34,24 @@ module.exports = {
     }
 }
 
-function add(message,game) { //!name add GAME NAME
+function add(message, game) { //!name add GAME NAME
 
     let name = message.author.username;
-    let igname = message.content.substring(game.length+10);
+    let igname = message.content.substring(game.length + 10);
 
     if (!localNames[name]) { //Create Person if it doesnt exist
         localNames[name] = {};
     }
 
     localNames[name][game] = igname; //Add name to game
+    localNames[name]['id'] = message.author.id;
 
     writeJSON();
     message.channel.send('Added ' + igname + ' to ' + name + '`s ' + game);
 
 }
 
-function remove(message,game) {//!name remove GAME
+function remove(message, game) {//!name remove GAME
 
     let name = message.author.username;
 
@@ -71,7 +66,7 @@ function remove(message,game) {//!name remove GAME
     message.channel.send('Removed name from ' + name + '`s ' + game);
 }
 
-function get(message,game) { //!name get GAME
+function get(message, game) { //!name get GAME
 
     let name = message.author.username;
 
@@ -85,16 +80,12 @@ function get(message,game) { //!name get GAME
 
 function getP(game, name) {
     try {
-        return require('../Files/local/names.json')[name][game];
+        return fh.get('../Files/local/names.json')[name][game];
     } catch (ignored) {
         return undefined;
     }
 }
 
 function writeJSON() { //Overwrites names.json with localNames
-    try {
-        fs.writeFileSync(localFile, JSON.stringify(localNames));
-    } catch (err) {
-        Logger.log(err);
-    }
+    fh.write(localFile, localNames);
 }

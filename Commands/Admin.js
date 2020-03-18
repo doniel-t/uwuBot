@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
+const fh = require('./FileHandler');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
 
@@ -72,7 +73,7 @@ module.exports = {
 
     toggleNeko: function (message) { //Toggles !neko Spamability
 
-        var Settings = getSettings(); //Get Settings
+        var Settings = fh.getSettings(); //Get Settings
 
         Settings.canspamneko = !Settings.canspamneko; //Change Setting
         
@@ -93,7 +94,7 @@ module.exports = {
 
     toggleEmojiDetection: function (message) { //Toggles if bot searches for emojis in every message
 
-        var Settings = getSettings(); //Get Settings
+        var Settings = fh.getSettings(); //Get Settings
 
         Settings.emojiDetection = !Settings.emojiDetection; //Change Setting
 
@@ -107,6 +108,29 @@ module.exports = {
             message.channel.send('An Error occured while saving Settings');
         }
     },
+
+    setLeagueChannel: function(message) {
+        fh.write('Files/local/LeagueChannel.json',message.channel.id);
+        message.channel.send('This is now the Standard LoL Channel');
+    },
+
+    toggleLeagueGameDetection: function (message,bot) {
+        
+        var Settings = fh.getSettings(); //Get Settings
+
+        Settings.checkForLOLGames = !Settings.checkForLOLGames; //Change Setting
+
+        if (saveSettings(Settings)) { //Save Settings to settings.json
+            if (Settings.checkForLOLGames) {
+                message.channel.send("Will detect LoLGames");
+                require('./league').checkForLOLGames(bot);
+            } else {
+                message.channel.send("Won't detect LoLGames");
+            }
+        } else {
+            message.channel.send('An Error occured while saving Settings');
+        }
+    }
 }
 
 var Admins = [ //Add DiscordID for AdminAccess
@@ -117,15 +141,5 @@ var Admins = [ //Add DiscordID for AdminAccess
 var stopvar = false;
 
 function saveSettings(Settings) { //Saves values to settings.json
-    try {
-        fs.writeFileSync('Files/local/settings.json', JSON.stringify(Settings));
-        return true;
-    } catch (error) {
-        Logger.log(error);
-        return false;
-    }
-}
-
-function getSettings() {
-    return require('../Files/local/settings.json');
+    return fh.write('Files/local/settings.json',Settings);
 }

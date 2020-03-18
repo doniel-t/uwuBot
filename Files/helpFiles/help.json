@@ -35,8 +35,8 @@
         "usage": "!jap <sentence> or !j <sentence>",
         "does": "translates sentence to japanese, or english if it was japanese"
     },
-    "leaguegetgame": {
-        "usage": "!leaguegetgame <optional: leagueName>",
+    "league": {
+        "usage": "!league <optional: leagueName>",
         "does": "gives you your (or leagueName's) current league game"
     },
     "minesweeper": {

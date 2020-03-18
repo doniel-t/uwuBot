@@ -4,14 +4,16 @@ const WebSocket = require('ws');
 module.exports = {
     osuplays: function (message) { //Gets Top 5 PP Plays!
 
-        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         
         name = getosuName(message);
+        
+        ws.on('error', function error(){
+            message.channel.send('Websocket-Server is unreachable');
+        })
 
         ws.on('open', function open() { //Request
-
             ws.send('osuAPI plays ' + name);
-
         });
 
         ws.on('message', function incoming(data) { //Answer

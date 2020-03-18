@@ -6,12 +6,13 @@ const Logger = require("./Commands/Logger.js");
 const Admin = require('./Commands/Admin.js');
 const BotID = require('./Dependencies/BotID.json');
 const version = require('./Files/version.json');
-const fs = require('fs');
-const Settings = initsettings();
+const fh = require('./Commands/FileHandler');
+const Settings = fh.getSettings();
 const commands = requireDir('./Commands');
 
 bot.on('ready', () => { //At Startup
     bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
+    commands.league.checkForLOLGames(bot);
 });
 
 bot.on('message', (message) => { //When Message sent
@@ -46,7 +47,7 @@ bot.on('message', (message) => { //When Message sent
     if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
         try {
             if (Admin.isAdmin(message)) {
-                executeFunctionByName(contentArgs[1], Admin, message);
+                executeFunctionByName(contentArgs[1], Admin, message, bot);
             } else {
                 message.channel.send('You are not an Admin');
             }
@@ -72,42 +73,4 @@ function executeFunctionByName(functionName, context /*, args */) {    //Execute
         context = context[namespaces[i]];
     }
     return context[func].apply(context, args);
-}
-
-function initsettings() {
-    try {
-
-        var set = require('./Files/local/settings.json'); //Test if settings.json is valid
-
-    } catch (ignored) { //No settings.json
-
-        try {
-            try {   //Try to create the local Folder
-                fs.mkdirSync('Files/local');
-            } catch (ignored) { }
-
-            fs.writeFileSync('Files/local/settings.json', JSON.stringify(require('./Files/initsettings.json'))); //Create settings.json
-            return require('./Files/local/settings.json');
-
-        } catch (error) {
-            Logger.log(error);
-            return undefined;
-        }
-    }
-
-    var initset = require('./Files/initsettings.json');
-
-    for (var setting in initset) { //Test for new Settings in initsettings.json
-        if (set[setting] == undefined) {
-            set[setting] = initset[setting];
-        }
-    }
-
-    try { //Write new Settings into settings.json
-        fs.writeFileSync('Files/local/settings.json', JSON.stringify(set));
-    } catch (error) {
-        Logger.log(error);
-    }
-
-    return set;
 }
