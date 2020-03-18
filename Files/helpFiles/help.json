@@ -48,6 +48,11 @@
         "does": "Can play YT-Videos",
         "hasOwnHelp" : true
     },
+    "name": {
+        "usage": "!name",
+        "does": "Saves usernames for other Commands",
+        "hasOwnHelp": true
+    },
     "neko": {
         "usage": "!neko",
         "does": "gives you a random Post from r/neko!"
