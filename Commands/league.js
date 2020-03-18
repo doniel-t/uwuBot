@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const Logger = require('./Logger');
+const fh = require('./FileHandler');
 const WebSocket = require('ws');
 const champions = require('../Files/champions.json');
 const RunningGames = [];
@@ -10,8 +10,8 @@ module.exports = {
 
         var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         var name = getleagueName(message);
-        
-        ws.on('error', function error(){
+
+        ws.on('error', function error() {
             message.channel.send('Websocket-Server is unreachable');
         })
 
@@ -79,35 +79,32 @@ function sendMessage(channel, activeGames) { //Sends a message to channel with g
 
 function autoCheck(bot) {
 
-    var leaguechannel;
-    var Names;
-    var ws;
+    var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server;
+    var leaguechannel = bot.channels.get(fh.get('../Files/local/LeagueChannel.json'));
+    var Names = fh.get('../Files/local/names.json');
 
-    try { //Search for missing Elements
-        let leaguechannelid = require('../Files/local/LeagueChannel.json');
-        leaguechannel = bot.channels.get(leaguechannelid);
-        Names = require('../Files/local/names.json');
-        ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-
-    } catch (error) {
-        Logger.log('No LeagueChannel or names .json Files or WebSocket-Server is unreachable');
-    }
-
-    if (!require('../Files/local/settings.json').checkForLOLGames || leaguechannel == undefined) { //Stop loop if boolean is false or leaguechannel is undefined
+    if (!fh.get('../Files/local/settings.json').checkForLOLGames || leaguechannel == undefined) { //Stop loop if boolean is false or leaguechannel is undefined
         return;
     }
-    
-    ws.on('error', function error(){
+
+    ws.on('error', function error() {
         message.channel.send('Websocket-Server is unreachable');
     })
 
-    ws.on('open', function open() { 
+    ws.on('open', function open() {
 
         for (let nameX in Names) {
 
             let name = Names[nameX];
+            var bool = true;
 
-            if (name.lol != undefined) {
+            try {
+                bool = (bot.users.get(name.id).presence.game.timestamps != null); //Test if DiscordUser is ingame
+            } catch (ignored) {
+                bool = false;
+            }
+
+            if (name.lol != undefined && bool) { //Has LolName in names.json and is ingame
 
                 ws.send('LeagueAPI ' + name.lol); //Requests for every name that has a lol-name
 

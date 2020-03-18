@@ -1,5 +1,6 @@
 const Music = require('./Music.js');
-const Shortcuts = require('../Files/MusicShortcut.json');
+const fh = require('./FileHandler')
+const Shortcuts = fh.get('../Files/MusicShortcut.json');
 
 module.exports = {
     play: function (message, bot) {

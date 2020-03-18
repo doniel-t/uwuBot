@@ -1,19 +1,14 @@
 const characters = require('../Files/characters.json');
-const fs = require('fs');
+const fh = require('./FileHandler');
 const Logger = require('./Logger');
 const localFile = 'Files/local/whatToDraw.json';
 var localList; // represents whatToDraw.json
 var List; // Combined List of localList and characters
 
 module.exports = {
-    whatToDraw: function(message) {
+    whatToDraw: function (message) {
 
-        try { //Get Local CharacterList, create it if doesn't exist
-            localList = require('../' + localFile);
-        } catch (error) {
-            Logger.log(error);
-            localList = [];
-        }
+        localList = fh.get('../' + localFile);
 
         List = localList.concat(characters);
 
@@ -39,7 +34,7 @@ module.exports = {
         }
         if (contentArgs[1] == 'get') {
 
-            writeJSON(JSON.stringify(List), 'Files/local/characterFiles.json')
+            writeJSON(List, 'Files/local/characterFiles.json')
 
             message.author.createDM().then(async dmChannel => { //asks for word in private channel
                 await dmChannel.send("Here is the Character List", { files: ['Files/local/characterFiles.json'] });
@@ -72,7 +67,7 @@ function addPrompt(data, message) { //Adds entry to list
     }
 
     localList.push(data);
-    writeJSON(JSON.stringify(localList), localFile);
+    writeJSON(localList, localFile);
     message.channel.send(data + " has been added!")
 }
 
@@ -83,14 +78,10 @@ function removeLatest(message) { //Removes last entry in list
     if (localList.length > 0) {
         message.channel.send(localList[localList.length - 1] + " was removed!");
         localList.pop();
-        writeJSON(JSON.stringify(localList), localFile);
+        writeJSON(localList, localFile);
     }
 }
 
 function writeJSON(promptsJsonString, path) { //Overwrites whatToDraw.json
-    try {
-        fs.writeFileSync(path, promptsJsonString);
-    } catch (err) {
-        Logger.log(err);
-    }
+    fh.write(path,promptsJsonString);
 }
