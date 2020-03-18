@@ -79,51 +79,31 @@ var listener = function(input) { //Listens to all Messages and ends game
 
 function checkGameState() { // checks end condition
     nTurns++;
-    for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
-        if (gameField[i] === players[0].symbol && gameField[i + 1] === players[0].symbol && gameField[i + 2] === players[0].symbol) {
-            ogMessage.channel.send(players[0].username + " won the game!");
+
+    for (let j = 0; j < 2; j++) {
+        for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
+            if (gameField[i] === players[j].symbol && gameField[i + 1] === players[j].symbol && gameField[i + 2] === players[j].symbol) {
+                ogMessage.channel.send(players[j].username + " won the game!");
+                stop();
+            }
+        }
+        for (let i = 0; i < 3; i++) { // checks every vertical combination
+            if (gameField[i] === players[j].symbol && gameField[i + 3] === players[j].symbol && gameField[i + 6] === players[j].symbol) {
+                ogMessage.channel.send(players[j].username + " won the game!");
+                stop();
+            }
+        }
+        //checks diagonales
+        if (gameField[0] === players[j].symbol && gameField[4] === players[j].symbol && gameField[8] === players[j].symbol) {
+            ogMessage.channel.send(players[j].username + " won the game!");
             stop();
         }
-    }
-    for (let i = 0; i < 3; i++) { // checks every vertical combination
-        if (gameField[i] === players[0].symbol && gameField[i + 3] === players[0].symbol && gameField[i + 6] === players[0].symbol) {
-            ogMessage.channel.send(players[0].username + " won the game!");
+        if (gameField[2] === players[j].symbol && gameField[4] === players[j].symbol && gameField[6] === players[j].symbol) {
+            ogMessage.channel.send(players[j].username + " won the game!");
             stop();
         }
-    }
-    //checks diagonales
-    if (gameField[0] === players[0].symbol && gameField[4] === players[0].symbol && gameField[8] === players[0].symbol) {
-        ogMessage.channel.send(players[0].username + " won the game!");
-        stop();
-    }
-    if (gameField[2] === players[0].symbol && gameField[4] === players[0].symbol && gameField[6] === players[0].symbol) {
-        ogMessage.channel.send(players[0].username + " won the game!");
-        stop();
     }
 
-    //xD
-
-    for (let i = 0; i <= 6; i += 3) { // checks every horizontal combination
-        if (gameField[i] === players[1].symbol && gameField[i + 1] === players[1].symbol && gameField[i + 2] === players[1].symbol) {
-            ogMessage.channel.send(players[1].username + " won the game!");
-            stop();
-        }
-    }
-    for (let i = 0; i < 3; i++) { // checks every vertical combination
-        if (gameField[i] === players[1].symbol && gameField[i + 3] === players[1].symbol && gameField[i + 6] === players[1].symbol) {
-            ogMessage.channel.send(players[1].username + " won the game!");
-            stop();
-        }
-    }
-    //checks diagonales
-    if (gameField[0] === players[1].symbol && gameField[4] === players[1].symbol && gameField[8] === players[1].symbol) {
-        ogMessage.channel.send(players[1].username + " won the game!");
-        stop();
-    }
-    if (gameField[2] === players[1].symbol && gameField[4] === players[1].symbol && gameField[6] === players[1].symbol) {
-        ogMessage.channel.send(players[1].username + " won the game!");
-        stop();
-    }
     if (nTurns == 9) { // if field is full stop the game
         ogMessage.channel.send("Its a tie!");
         stop();
