@@ -99,14 +99,14 @@ function autoCheck(bot) {
             var bool = true;
 
             try {
-                bool = (bot.users.get(name.id).presence.game.timestamps != null) && (bot.users.get(name.id).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
             } catch (ignored) {
                 bool = false;
             }
 
-            if (name.lol != undefined && bool) { //Has LolName in names.json and is ingame
+            if (name['lol'] != undefined && bool) { //Has LolName in names.json and is ingame
 
-                ws.send('LeagueAPI ' + name.lol); //Requests for every name that has a lol-name
+                ws.send('LeagueAPI ' + name['lol']); //Requests for every name that has a lol-name
 
             }
         }
