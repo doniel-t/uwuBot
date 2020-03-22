@@ -93,6 +93,10 @@
         "usage": "!tictactoe <optional: stop>",
         "does": "play a game of tictactoe with a friend or stop it"
     },
+    "twitch": {
+        "usage": "!twitch <optional: add> <NAME>",
+        "does": "checks if Streamer is live or adds him to AutoCheck list"
+    },
     "uwufy": {
         "usage": "!uwufy <message>",
         "does": "uwufies your message"

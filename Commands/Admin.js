@@ -130,7 +130,30 @@ module.exports = {
         } else {
             message.channel.send('An Error occured while saving Settings');
         }
-    }
+    },
+
+    setTwitchChannel: function(message) {
+        fh.write('Files/local/TwitchChannel.json',message.channel.id);
+        message.channel.send('This is now the Standard Twitch Channel');
+    },
+
+    toggleTwitchStreamDetection: function (message,bot) {
+        
+        var Settings = fh.getSettings(); //Get Settings
+
+        Settings.checkForTwitchStreams = !Settings.checkForTwitchStreams; //Change Setting
+
+        if (saveSettings(Settings)) { //Save Settings to settings.json
+            if (Settings.checkForTwitchStreams) {
+                message.channel.send("Will detect Streams");
+                require('./twitch').checkForStreams(bot);
+            } else {
+                message.channel.send("Won't detect Streams");
+            }
+        } else {
+            message.channel.send('An Error occured while saving Settings');
+        }
+    },
 }
 
 var Admins = [ //Add DiscordID for AdminAccess
