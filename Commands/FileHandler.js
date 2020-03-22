@@ -66,14 +66,18 @@ function create(Path) {
     let Filename = splitted[splitted.length - 1];
     switch (Filename) {
         case 'whatToDraw.json':
+        case 'Streamers.json':
             writeFile('Files/local/' + Filename, []);
             break;
         case 'LeagueChannel.json':
+        case 'TwitchChannel.json':
             writeFile('Files/local/' + Filename, "");
             break;
         case 'names.json':
             writeFile('Files/local/' + Filename, {});
             break;
+        default:
+            writeFile('Files/local/' + Filename, undefined);
     }
     return false;
 }
