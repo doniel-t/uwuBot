@@ -13,6 +13,7 @@ const commands = requireDir('./Commands');
 bot.on('ready', () => { //At Startup
     bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
     commands.league.checkForLOLGames(bot);
+    commands.twitch.checkForStreams(bot);
 });
 
 bot.on('message', (message) => { //When Message sent

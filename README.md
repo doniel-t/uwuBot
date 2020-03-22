@@ -37,7 +37,7 @@ fs node-osu require-dir discord.js leagueapiwrapper snoowrap child_process @vita
 - [x] Emoji Detect in Messages
 - [x] make MusicShortcuts to array for print
 - [x] MusicQueue as List not Stack
-- [ ] Twitch Stream Notification
+- [x] Twitch Stream Notification
 - [ ] Add Minesweeper support for bigger Fields
 - [ ] UNO
 - [x] Add WebSocket Error Handling
