@@ -1,5 +1,8 @@
+3.4.3: 24.03.2020
+    -Fixed league ingame Detection
+
 3.4.2: 23.03.2020
-    - Added Rank display in league
+    -Added Rank display in league
 
 3.4.1: 22.03.2020
     -Fixed FileHandler

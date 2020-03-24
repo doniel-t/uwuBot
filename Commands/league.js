@@ -23,21 +23,8 @@ module.exports = {
                     message.channel.send('An Error occured or Player isn`t ingame');
                     return;
                 }
-                var parsedData = JSON.parse(data);
-                if (oldId == parsedData[0]) {
-                    return;
-                }
-                oldId = parsedData[0];
-                var players = parsedData[1];
 
-                for (let i = 0; i < 10; i++) { //fixed ALLCAPS in data
-                    players[i].playerlevel = "lvl " + players[i].playerlevel;
-                    players[i].champion = players[i].champion.substring(0, 1) + players[i].champion.toLowerCase().substring(1);
-                    players[i].rank = players[i].rank.substring(0, 1) + players[i].rank.substring(1, players[i].rank.indexOf(" ")).toLowerCase() +
-                        players[i].rank.substring(players[i].rank.indexOf(" "));
-                }
-
-                message.channel.send(makeEmbed(players));
+                message.channel.send(makeEmbed(JSON.parse(data)[1]));
             });
         });
     },
@@ -46,7 +33,6 @@ module.exports = {
         autoCheck(bot);
     }
 }
-var oldId;
 
 function makeEmbed(players) {
     return new Discord.RichEmbed().setColor('#0099ff').setTitle("League Game")
@@ -86,14 +72,6 @@ function makeEmbed(players) {
         players[7].playerlevel + " " + players[7].rank + "\n" +
         players[8].playerlevel + " " + players[8].rank + "\n" +
         players[9].playerlevel + " " + players[9].rank, true);
-}
-
-function getChamp(ID) {
-    for (var champ in champions.data) {
-        if (champions.data[champ].key == ID) {
-            return champ;
-        }
-    }
 }
 
 function getleagueName(message) { //Gives back a NameString 
@@ -152,7 +130,7 @@ function autoCheck(bot) {
             var bool = true;
 
             try {
-                bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+               // bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
             } catch (ignored) {
                 bool = false;
             }
@@ -179,11 +157,11 @@ function autoCheck(bot) {
 
         activeGames = JSON.parse(data);
 
-        if (RunningGames.includes(activeGames.gameId)) { //Dont send message if there is already a message with this game
+        if (RunningGames.includes(activeGames[0])) { //Dont send message if there is already a message with this game
             return;
         }
 
-        RunningGames.push(activeGames.gameId);
-        sendMessage(leaguechannel, activeGames);
+        RunningGames.push(activeGames[0]);
+        leaguechannel.send(makeEmbed(activeGames[1]));
     });
 }

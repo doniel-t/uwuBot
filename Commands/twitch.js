@@ -24,7 +24,7 @@ module.exports = {
 
         }
 
-        var ws = new WebSocket('ws://localhost:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         let name = message.content.substring(contentArgs[0].length + 1);
 
         ws.on('error', function error() {
@@ -57,7 +57,7 @@ module.exports = {
 
 function autoCheck(bot) {
 
-    var ws = new WebSocket('ws://localhost:60001', { handshakeTimeout: 5000 }); //Connection to Server
+    var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
     var Names = fh.get('../Files/local/Streamers.json');
     var twitchchannel = bot.channels.get(fh.get('../Files/local/TwitchChannel.json'));
 
