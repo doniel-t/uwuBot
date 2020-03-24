@@ -85,29 +85,6 @@ function getleagueName(message) { //Gives back a NameString
     }
 }
 
-function sendMessage(channel, activeGames) { //Sends a message to channel with given activeGames
-
-    try {
-        let mes = new Discord.RichEmbed();
-        mes.setTitle('LEAGUE GAME');
-
-        for (var x = 0; x < 5; x++) {
-            let Link1 = '[' + activeGames.participants[x].summonerName + '](' + 'https://euw.op.gg/summoner/userName=' + activeGames.participants[x].summonerName.replace(/ /g, '_') + ')';
-            mes.addField(getChamp(activeGames.participants[x].championId), Link1, true);
-
-            if (x == 0) {
-                mes.addField('VS', 'VS', true);
-            } else {
-                mes.addBlankField(true);
-            }
-
-            let Link2 = '[' + activeGames.participants[x + 5].summonerName + '](' + 'https://euw.op.gg/summoner/userName=' + activeGames.participants[x + 5].summonerName.replace(/ /g, '_') + ')';
-            mes.addField(getChamp(activeGames.participants[x + 5].championId), Link2, true);
-        }
-        channel.send(mes);
-    } catch (ignored) {}
-}
-
 function autoCheck(bot) {
 
     var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server;
