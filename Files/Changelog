@@ -1,3 +1,6 @@
+3.4.5: 25.03.2020
+    -Fixed bot crashing when there is no LeagueChannel/TwitchChannel set
+
 3.4.4: 25.03.2020
     -Fixed bot crashing when WebSocket is offline
 

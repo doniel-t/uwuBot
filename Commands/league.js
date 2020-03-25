@@ -91,7 +91,8 @@ function autoCheck(bot) {
     var Names = fh.get('../Files/local/names.json');
 
     ws.on('error', function error() {
-        leaguechannel.send('League: Websocket-Server is unreachable');
+        if (leaguechannel)
+            leaguechannel.send('League: Websocket-Server is unreachable');
     })
 
     if (!fh.get('../Files/local/settings.json').checkForLOLGames || leaguechannel == undefined) { //Stop loop if boolean is false or leaguechannel is undefined
