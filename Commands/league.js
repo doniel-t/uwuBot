@@ -1,12 +1,11 @@
 const Discord = require('discord.js');
 const fh = require('./FileHandler');
 const WebSocket = require('ws');
-const champions = require('../Files/champions.json');
 const RunningGames = [];
 
 module.exports = {
 
-    league: function(message) {
+    league: function (message) {
 
         var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         var name = getleagueName(message);
@@ -29,7 +28,7 @@ module.exports = {
         });
     },
 
-    checkForLOLGames: function(bot) {
+    checkForLOLGames: function (bot) {
         autoCheck(bot);
     }
 }
@@ -37,41 +36,41 @@ module.exports = {
 function makeEmbed(players) {
     return new Discord.RichEmbed().setColor('#0099ff').setTitle("League Game")
 
-    .addField("Blue Team", players[0].name + "\n" +
-        players[1].name + "\n" +
-        players[2].name + "\n" +
-        players[3].name + "\n" +
-        players[4].name, true)
+        .addField("Blue Team", players[0].name + "\n" +
+            players[1].name + "\n" +
+            players[2].name + "\n" +
+            players[3].name + "\n" +
+            players[4].name, true)
 
-    .addField("Champion", players[0].champion + "\n" +
-        players[1].champion + "\n" +
-        players[2].champion + "\n" +
-        players[3].champion + "\n" +
-        players[4].champion, true)
+        .addField("Champion", players[0].champion + "\n" +
+            players[1].champion + "\n" +
+            players[2].champion + "\n" +
+            players[3].champion + "\n" +
+            players[4].champion, true)
 
-    .addField("SoloQ Rank ", players[0].playerlevel + " " + players[0].rank + "\n" +
-        players[1].playerlevel + " " + players[1].rank + "\n" +
-        players[2].playerlevel + " " + players[2].rank + "\n" +
-        players[3].playerlevel + " " + players[3].rank + "\n" +
-        players[4].playerlevel + " " + players[4].rank, true)
+        .addField("SoloQ Rank ", players[0].playerlevel + " " + players[0].rank + "\n" +
+            players[1].playerlevel + " " + players[1].rank + "\n" +
+            players[2].playerlevel + " " + players[2].rank + "\n" +
+            players[3].playerlevel + " " + players[3].rank + "\n" +
+            players[4].playerlevel + " " + players[4].rank, true)
 
-    .addField("Red Team", players[5].name + "\n" +
-        players[6].name + "\n" +
-        players[7].name + "\n" +
-        players[8].name + "\n" +
-        players[9].name, true)
+        .addField("Red Team", players[5].name + "\n" +
+            players[6].name + "\n" +
+            players[7].name + "\n" +
+            players[8].name + "\n" +
+            players[9].name, true)
 
-    .addField("Champion", players[5].champion + "\n" +
-        players[6].champion + "\n" +
-        players[7].champion + "\n" +
-        players[8].champion + "\n" +
-        players[9].champion, true)
+        .addField("Champion", players[5].champion + "\n" +
+            players[6].champion + "\n" +
+            players[7].champion + "\n" +
+            players[8].champion + "\n" +
+            players[9].champion, true)
 
-    .addField("SoloQ Rank ", players[5].playerlevel + " " + players[5].rank + "\n" +
-        players[6].playerlevel + " " + players[6].rank + "\n" +
-        players[7].playerlevel + " " + players[7].rank + "\n" +
-        players[8].playerlevel + " " + players[8].rank + "\n" +
-        players[9].playerlevel + " " + players[9].rank, true);
+        .addField("SoloQ Rank ", players[5].playerlevel + " " + players[5].rank + "\n" +
+            players[6].playerlevel + " " + players[6].rank + "\n" +
+            players[7].playerlevel + " " + players[7].rank + "\n" +
+            players[8].playerlevel + " " + players[8].rank + "\n" +
+            players[9].playerlevel + " " + players[9].rank, true);
 }
 
 function getleagueName(message) { //Gives back a NameString 
@@ -87,17 +86,17 @@ function getleagueName(message) { //Gives back a NameString
 
 function autoCheck(bot) {
 
-    var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server;
+    var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server    
     var leaguechannel = bot.channels.get(fh.get('../Files/local/LeagueChannel.json'));
     var Names = fh.get('../Files/local/names.json');
+
+    ws.on('error', function error() {
+        leaguechannel.send('League: Websocket-Server is unreachable');
+    })
 
     if (!fh.get('../Files/local/settings.json').checkForLOLGames || leaguechannel == undefined) { //Stop loop if boolean is false or leaguechannel is undefined
         return;
     }
-
-    ws.on('error', function error() {
-        message.channel.send('Websocket-Server is unreachable');
-    })
 
     ws.on('open', function open() {
 
@@ -107,7 +106,7 @@ function autoCheck(bot) {
             var bool = true;
 
             try {
-               bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
             } catch (ignored) {
                 bool = false;
             }

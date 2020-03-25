@@ -1,14 +1,16 @@
-const Logger = require("./Logger.js");
 const WebSocket = require('ws');
-
 
 module.exports = {
 
     rngsub: function (message) {
         
-        const ws = new WebSocket('ws://leftdoge.de:60001'); //Connection to Server
+        const ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
+
+        ws.on('error', function error(){
+            message.channel.send('Websocket-Server is unreachable');
+        })
 
         ws.on('open', function open() { //Request
 

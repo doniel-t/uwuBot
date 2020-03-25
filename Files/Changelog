@@ -1,3 +1,6 @@
+3.4.4: 25.03.2020
+    -Fixed bot crashing when WebSocket is offline
+
 3.4.3: 24.03.2020
     -Fixed league ingame Detection
 
