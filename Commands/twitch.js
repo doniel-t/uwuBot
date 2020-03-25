@@ -62,7 +62,8 @@ function autoCheck(bot) {
     var twitchchannel = bot.channels.get(fh.get('../Files/local/TwitchChannel.json'));
 
     ws.on('error', function error() {
-        twitchchannel.send('Twitch: Websocket-Server is unreachable');
+        if (twitchchannel)
+            twitchchannel.send('Twitch: Websocket-Server is unreachable');
     })
 
     if (!fh.get('../Files/local/settings.json').checkForTwitchStreams || twitchchannel == undefined) { //Stop loop if boolean is false or twitchchannel is undefined
