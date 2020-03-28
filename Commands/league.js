@@ -36,11 +36,11 @@ module.exports = {
 function makeEmbed(players) {
     return new Discord.RichEmbed().setColor('#0099ff').setTitle("League Game")
 
-        .addField("Blue Team", players[0].name + "\n" +
-            players[1].name + "\n" +
-            players[2].name + "\n" +
-            players[3].name + "\n" +
-            players[4].name, true)
+        .addField("Blue Team", '[' + players[0].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[0].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[1].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[1].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[2].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[2].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[3].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[3].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[4].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[4].name.replace(/ /g, '_') + ')\n', true)
 
         .addField("Champion", players[0].champion + "\n" +
             players[1].champion + "\n" +
@@ -54,11 +54,11 @@ function makeEmbed(players) {
             players[3].playerlevel + " " + players[3].rank + "\n" +
             players[4].playerlevel + " " + players[4].rank, true)
 
-        .addField("Red Team", players[5].name + "\n" +
-            players[6].name + "\n" +
-            players[7].name + "\n" +
-            players[8].name + "\n" +
-            players[9].name, true)
+        .addField("Red Team", '[' + players[5].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[5].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[6].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[6].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[7].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[7].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[8].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[8].name.replace(/ /g, '_') + ')\n' +
+        '[' + players[9].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[9].name.replace(/ /g, '_') + ')\n', true)
 
         .addField("Champion", players[5].champion + "\n" +
             players[6].champion + "\n" +

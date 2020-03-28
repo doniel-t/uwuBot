@@ -1,3 +1,6 @@
+3.4.6: 28.03.2020
+    -Added OP.GG-Links to league-EmbedMessage
+
 3.4.5: 25.03.2020
     -Fixed bot crashing when there is no LeagueChannel/TwitchChannel set
 
