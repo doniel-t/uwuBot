@@ -1,5 +1,5 @@
 const ytdldc = require('ytdl-core-discord');
-const ytdl = require('ytdl-core');
+const { getBasicInfo } = require('ytdl-core');
 const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
@@ -40,16 +40,16 @@ var MusicQueue = new Set();
 var inChannel = false;
 var Channel;
 
-async function playSong() { //Plays a Song
+async function playSong(first) { //Plays a Song
 
     let Song = getNextSong();
-    ogmessage.channel.send("Now playing " + Song);
+    if (!first) ogmessage.channel.send("Now playing " + Song);
 
-    playyt(Musicconnection, Song).then(dispatcher => { //Throws error in console if url isnt valid
+    playyt(Song).then(dispatcher => { //Throws error in console if url isnt valid
         Musicdispatcher = dispatcher;
         Musicdispatcher.on('end', () => {
             if (MusicQueue.size > 0) {
-                playSong();
+                playSong(false);
             } else {
                 ogmessage.channel.send('End of Queue');
                 stop();
@@ -68,20 +68,7 @@ function join(message, bot) { //Joins VoiceChannel of Caller
 
         Musicconnection = connection;
         inChannel = true;
-        playyt(connection, getNextSong()).then(dispatcher => { //Has to be called here so the Promise is returned
-
-            Musicdispatcher = dispatcher;
-
-            dispatcher.on('end', () => {
-
-                if (MusicQueue.size > 0) {
-                    playSong();
-                } else {
-                    ogmessage.channel.send('End of Queue');
-                    stop();
-                }
-            })
-        })
+        playSong(true);
     });
 }
 
@@ -91,7 +78,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         var Link = message.content.substring(message.content.indexOf(' ') + 1); //Remove command
 
-        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
+        getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
             MusicQueue.add(Link);
 
@@ -162,13 +149,13 @@ function next() {       //Ends current Song
     Musicdispatcher.end();
 }
 
-async function playyt(connection, url) {    //Plays the URL
+async function playyt(url) {    //Plays the URL
     try {
         var YTStream = await ytdldc(url);
     } catch (error) {
         Logger.log(error);
     }
-    return connection.playOpusStream(YTStream);
+    return Musicconnection.playOpusStream(YTStream);
 }
 
 function getNextSong() { //Returns next Song on MusicQueue and deletes it from Queue

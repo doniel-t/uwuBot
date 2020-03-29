@@ -1,3 +1,8 @@
+3.4.7: 28.03.2020
+    -Removed npm-Module List from README.md
+    -Updated ytdl-core-discord to masterBranch
+    -Changed Music.js
+
 3.4.6: 28.03.2020
     -Added OP.GG-Links to league-EmbedMessage
 
