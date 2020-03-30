@@ -1,3 +1,14 @@
+3.4.8: 29.03.2020
+    -Bot can leave every VoiceChannel now
+
+3.4.7: 28.03.2020
+    -Removed npm-Module List from README.md
+    -Updated ytdl-core-discord to masterBranch
+    -Changed Music.js
+
+3.4.6: 28.03.2020
+    -Added OP.GG-Links to league-EmbedMessage
+
 3.4.5: 25.03.2020
     -Fixed bot crashing when there is no LeagueChannel/TwitchChannel set
 

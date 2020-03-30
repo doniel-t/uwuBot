@@ -1,5 +1,5 @@
 const ytdldc = require('ytdl-core-discord');
-const ytdl = require('ytdl-core');
+const { getBasicInfo } = require('ytdl-core');
 const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
@@ -33,78 +33,55 @@ module.exports = {
 }
 
 var dcbot;
-var ogmessage;
 var Musicdispatcher;
 var Musicconnection;
 var MusicQueue = new Set();
 var inChannel = false;
-var Channel;
 
-async function playSong() { //Plays a Song
+async function playSong(first,Channel) { //Plays a Song
 
     let Song = getNextSong();
-    ogmessage.channel.send("Now playing " + Song);
+    if (!first) Channel.send("Now playing " + Song);
 
-    playyt(Musicconnection, Song).then(dispatcher => { //Throws error in console if url isnt valid
+    playyt(Song).then(dispatcher => { //Throws error in console if url isnt valid
         Musicdispatcher = dispatcher;
         Musicdispatcher.on('end', () => {
             if (MusicQueue.size > 0) {
-                playSong();
+                playSong(false,Channel);
             } else {
-                ogmessage.channel.send('End of Queue');
+                Channel.send('End of Queue');
                 stop();
             }
         })
     })
 }
 
-function join(message, bot) { //Joins VoiceChannel of Caller
+function join(voiceID,Channel) { //Joins VoiceChannel of Caller
 
-    dcbot = bot;
-    ogmessage = message;
-    Channel = dcbot.channels.get(ogmessage.author.lastMessage.member.voiceChannelID);
-
-    Channel.join().then(connection => {
+    dcbot.channels.get(voiceID).join().then(connection => {
 
         Musicconnection = connection;
         inChannel = true;
-        playyt(connection, getNextSong()).then(dispatcher => { //Has to be called here so the Promise is returned
-
-            Musicdispatcher = dispatcher;
-
-            dispatcher.on('end', () => {
-
-                if (MusicQueue.size > 0) {
-                    playSong();
-                } else {
-                    ogmessage.channel.send('End of Queue');
-                    stop();
-                }
-            })
-        })
+        playSong(true,Channel);
     });
 }
 
 async function play(message, bot) { //Adds Music to Queue and starts Playing if not playing already
 
+    dcbot = bot;
+
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
         var Link = message.content.substring(message.content.indexOf(' ') + 1); //Remove command
 
-        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
+        getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
             MusicQueue.add(Link);
 
-            if (Musicdispatcher != undefined) {
-                if (Musicdispatcher.time != 0) {
-                    message.channel.send("Added Song to Queue at Position " + MusicQueue.size);
-                }
-            }
-
-            if (MusicQueue.size == 1) {
-                if (!inChannel) {
-                    join(message, bot);
-                }
+            if (!inChannel) {
+                join(message.author.lastMessage.member.voiceChannelID,message.channel);
+            } else {
+                message.channel.send("Added Song to Queue: " + MusicQueue.size);
             }
 
         }).catch(() => { //Not a Video
@@ -117,14 +94,10 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                         MusicQueue.add(song.url_simple);
                     }
 
-                    if (Musicdispatcher != undefined) {
-                        if (Musicdispatcher.time != 0) {
-                            message.channel.send("Added Playlist to Queue");
-                        }
-                    }
-
                     if (!inChannel) {
-                        join(message, bot);
+                        join();
+                    } else {
+                        message.channel.send("Added Playlist to Queue");
                     }
                 }).catch(() => {
                     message.channel.send('Playlist couldn`t be resolved');
@@ -141,11 +114,10 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
 function stop() {       //Stops Music, cleares Queue and leaves Channel
 
+    dcbot.channels.get(Musicconnection.channel.id).leave();
     MusicQueue = new Set();
     inChannel = false;
-    Channel.leave();
-    Channel = undefined;
-    ogmessage = undefined;
+    dcbot = undefined;
     Musicdispatcher = undefined;
     Musicconnection = undefined;
 }
@@ -162,13 +134,13 @@ function next() {       //Ends current Song
     Musicdispatcher.end();
 }
 
-async function playyt(connection, url) {    //Plays the URL
+async function playyt(url) {    //Plays the URL
     try {
         var YTStream = await ytdldc(url);
     } catch (error) {
         Logger.log(error);
     }
-    return connection.playOpusStream(YTStream);
+    return Musicconnection.playOpusStream(YTStream);
 }
 
 function getNextSong() { //Returns next Song on MusicQueue and deletes it from Queue
