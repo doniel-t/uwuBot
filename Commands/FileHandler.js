@@ -65,6 +65,8 @@ function create(Path) {
     let splitted = Path.split('/');
     let Filename = splitted[splitted.length - 1];
     switch (Filename) {
+        case 'botToken.json':
+            return writeFile('Files/local/' + Filename, {"token": ""});
         case 'whatToDraw.json':
         case 'Streamers.json':
             return writeFile('Files/local/' + Filename, []);
