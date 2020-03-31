@@ -69,7 +69,10 @@ bot.on('message', (message) => { //When Message sent
     }
 });
 
-bot.login(fh.get('../Files/local/botToken.json').token); //Starts Bot
+bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
+    Logger.log('botToken.json is invalid: ' + err);
+    return;
+}); //Starts Bot
 
 function executeFunctionByName(functionName, context /*, args */) {    //Executes functionName at context with args
     var args = Array.prototype.slice.call(arguments, 2);

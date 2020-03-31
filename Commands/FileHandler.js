@@ -58,6 +58,10 @@ module.exports = {
         }
 
         return set;
+    },
+
+    readdirSync: function(path) { //just calls fs.readDirSync
+        return fs.readdirSync(path);
     }
 }
 
