@@ -7,7 +7,7 @@ module.exports = {
         translate(message.content.substring(message.content.indexOf(' ')+1), { to: 'ja' }).then(res => { //Translate from x to Japanese
 
             if (res.from.language.iso == 'ja') { //If Language was Japanese translate to English
-                translate(message.content.substring(6), { to: 'en' }).then(res => { //Translate
+                translatemessage.content.substring(message.content.indexOf(' ')+1, { to: 'en' }).then(res => { //Translate
                     message.channel.send(res.text); //English Text
                 })
             } else {

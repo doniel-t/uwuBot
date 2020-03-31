@@ -1,3 +1,6 @@
+3.5.1: 01.04.2020
+    -Fixed an error in jap Translator
+
 3.5.0: 01.04.2020
     -Added chat command
     -AdminCommands now run with uwuadmin
