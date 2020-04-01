@@ -46,7 +46,7 @@
     "Music": {
         "usage": "N/A",
         "does": "Can play YT-Videos",
-        "hasOwnHelp" : true
+        "hasOwnHelp": true
     },
     "name": {
         "usage": "!name",
@@ -80,6 +80,10 @@
     "poll2": {
         "usage": "!poll <title; option 1; option2>",
         "does": "gives you a poll based on your title (optional: with custom options)"
+    },
+    "rng": {
+        "usage": "!rng <min> <max>",
+        "does": "gives you a random number between min and max"
     },
     "rngsub": {
         "usage": "!rngsub optional:<subreddit>",
