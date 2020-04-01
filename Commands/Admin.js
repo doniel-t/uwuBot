@@ -89,7 +89,6 @@ module.exports = {
         var Settings = fh.getSettings(); //Get Settings
         var etn = {};
         var msg;
-        var i = 0;
 
         var Emojis = [
             '0️⃣',
@@ -109,6 +108,7 @@ module.exports = {
         var writeMessage = function () { //Returns Embed Message
             var emb = new Discord.RichEmbed().setTitle('Settings (Will be removed after 5 minutes)');
 
+            let i = 0;
             for (let setting in Settings) {
                 emb.addField(Emojis[i] + ' ' + setting, Settings[setting]);
                 etn[Emojis[i]] = setting;
@@ -119,36 +119,53 @@ module.exports = {
 
         var listener = function (emoji) { //EmojiListener
 
-            Settings[etn[emoji._emoji.name]] = !Settings[etn[emoji._emoji.name]];
+            emoji.users.delete(bot.user.id);
 
-            if (Settings[etn[emoji._emoji.name]]) { //Custom Commands for some Settings
-                switch (etn[emoji._emoji.name]) {
-                    case 'checkForLOLGames':
-                        require('./league').checkForLOLGames(bot);
-                        break;
-                    case 'checkForTwitchStreams':
-                        require('./twitch').checkForStreams(bot);
-                        break;
-                    default:
-                        break;
+            if (Settings[etn[emoji._emoji.name]] == undefined) {
+                return;
+            }
+
+            for (let user of emoji.users) {
+
+                if (Admins.includes(user[0])) {
+
+                    msg.clearReactions();
+
+                    Settings[etn[emoji._emoji.name]] = !Settings[etn[emoji._emoji.name]];
+
+                    if (Settings[etn[emoji._emoji.name]]) { //Custom Commands for some Settings
+                        switch (etn[emoji._emoji.name]) {
+                            case 'checkForLOLGames':
+                                require('./league').checkForLOLGames(bot);
+                                break;
+                            case 'checkForTwitchStreams':
+                                require('./twitch').checkForStreams(bot);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    if (!saveSettings(Settings)) { //Save Settings to settings.json
+                        message.channel.send('An Error occured while saving Settings');
+                    }
+
+                    msg.edit(writeMessage());
+                    for (let x = 0; x < Object.keys(Settings).length; x++) {
+                        msg.react(Emojis[x]);
+                    }
                 }
             }
-
-            if (!saveSettings(Settings)) { //Save Settings to settings.json
-                message.channel.send('An Error occured while saving Settings');
-            }
-            i = 0;
-            msg.edit(writeMessage());
         }
 
         message.channel.send(writeMessage()).then(ans => {
             msg = ans;
 
-            for (let x = 0; x < i; x++) {
+            for (let x = 0; x < Object.keys(Settings).length; x++) {
                 ans.react(Emojis[x]);
             }
 
-            collector = ans.createReactionCollector(m => m.users.has(message.author.id)); //Emoji Listener
+            collector = ans.createReactionCollector(x => true); //Emoji Listener
             collector.on('collect', listener);
 
             ans.delete(300000); //Delete Message after 5 minutes
