@@ -1,5 +1,4 @@
 const { spawn } = require('child_process');
-const fs = require('fs');
 const fh = require('./FileHandler');
 const version = require('../Files/version.json');
 const Logger = require('./Logger.js');
@@ -9,7 +8,7 @@ module.exports = {
     getLogFile: function (message) { //Bot will give you the current LogFile
 
         var logFile;
-        let array = fs.readdirSync('.');
+        let array = fh.readdirSync('.');
 
         for (var i = 0; i < array.length; i++) { //Search for File ending on .log
             if (array[i].endsWith('.log')) {

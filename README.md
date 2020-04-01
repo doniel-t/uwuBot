@@ -6,8 +6,7 @@
 * Install git
 * Install node.js
 * Run Installer.bat
-* Extract Dependencies_Template.rar in uwuBot so 'uwuBot/Dependencies/botToken.json'
-* Fill all Dependencies
+* Fill botToken.json with your Token from Discord
 * Start Bot with run.bat
 
 ## TODO

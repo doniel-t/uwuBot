@@ -1,19 +1,20 @@
-const token = require('./Dependencies/botToken.json'); //Has DiscordToken under token.token
 const Discord = require('discord.js');
 const requireDir = require('require-dir');
 const bot = new Discord.Client();
 const Logger = require("./Commands/Logger.js");
 const Admin = require('./Commands/Admin.js');
-const BotID = require('./Dependencies/BotID.json');
-const version = require('./Files/version.json');
-const fh = require('./Commands/FileHandler');
-const Settings = fh.getSettings();
 const commands = requireDir('./Commands');
+const fh = require('./Commands/FileHandler');
+
+const version = fh.get('../Files/version.json');
+const Settings = fh.getSettings();
+var BotID;
 
 bot.on('ready', () => { //At Startup
     bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
     commands.league.checkForLOLGames(bot);
     commands.twitch.checkForStreams(bot);
+    BotID = '<@!' + bot.user.id + '>';
 });
 
 bot.on('message', (message) => { //When Message sent
@@ -45,7 +46,7 @@ bot.on('message', (message) => { //When Message sent
         }
     }
 
-    if (contentArgs[0].startsWith(BotID.id)) { //AdminCommands
+    if (contentArgs[0].startsWith('uwuadmin')) { //AdminCommands
         try {
             if (Admin.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Admin, message, bot);
@@ -59,12 +60,19 @@ bot.on('message', (message) => { //When Message sent
         }
     }
 
+    if (contentArgs[0].startsWith(BotID)) { //ChatBot
+        commands.chat.chat(message);
+    }
+
     if (Settings.emojiDetection) { //Emoji detection in plain Text
         executeFunctionByName("emoji.emojiDetection", commands, message, bot);
     }
 });
 
-bot.login(token.token); //Starts Bot
+bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
+    Logger.log('botToken.json is invalid: ' + err);
+    return;
+}); //Starts Bot
 
 function executeFunctionByName(functionName, context /*, args */) {    //Executes functionName at context with args
     var args = Array.prototype.slice.call(arguments, 2);
