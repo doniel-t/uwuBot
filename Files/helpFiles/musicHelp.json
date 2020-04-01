@@ -17,6 +17,10 @@
     },
     "stop": {
         "usage": "!stop or !s",
-        "does": "Stops the Music in your Channel"
+        "does": "stops the Music in your Channel"
+    },
+    "Shortcuts": {
+        "usage": "!play <Shortcut> or !<Shortcut>",
+        "does": "plays the Song in your Channel"
     }
 }

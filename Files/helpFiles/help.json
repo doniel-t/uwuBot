@@ -11,13 +11,13 @@
         "usage": "!ask <question> or !a <question>",
         "does": "answers your question with 100% accuracy"
     },
+    "chat": {
+        "usage": "!chat <Message>",
+        "does": "answers your Message"
+    },
     "choose": {
         "usage": "!choose <option1> , <option2> , ... , <option n>",
         "does": "chooses a random option for you"
-    },
-    "dorime": {
-        "usage": "!dorime or !d",
-        "does": "answers your Prayers"
     },
     "emoji": {
         "usage": "!emoji <EmojiName / all> or !e <EmojiName / all>",
@@ -68,10 +68,6 @@
     "osurecent": {
         "usage": "!osurecent <optional: osuName>",
         "does": "gives you your (or osuName's) most recent Play (passed or not passed)"
-    },
-    "padoru": {
-        "usage": "!padoru",
-        "does": "answers your Callings for the almighty Being"
     },
     "poll1": {
         "usage": "!poll <title>",

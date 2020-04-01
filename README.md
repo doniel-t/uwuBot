@@ -1,6 +1,5 @@
 # Requires:
 * a DiscordBotToken
-* your DiscordID
 
 ## Installation
 * Install git

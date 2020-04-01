@@ -1,3 +1,4 @@
+const Discord = require('discord.js')
 const { spawn } = require('child_process');
 const fh = require('./FileHandler');
 const version = require('../Files/version.json');
@@ -70,89 +71,89 @@ module.exports = {
 
     },
 
-    toggleNeko: function (message) { //Toggles !neko Spamability
-
-        var Settings = fh.getSettings(); //Get Settings
-
-        Settings.canspamneko = !Settings.canspamneko; //Change Setting
-        
-        if (saveSettings(Settings)) { //Save Settings to settings.json
-            if (Settings.canspamneko) {
-                message.channel.send("Can spam now");
-            } else {
-                message.channel.send("Can't spam now");
-            }
-        } else {
-            message.channel.send('An Error occured while saving Settings');
-        }
-    },
-
     version: function (message) { //returns current version
         message.channel.send(version.version);
     },
 
-    toggleEmojiDetection: function (message) { //Toggles if bot searches for emojis in every message
-
-        var Settings = fh.getSettings(); //Get Settings
-
-        Settings.emojiDetection = !Settings.emojiDetection; //Change Setting
-
-        if (saveSettings(Settings)) { //Save Settings to settings.json
-            if (Settings.emojiDetection) {
-                message.channel.send("Will detect Emojis");
-            } else {
-                message.channel.send("Won't detect Emojis");
-            }
-        } else {
-            message.channel.send('An Error occured while saving Settings');
-        }
-    },
-
-    setLeagueChannel: function(message) {
-        fh.write('Files/local/LeagueChannel.json',message.channel.id);
+    setLeagueChannel: function (message) {
+        fh.write('Files/local/LeagueChannel.json', message.channel.id);
         message.channel.send('This is now the Standard LoL Channel');
     },
 
-    toggleLeagueGameDetection: function (message,bot) {
-        
-        var Settings = fh.getSettings(); //Get Settings
-
-        Settings.checkForLOLGames = !Settings.checkForLOLGames; //Change Setting
-
-        if (saveSettings(Settings)) { //Save Settings to settings.json
-            if (Settings.checkForLOLGames) {
-                message.channel.send("Will detect LoLGames");
-                require('./league').checkForLOLGames(bot);
-            } else {
-                message.channel.send("Won't detect LoLGames");
-            }
-        } else {
-            message.channel.send('An Error occured while saving Settings');
-        }
-    },
-
-    setTwitchChannel: function(message) {
-        fh.write('Files/local/TwitchChannel.json',message.channel.id);
+    setTwitchChannel: function (message) {
+        fh.write('Files/local/TwitchChannel.json', message.channel.id);
         message.channel.send('This is now the Standard Twitch Channel');
     },
 
-    toggleTwitchStreamDetection: function (message,bot) {
-        
+    settings: function (message, bot) { //SettingsHandler
         var Settings = fh.getSettings(); //Get Settings
+        var etn = {};
+        var msg;
+        var i = 0;
 
-        Settings.checkForTwitchStreams = !Settings.checkForTwitchStreams; //Change Setting
+        var Emojis = [
+            '0️⃣',
+            '1️⃣',
+            '2️⃣',
+            '3️⃣',
+            '4️⃣',
+            '5️⃣',
+            '6️⃣',
+            '7️⃣',
+            '8️⃣',
+            '9️⃣',
+            '🔟',
+            '⬜'
+        ]
 
-        if (saveSettings(Settings)) { //Save Settings to settings.json
-            if (Settings.checkForTwitchStreams) {
-                message.channel.send("Will detect Streams");
-                require('./twitch').checkForStreams(bot);
-            } else {
-                message.channel.send("Won't detect Streams");
+        var writeMessage = function () { //Returns Embed Message
+            var emb = new Discord.RichEmbed().setTitle('Settings (Will be removed after 5 minutes)');
+
+            for (let setting in Settings) {
+                emb.addField(Emojis[i] + ' ' + setting, Settings[setting]);
+                etn[Emojis[i]] = setting;
+                i++;
             }
-        } else {
-            message.channel.send('An Error occured while saving Settings');
+            return emb;
         }
-    },
+
+        var listener = function (emoji) { //EmojiListener
+
+            Settings[etn[emoji._emoji.name]] = !Settings[etn[emoji._emoji.name]];
+
+            if (Settings[etn[emoji._emoji.name]]) { //Custom Commands for some Settings
+                switch (etn[emoji._emoji.name]) {
+                    case 'checkForLOLGames':
+                        require('./league').checkForLOLGames(bot);
+                        break;
+                    case 'checkForTwitchStreams':
+                        require('./twitch').checkForStreams(bot);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (!saveSettings(Settings)) { //Save Settings to settings.json
+                message.channel.send('An Error occured while saving Settings');
+            }
+            i = 0;
+            msg.edit(writeMessage());
+        }
+
+        message.channel.send(writeMessage()).then(ans => {
+            msg = ans;
+
+            for (let x = 0; x < i; x++) {
+                ans.react(Emojis[x]);
+            }
+
+            collector = ans.createReactionCollector(m => m.users.has(message.author.id)); //Emoji Listener
+            collector.on('collect', listener);
+
+            ans.delete(300000); //Delete Message after 5 minutes
+        })
+    }
 }
 
 var Admins = [ //Add DiscordID for AdminAccess
@@ -163,5 +164,5 @@ var Admins = [ //Add DiscordID for AdminAccess
 var stopvar = false;
 
 function saveSettings(Settings) { //Saves values to settings.json
-    return fh.write('Files/local/settings.json',Settings);
+    return fh.write('Files/local/settings.json', Settings);
 }

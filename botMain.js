@@ -27,6 +27,11 @@ bot.on('message', (message) => { //When Message sent
 
         let command = contentArgs[0].substring(1); //Get commandName
 
+        if(command.length == 0) {
+            message.channel.send('No Command entered');
+            return;
+        }
+
         if (!commands.play.playKey(message, bot)) { //Checks if command is shortcut for music and plays it
 
             if (command.length == 1) {  //Go to Shortcut for command
@@ -48,6 +53,12 @@ bot.on('message', (message) => { //When Message sent
 
     if (contentArgs[0].startsWith('uwuadmin')) { //AdminCommands
         try {
+
+            if (contentArgs[1] == undefined) {
+                message.channel.send('No Command entered');
+                return;
+            }
+
             if (Admin.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Admin, message, bot);
             } else {
