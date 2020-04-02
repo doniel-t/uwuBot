@@ -21,9 +21,12 @@ function gbBot(bot) { //Evalutes the day
         return;
     }
 
-    let val = Date.now();
-    let val1 = val % 86400000; //86400000 == 1 day
-    val1 = val - val1 + 86400000; //Get next Midnight
+    let time = 86_400_000; //86400000 == midnight
+    let date = new Date();
+
+    let val = date.getTime() - date.getTimezoneOffset() * 60 * 1000;//Get time with TimezoneOffset
+    let val1 = (val - (val % time)) + time; //Get next Midnight
+
     val = val1 - val; //Time until next Midnight
 
     setTimeout(function () {
