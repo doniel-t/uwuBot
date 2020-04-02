@@ -3,6 +3,11 @@ const Logger = require('./Logger');
 
 module.exports = {
     get: function (Path) {
+
+        if(Path == '../Files/local/settings.json') {
+            return this.getSettings();
+        }
+
         try {
             return require(Path);
         } catch (error) {
