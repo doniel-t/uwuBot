@@ -1,13 +1,14 @@
 const cleverbot = require("cleverbot-free");
 const fh = require('./FileHandler');
-const Logger = require('./Logger');
-var counter = fh.get('../Files/local/counter.json');
+const { chatCalled } = require('./Auto');
 var called = false;
 
 module.exports = {
     chat: function (message) {
 
-        called = true;
+        var counter = fh.get('../Files/local/counter.json');
+
+        chatCalled();
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
         let msg = message.content.substring(contentArgs[0].length + 1);
@@ -33,6 +34,6 @@ module.exports = {
                 return;
         }
 
-        fh.write('../Files/local/counter.json', counter); //Use return in switch to not get here
+        fh.write('counter.json', counter); //Use return in switch to not get here
     }
 }

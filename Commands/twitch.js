@@ -13,7 +13,7 @@ module.exports = {
             if (!Streamers.includes(message.content.substring(contentArgs[0].length + 5))) {
 
                 Streamers.push(message.content.substring(contentArgs[0].length + 5));
-                fh.write('../Files/local/Streamers.json', Streamers);
+                fh.write('Streamers.json', Streamers);
                 message.channel.send(message.content.substring(contentArgs[0].length + 5) + ' has been added');
                 return;
 

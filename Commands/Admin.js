@@ -76,17 +76,17 @@ module.exports = {
     },
 
     setLeagueChannel: function (message) {
-        fh.write('Files/local/LeagueChannel.json', message.channel.id);
+        fh.write('LeagueChannel.json', message.channel.id);
         message.channel.send('This is now the Standard LoL Channel');
     },
 
     setTwitchChannel: function (message) {
-        fh.write('Files/local/TwitchChannel.json', message.channel.id);
+        fh.write('TwitchChannel.json', message.channel.id);
         message.channel.send('This is now the Standard Twitch Channel');
     },
 
     setStandardChannel: function (message) {
-        fh.write('Files/local/StandardChannel.json', message.channel.id);
+        fh.write('StandardChannel.json', message.channel.id);
         message.channel.send('This is now the Standard Channel for automated Messages');
     },
 
@@ -186,5 +186,5 @@ var Admins = [ //Add DiscordID for AdminAccess
 var stopvar = false;
 
 function saveSettings(Settings) { //Saves values to settings.json
-    return fh.write('Files/local/settings.json', Settings);
+    return fh.write('settings.json', Settings);
 }

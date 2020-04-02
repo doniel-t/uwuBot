@@ -4,20 +4,15 @@ const Logger = require('./Logger');
 module.exports = {
     get: function (Path) {
 
-        if(Path == '../Files/local/settings.json') {
+        if (Path == '../Files/local/settings.json') {
             return this.getSettings();
         }
 
         try {
             return require(Path);
         } catch (error) {
-
             Logger.log(error);
-            if (create(Path)) {
-                return require(Path);
-            } else {
-                return undefined;
-            }
+            return create(Path);
         }
     },
 
@@ -44,10 +39,10 @@ module.exports = {
 
             } catch (error) {
                 Logger.log(error);
-                return undefined;
+                return require('../Files/initsettings.json');
             }
         }
-
+        set = {};
         var initset = require('../Files/initsettings.json');
 
         for (var setting in initset) { //Test for new Settings in initsettings.json
@@ -65,31 +60,48 @@ module.exports = {
         return set;
     },
 
-    readdirSync: function(path) { //just calls fs.readDirSync
+    readdirSync: function (path) { //just calls fs.readDirSync
         return fs.readdirSync(path);
     }
 }
 
 function create(Path) {
+
     let splitted = Path.split('/');
     let Filename = splitted[splitted.length - 1];
+    let File;
+
     switch (Filename) {
+
         case 'counter.json':
-            return writeFile('Files/local/' + Filename, {"good": 0,"bad": 0});
+            File = { "good": 0, "bad": 0 };
+            break;
+
         case 'botToken.json':
-            return writeFile('Files/local/' + Filename, {"token": ""});
+            File = { "token": "" };
+            break;
+
         case 'whatToDraw.json':
         case 'Streamers.json':
-            return writeFile('Files/local/' + Filename, []);
+            File = [];
+            break;
+
         case 'LeagueChannel.json':
         case 'TwitchChannel.json':
         case 'StandardChannel.json':
-            return writeFile('Files/local/' + Filename, "");
+            File = "";
+            break;
+
         case 'names.json':
-            return writeFile('Files/local/' + Filename, {});
+            File = {};
+            break;
+
         default:
-            return writeFile('Files/local/' + Filename, undefined);
+            File = undefined;
+            break;
     }
+    writeFile('Files/local/' + Filename, File);
+    return File;
 }
 
 function writeFile(Path, Object) {

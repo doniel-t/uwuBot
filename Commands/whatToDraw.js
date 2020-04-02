@@ -1,14 +1,14 @@
 const characters = require('../Files/characters.json');
 const fh = require('./FileHandler');
 const Logger = require('./Logger');
-const localFile = 'Files/local/whatToDraw.json';
+const localFile = 'whatToDraw.json';
 var localList; // represents whatToDraw.json
 var List; // Combined List of localList and characters
 
 module.exports = {
     whatToDraw: function (message) {
 
-        localList = fh.get('../' + localFile);
+        localList = fh.get('../Files/local/' + localFile);
 
         List = localList.concat(characters);
 

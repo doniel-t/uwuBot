@@ -1,10 +1,19 @@
+const fh = require('./FileHandler');
+
 module.exports = {
     goodbadBot: function (bot) {
         gbBot(bot);
+    },
+
+    chatCalled: function () {
+        called = true;
     }
 }
 
+var called = false;
+
 function gbBot(bot) { //Evalutes the day
+    let counter = fh.get('../Files/local/counter.json');
     let Standardchannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
 
     if (!Standardchannel) {
@@ -33,7 +42,8 @@ function gbBot(bot) { //Evalutes the day
 
         counter.good = 0; //Reset values
         counter.bad = 0;
-        fh.write('../Files/local/counter.json', counter);
+        fh.write('counter.json', counter);
+        called = false;
 
         gbBot(bot);
     }, val)

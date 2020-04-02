@@ -7,7 +7,7 @@ const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
 
 const version = fh.get('../Files/version.json');
-const Settings = fh.getSettings();
+var Settings = fh.getSettings();
 var BotID;
 
 bot.on('ready', () => { //At Startup
@@ -32,7 +32,7 @@ bot.on('ready', () => { //At Startup
 
     commands.league.checkForLOLGames(bot);
     commands.twitch.checkForStreams(bot);
-    commands.chat.monitor(bot);
+    commands.Auto.goodbadBot(bot);
     BotID = '<@!' + bot.user.id + '>';
 });
 
@@ -94,7 +94,7 @@ bot.on('message', (message) => { //When Message sent
         commands.chat.chat(message);
     }
 
-    if (Settings.emojiDetection) { //Emoji detection in plain Text
+    if (Settings['emojiDetection']) { //Emoji detection in plain Text
         executeFunctionByName("emoji.emojiDetection", commands, message, bot);
     }
 });

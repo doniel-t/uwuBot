@@ -2,6 +2,7 @@
     -Added Handling for fh.get('../Files/local/settings.json')
     -Added StandardChannel
     -Added good/bad bot counter and message at 0:00am
+    -Fixed bug when no Files are in local
 
 3.6.1: 01.04.2020
     -Fixed things in help

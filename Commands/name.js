@@ -1,5 +1,5 @@
 const fh = require('./FileHandler');
-const localFile = 'Files/local/names.json';
+const localFile = 'names.json';
 var localNames; // represents whatToDraw.json
 const games = [
     'lol',
@@ -8,7 +8,7 @@ const games = [
 
 module.exports = {
     name: function (message) {
-        localNames = fh.get('../' + localFile);
+        localNames = fh.get('../Files/local/' + localFile);
 
         let contentArgs = message.content.split(' ');
 
