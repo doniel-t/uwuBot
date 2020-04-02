@@ -74,6 +74,8 @@ function create(Path) {
     let splitted = Path.split('/');
     let Filename = splitted[splitted.length - 1];
     switch (Filename) {
+        case 'counter.json':
+            return writeFile('Files/local/' + Filename, {"good": 0,"bad": 0});
         case 'botToken.json':
             return writeFile('Files/local/' + Filename, {"token": ""});
         case 'whatToDraw.json':
@@ -81,6 +83,7 @@ function create(Path) {
             return writeFile('Files/local/' + Filename, []);
         case 'LeagueChannel.json':
         case 'TwitchChannel.json':
+        case 'StandardChannel.json':
             return writeFile('Files/local/' + Filename, "");
         case 'names.json':
             return writeFile('Files/local/' + Filename, {});

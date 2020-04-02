@@ -60,13 +60,19 @@ function autoCheck(bot) {
     var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
     var Names = fh.get('../Files/local/Streamers.json');
     var twitchchannel = bot.channels.get(fh.get('../Files/local/TwitchChannel.json'));
+    var Standardchannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'))
 
     ws.on('error', function error() {
         if (twitchchannel)
             twitchchannel.send('Twitch: Websocket-Server is unreachable');
     })
 
-    if (!fh.get('../Files/local/settings.json').checkForTwitchStreams || twitchchannel == undefined) { //Stop loop if boolean is false or twitchchannel is undefined
+    if (!fh.get('../Files/local/settings.json').checkForTwitchStreams) { //Stop loop if boolean is false or twitchchannel is undefined
+        return;
+    }
+
+    if(!twitchchannel && Standardchannel) {
+        Standardchannel.send('Please set a TwitchChannel or disable checkForTwitchStreams in Settings');
         return;
     }
 

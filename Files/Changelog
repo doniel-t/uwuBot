@@ -1,5 +1,7 @@
-3.6.2: 02.04.2020
+3.7.0: 02.04.2020
     -Added Handling for fh.get('../Files/local/settings.json')
+    -Added StandardChannel
+    -Added good/bad bot counter and message at 0:00am
 
 3.6.1: 01.04.2020
     -Fixed things in help

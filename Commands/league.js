@@ -88,6 +88,7 @@ function autoCheck(bot) {
 
     var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server    
     var leaguechannel = bot.channels.get(fh.get('../Files/local/LeagueChannel.json'));
+    var StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
     var Names = fh.get('../Files/local/names.json');
 
     ws.on('error', function error() {
@@ -95,7 +96,12 @@ function autoCheck(bot) {
             leaguechannel.send('League: Websocket-Server is unreachable');
     })
 
-    if (!fh.get('../Files/local/settings.json').checkForLOLGames || leaguechannel == undefined) { //Stop loop if boolean is false or leaguechannel is undefined
+    if (!fh.get('../Files/local/settings.json').checkForLOLGames) { //Stop loop if boolean is false or leaguechannel is undefined
+        return;
+    }
+
+    if(!leaguechannel && StandardChannel) {
+        StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
         return;
     }
 

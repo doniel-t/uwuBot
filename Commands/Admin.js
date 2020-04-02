@@ -85,6 +85,11 @@ module.exports = {
         message.channel.send('This is now the Standard Twitch Channel');
     },
 
+    setStandardChannel: function (message) {
+        fh.write('Files/local/StandardChannel.json', message.channel.id);
+        message.channel.send('This is now the Standard Channel for automated Messages');
+    },
+
     settings: function (message, bot) { //SettingsHandler
         var Settings = fh.getSettings(); //Get Settings
         var etn = {};
