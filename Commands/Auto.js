@@ -12,22 +12,29 @@ module.exports = {
 
 var called = false;
 
-function gbBot(bot) { //Evalutes the day
+function gbBot(bot, first) { //Evalutes the day
+
     let counter = fh.get('../Files/local/counter.json');
     let Standardchannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
+    let offset;
 
     if (!Standardchannel) {
         Logger.log('Please set a Standard Channel or some Features wont work');
         return;
     }
 
-    let time = 86_400_000; //86400000 == midnight
-    let date = new Date();
+    let time = 86_400_000; //86400000 == 1 day
 
-    let val = date.getTime() - date.getTimezoneOffset() * 60 * 1000;//Get time with TimezoneOffset
-    let val1 = (val - (val % time)) + time; //Get next Midnight
+    if (first) {
+        let date = new Date();
 
-    val = val1 - val; //Time until next Midnight
+        let val = date.getTime() - date.getTimezoneOffset() * 60 * 1000;//Get time with TimezoneOffset
+        let val1 = (val - (val % time)) + time; //Get next Midnight
+
+        offset = val1 - val; //Time until next Midnight
+    } else {
+        offset = time;
+    }
 
     setTimeout(function () {
 
@@ -48,6 +55,6 @@ function gbBot(bot) { //Evalutes the day
         fh.write('counter.json', counter);
         called = false;
 
-        gbBot(bot);
-    }, val)
+        gbBot(bot, false);
+    }, offset)
 }

@@ -32,7 +32,7 @@ bot.on('ready', () => { //At Startup
 
     commands.league.checkForLOLGames(bot);
     commands.twitch.checkForStreams(bot);
-    commands.Auto.goodbadBot(bot);
+    commands.Auto.goodbadBot(bot,true);
     BotID = '<@!' + bot.user.id + '>';
 });
 
