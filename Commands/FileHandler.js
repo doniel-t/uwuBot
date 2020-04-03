@@ -42,7 +42,7 @@ module.exports = {
                 return require('../Files/initsettings.json');
             }
         }
-        set = {};
+
         var initset = require('../Files/initsettings.json');
 
         for (var setting in initset) { //Test for new Settings in initsettings.json
