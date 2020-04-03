@@ -25,7 +25,7 @@ function gbBot(bot, first) { //Evalutes the day
 
     let time = 86_400_000; //86400000 == 1 day
 
-    if (first) {
+    if (!first) {
         let date = new Date();
 
         let val = date.getTime() - date.getTimezoneOffset() * 60 * 1000;//Get time with TimezoneOffset
