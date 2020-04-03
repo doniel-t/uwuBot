@@ -7,13 +7,32 @@ const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
 
 const version = fh.get('../Files/version.json');
-const Settings = fh.getSettings();
+var Settings = fh.getSettings();
 var BotID;
 
 bot.on('ready', () => { //At Startup
     bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
+
+    let StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
+
+    if (!StandardChannel) {
+
+        for (let ch of bot.channels) {
+
+            if (ch[1].type == 'text') {
+
+                fh.write('../Files/local/StandardChannel.json', ch[1].id);
+                StandardChannel = bot.channels.get(ch[1].id);
+                break;
+            }
+        }
+        StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
+    }
+    StandardChannel.send('I am now ready to use: Version ' + version.version);
+
     commands.league.checkForLOLGames(bot);
     commands.twitch.checkForStreams(bot);
+    commands.Auto.goodbadBot(bot,true);
     BotID = '<@!' + bot.user.id + '>';
 });
 
@@ -26,6 +45,11 @@ bot.on('message', (message) => { //When Message sent
     if (contentArgs[0].charAt(0) == '!') {
 
         let command = contentArgs[0].substring(1); //Get commandName
+
+        if (command.length == 0) {
+            message.channel.send('No Command entered');
+            return;
+        }
 
         if (!commands.play.playKey(message, bot)) { //Checks if command is shortcut for music and plays it
 
@@ -48,6 +72,12 @@ bot.on('message', (message) => { //When Message sent
 
     if (contentArgs[0].startsWith('uwuadmin')) { //AdminCommands
         try {
+
+            if (contentArgs[1] == undefined) {
+                message.channel.send('No Command entered');
+                return;
+            }
+
             if (Admin.isAdmin(message)) {
                 executeFunctionByName(contentArgs[1], Admin, message, bot);
             } else {
@@ -64,7 +94,7 @@ bot.on('message', (message) => { //When Message sent
         commands.chat.chat(message);
     }
 
-    if (Settings.emojiDetection) { //Emoji detection in plain Text
+    if (Settings['emojiDetection']) { //Emoji detection in plain Text
         executeFunctionByName("emoji.emojiDetection", commands, message, bot);
     }
 });
