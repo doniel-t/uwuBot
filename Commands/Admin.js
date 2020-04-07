@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const { spawn } = require('child_process');
 const fh = require('./FileHandler');
-const version = require('../Files/version.json');
+const { version } = require('../package.json');
 const Logger = require('./Logger.js');
 
 module.exports = {
@@ -72,7 +72,7 @@ module.exports = {
     },
 
     version: function (message) { //returns current version
-        message.channel.send(version.version);
+        message.channel.send(version);
     },
 
     setLeagueChannel: function (message) {

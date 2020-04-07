@@ -1,3 +1,6 @@
+3.7.4: 08.04.2020
+    -Removed version.json (Version now tracked in package.json)
+
 3.7.3: 07.04.2020
     -Updated discord.js to 11.6.4
     -Updated ffmpeg-static to 4.1.0
