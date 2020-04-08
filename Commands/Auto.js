@@ -3,14 +3,8 @@ const fh = require('./FileHandler');
 module.exports = {
     goodbadBot: function (bot) {
         gbBot(bot);
-    },
-
-    chatCalled: function () {
-        called = true;
     }
 }
-
-var called = false;
 
 function gbBot(bot, first) { //Evalutes the day
 
@@ -38,7 +32,7 @@ function gbBot(bot, first) { //Evalutes the day
 
     setTimeout(function () {
 
-        if (!called) {
+        if (!counter.called && counter.good == 0 && counter.bad == 0) {
             Standardchannel.send('Nobody talked to me today 😞');
         } else {
             let tmp = 'Good: ' + counter.good + ' Bad: ' + counter.bad + ' \n';
@@ -52,9 +46,9 @@ function gbBot(bot, first) { //Evalutes the day
 
         counter.good = 0; //Reset values
         counter.bad = 0;
+        counter.called = false;
         fh.write('counter.json', counter);
-        called = false;
-
+        
         gbBot(bot, false);
     }, offset)
 }

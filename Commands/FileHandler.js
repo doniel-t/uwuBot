@@ -74,7 +74,7 @@ function create(Path) {
     switch (Filename) {
 
         case 'counter.json':
-            File = { "good": 0, "bad": 0 };
+            File = { "good": 0, "bad": 0, "called": false };
             break;
 
         case 'botToken.json':
