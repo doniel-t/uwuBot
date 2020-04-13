@@ -1,5 +1,4 @@
-const ytdldc = require('ytdl-core-discord');
-const { getBasicInfo } = require('ytdl-core');
+const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
@@ -38,7 +37,7 @@ var Musicconnection;
 var MusicQueue = new Set();
 var inChannel = false;
 
-async function playSong(first,Channel) { //Plays a Song
+async function playSong(first, Channel) { //Plays a Song
 
     let Song = getNextSong();
     if (!first) Channel.send("Now playing " + Song);
@@ -47,7 +46,7 @@ async function playSong(first,Channel) { //Plays a Song
         Musicdispatcher = dispatcher;
         Musicdispatcher.on('end', () => {
             if (MusicQueue.size > 0) {
-                playSong(false,Channel);
+                playSong(false, Channel);
             } else {
                 Channel.send('End of Queue');
                 stop();
@@ -56,13 +55,13 @@ async function playSong(first,Channel) { //Plays a Song
     })
 }
 
-function join(voiceID,Channel) { //Joins VoiceChannel of Caller
+function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
     dcbot.channels.get(voiceID).join().then(connection => {
 
         Musicconnection = connection;
         inChannel = true;
-        playSong(true,Channel);
+        playSong(true, Channel);
     });
 }
 
@@ -74,12 +73,12 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         var Link = message.content.substring(message.content.indexOf(' ') + 1); //Remove command
 
-        getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
+        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
             MusicQueue.add(Link);
 
             if (!inChannel) {
-                join(message.author.lastMessage.member.voiceChannelID,message.channel);
+                join(message.author.lastMessage.member.voiceChannelID, message.channel);
             } else {
                 message.channel.send("Added Song to Queue: " + MusicQueue.size);
             }
@@ -136,11 +135,11 @@ function next() {       //Ends current Song
 
 async function playyt(url) {    //Plays the URL
     try {
-        var YTStream = await ytdldc(url);
+        var stream = ytdl(url, { filter: 'audioonly' });
     } catch (error) {
         Logger.log(error);
     }
-    return Musicconnection.playOpusStream(YTStream);
+    return Musicconnection.playStream(stream, { seek: 0, volume: 1 });
 }
 
 function getNextSong() { //Returns next Song on MusicQueue and deletes it from Queue

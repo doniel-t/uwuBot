@@ -1,6 +1,6 @@
 {
   "name": "discordbot",
-  "version": "1.0.0",
+  "version": "3.7.4",
   "main": "botMain.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,20 +12,17 @@
     "@vitalets/google-translate-api": "^3.0.0",
     "child_process": "^1.0.2",
     "cleverbot-free": "^1.0.3",
-    "discord.js": "^11.6.3",
+    "discord.js": "11.6.4",
     "ffmpeg-binaries": "3.2.2-3",
-    "ffmpeg-static": "^4.0.1",
+    "ffmpeg-static": "^4.1.0",
     "fs": "0.0.1-security",
     "leagueapiwrapper": "^1.1.0",
     "minimist": "^1.2.5",
-    "nhentai-api": "^2.0.4",
-    "nhentai-api-js": "^1.1.2",
     "node-osu": "^2.2.0",
     "require-dir": "^1.2.0",
     "snoowrap": "^1.21.0",
     "ws": "^7.2.3",
     "ytdl-core": "^2.0.1",
-    "ytdl-core-discord": "github:amishshah/ytdl-core-discord",
     "ytpl": "^0.1.20"
   },
   "devDependencies": {},
@@ -37,5 +34,5 @@
     "url": "https://github.com/danieltheil/uwuBot/issues"
   },
   "homepage": "https://github.com/danieltheil/uwuBot#readme",
-  "description": "An osuAPIKey (save in ./Dependencies/osuAPIKey.json)\r An DiscordBotToken (save in ./Dependencies/botToken.json)"
+  "description": "Discord Bot"
 }

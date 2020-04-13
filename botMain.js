@@ -6,12 +6,12 @@ const Admin = require('./Commands/Admin.js');
 const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
 
-const version = fh.get('../Files/version.json');
+const { version } = require('./package.json');
 var Settings = fh.getSettings();
 var BotID;
 
 bot.on('ready', () => { //At Startup
-    bot.user.setPresence({ game: { name: 'on ' + version.version }, status: 'online' });
+    bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' });
 
     let StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
 
@@ -28,11 +28,11 @@ bot.on('ready', () => { //At Startup
         }
         StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
     }
-    StandardChannel.send('I am now ready to use: Version ' + version.version);
+    StandardChannel.send('I am now ready to use: Version ' + version);
 
     commands.league.checkForLOLGames(bot);
     commands.twitch.checkForStreams(bot);
-    commands.Auto.goodbadBot(bot,true);
+    commands.Auto.goodbadBot(bot, true);
     BotID = '<@!' + bot.user.id + '>';
 });
 

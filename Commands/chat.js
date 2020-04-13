@@ -1,14 +1,12 @@
 const cleverbot = require("cleverbot-free");
 const fh = require('./FileHandler');
-const { chatCalled } = require('./Auto');
-var called = false;
 
 module.exports = {
     chat: function (message) {
 
         var counter = fh.get('../Files/local/counter.json');
 
-        chatCalled();
+        counter.called = true;
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
         let msg = message.content.substring(contentArgs[0].length + 1);
