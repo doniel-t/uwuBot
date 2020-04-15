@@ -134,11 +134,13 @@ function next() {       //Ends current Song
 }
 
 async function playyt(url) {    //Plays the URL
-    try {
-        var stream = ytdl(url, { filter: 'audioonly' });
-    } catch (error) {
-        Logger.log(error);
-    }
+
+    var stream = ytdl(url, { filter: 'audioonly' });
+
+    stream.on('error', err => {
+        Logger.log(err);
+    });
+
     return Musicconnection.playStream(stream, { seek: 0, volume: 1 });
 }
 

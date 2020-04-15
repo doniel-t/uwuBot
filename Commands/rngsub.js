@@ -4,7 +4,7 @@ module.exports = {
 
     rngsub: function (message) {
         
-        const ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 

@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 module.exports = {
     osuplays: function (message) { //Gets Top 5 PP Plays!
 
-        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         
         name = getosuName(message);
         

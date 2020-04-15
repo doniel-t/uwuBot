@@ -1,3 +1,9 @@
+3.7.5: 15.04.2020
+    -Updated ytdl-core to 2.1.0
+    -Updated ffmpeg-static to 4.1.1
+    -Added error event to Music
+    -Fixed some WebSocket-Call errors
+
 3.7.4: 08.04.2020
     -Removed version.json (Version now tracked in package.json)
     -Changed CalledTracker to save value to counter.json
