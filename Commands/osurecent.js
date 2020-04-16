@@ -5,7 +5,7 @@ module.exports = {
 
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
-        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         name = getosuName(message);
 

@@ -7,8 +7,8 @@ module.exports = {
 
     league: function (message) {
 
-        var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-        var name = getleagueName(message);
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let name = getleagueName(message);
 
         ws.on('error', function error() {
             message.channel.send('Websocket-Server is unreachable');
@@ -86,10 +86,10 @@ function getleagueName(message) { //Gives back a NameString
 
 function autoCheck(bot) {
 
-    var ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server    
-    var leaguechannel = bot.channels.get(fh.get('../Files/local/LeagueChannel.json'));
-    var StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
-    var Names = fh.get('../Files/local/names.json');
+    let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server    
+    let leaguechannel = bot.channels.get(fh.get('../Files/local/LeagueChannel.json'));
+    let StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
+    let Names = fh.get('../Files/local/names.json');
 
     ws.on('error', function error() {
         if (leaguechannel)
@@ -110,7 +110,7 @@ function autoCheck(bot) {
         for (let nameX in Names) {
 
             let name = Names[nameX];
-            var bool = true;
+            let bool = true;
 
             try {
                 bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
