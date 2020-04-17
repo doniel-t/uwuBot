@@ -1,3 +1,7 @@
+/**
+ * @usage !uwufy <message>
+ * @does uwufies your message
+ */
 module.exports = {
     uwufy: function (message) { //uwu a Message
         message.channel.send(

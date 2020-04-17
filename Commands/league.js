@@ -3,6 +3,10 @@ const fh = require('./FileHandler');
 const WebSocket = require('ws');
 const RunningGames = [];
 
+/**
+ * @usage !league <optional: leagueName>
+ * @does returns LeagueGame from leagueName or savedName in name.json
+ */
 module.exports = {
 
     league: function (message) {

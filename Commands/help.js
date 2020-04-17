@@ -1,8 +1,14 @@
 const Logger = require("./Logger.js");
 const fh = require('./FileHandler');
+const annotations = require('annotations');
+const requireDir = require('require-dir')
 
+/**
+ * @usage !help <optional: command>
+ * @does gives you a list of commands to use
+ */
 module.exports = {
-    help: function(message) {
+    help: function (message) {
         switch (message.content.substring(5)) {
             case 'music':
                 musicHelp(message);
@@ -20,21 +26,40 @@ module.exports = {
     }
 }
 
-function normalHelp(message) { //prints all Commands in help.json
+function normalHelp(message) {
+
     try {
-        var helpFile = fh.get('../Files/helpFiles/help.json'); //Get File
         var helpMessage = '';
 
-        for (var com in helpFile) {
+        for (let command in requireDir('.')) {
 
-            var comm = helpFile[com];
-            helpMessage = helpMessage.concat("Command:   ").concat(com)
-                .concat('\nUsage:           ').concat(comm.usage)
-                .concat('\nDoes:             ').concat(comm.does);
+            let res = annotations.getSync('./Commands/' + command + '.js');
 
-            if (comm.hasOwnHelp) {
-                helpMessage = helpMessage.concat('\nMore:            !help ' + com.toLocaleLowerCase() + ' for more info')
+            if (!res.module) {
+                Logger.log(err + '\n' + command);
+                message.channel.send("Error in help.js, check Log for Details");
             }
+
+            if (res.module.usage && res.module.does) {
+
+                helpMessage = helpMessage.concat("Command:   ").concat(command)
+                    .concat('\nUsage:           ').concat(res.module.usage)
+                    .concat('\nDoes:             ').concat(res.module.does);
+
+                if (res.module.hasOwnHelp) {
+                    helpMessage = helpMessage.concat('\nMore:            !help ' + command.toLocaleLowerCase() + ' for more info')
+                }
+
+                if (res.module.Shortcut) {
+                    helpMessage = helpMessage.concat('\nShortcut:       !' + res.module.Shortcut)
+                }
+
+            } else {
+                helpMessage = helpMessage.concat("Command:   ").concat(command)
+                    .concat('\nUsage:           ').concat('N/A')
+                    .concat('\nDoes:             ').concat('N/A');
+            }
+
             helpMessage = helpMessage.concat("\n-----------------------------------\n");
 
             if (helpMessage.length > 1500) {
@@ -42,12 +67,13 @@ function normalHelp(message) { //prints all Commands in help.json
                 helpMessage = '';
             }
         }
+
         if (helpMessage.length > 0) {
             message.channel.send(helpMessage);
         }
+
     } catch (error) {
-        Logger.log(error);
-        message.channel.send("Error in help.json");
+        Logger.log(error)
     }
 }
 

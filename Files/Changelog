@@ -1,3 +1,11 @@
+3.7.6: 17.04.2020
+    -Added Comments to various Functions
+    -Updated Admin.update
+    -Updated Admin.restart
+    -Refractored help.js
+    -Added annotations-Module
+    -Added Annotations to every Command
+
 3.7.5: 15.04.2020
     -Updated ytdl-core to 2.1.0
     -Updated ffmpeg-static to 4.1.1

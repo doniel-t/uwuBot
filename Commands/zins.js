@@ -1,3 +1,7 @@
+/**
+ * @usage !zins <startMoney> <number_of_months> <percentage>
+ * @does calculates the end money
+ */
 module.exports = {
     zins: function (message) {
 

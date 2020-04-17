@@ -6,6 +6,10 @@ var inputWord = "";
 var hiddenMessage = "";
 var hp = 7; //Amount of failed Tries
 
+/**
+ * @usage !hangman <optional: stop>
+ * @does plays a Game of Hangman with the word from users PM or stops it
+ */
 module.exports = { //!hangman starts the game
     hangman: function (message, bot) {
 

@@ -1,6 +1,10 @@
 const cleverbot = require("cleverbot-free");
 const fh = require('./FileHandler');
 
+/**
+ * @usage !chat <Message>
+ * @does answers your Message
+ */
 module.exports = {
     chat: function (message) {
 

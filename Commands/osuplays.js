@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
 const WebSocket = require('ws');
 
+/**
+ * @usage !osuplays <optional: osuName>
+ * @does returns 5 best osu plays from osuName or savedName in name.json
+ */
 module.exports = {
     osuplays: function (message) { //Gets Top 5 PP Plays!
 

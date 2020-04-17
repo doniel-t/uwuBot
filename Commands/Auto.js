@@ -1,5 +1,9 @@
 const fh = require('./FileHandler');
 
+/**
+ * @usage N/A
+ * @does runs automated Functions
+ */
 module.exports = {
     goodbadBot: function (bot) {
         gbBot(bot);

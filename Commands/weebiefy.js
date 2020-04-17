@@ -1,3 +1,8 @@
+/**
+ * @usage !weebiefy <messsage>
+ * @does weebifies your message
+ * @Shortcut w
+ */
 module.exports = {
     weebiefy: function(message) {
         let returnString = "";

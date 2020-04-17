@@ -2,6 +2,10 @@ const redditAPI = require('./rngsub.js');
 const fh = require('./FileHandler');
 const talkedRecently = new Set();
 
+/**
+ * @usage !neko
+ * @does gives you a random Post from r/neko
+ */
 module.exports = {
     neko: function (message) {
 

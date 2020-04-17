@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
 const WebSocket = require('ws');
 
+/**
+ * @usage !osurecent <optional: osuName>
+ * @does returns latest osu play (passed or not passed) from osuName or savedName in name.json
+ */
 module.exports = {
 
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)

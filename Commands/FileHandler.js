@@ -1,7 +1,16 @@
 const fs = require('fs');
 const Logger = require('./Logger');
 
+/**
+ * @usage N/A
+ * @does handels all File-related Actions
+ */
 module.exports = {
+
+    /**
+     * @summary Failsafe require(Path)
+     * @param {string} Path eg '../Files/local/FILENAME'
+     */
     get: function (Path) {
 
         if (Path == '../Files/local/settings.json') {
@@ -16,12 +25,20 @@ module.exports = {
         }
     },
 
+    /**
+     * @summary Failsafe fs.writeFileSync(Path,Object)
+     * @param {string} Path Automatically goes to Files/local/FILENAME
+     */
     write: function (Path, Object) {
         let splitted = Path.split('/');
         let Filename = splitted[splitted.length - 1];
         return writeFile('Files/local/' + Filename, Object);
     },
 
+    /**
+     * @summary Improved require('../Files/local/settings.json'), should always be used
+     * @returns {Object} Returns require('../Files/local/settings.json')
+     */
     getSettings: function () {
         var set;
         try {

@@ -1,5 +1,9 @@
 const WebSocket = require('ws');
 
+/**
+ * @usage !rngsub <optional:subreddit>
+ * @does gives you a random Post (of the subreddit)
+ */
 module.exports = {
 
     rngsub: function (message) {

@@ -6,6 +6,11 @@ const games = [
     'osu'
 ]
 
+/**
+ * @usage !name
+ * @does Saves usernames for other Commands
+ * @hasOwnHelp
+ */
 module.exports = {
     name: function (message) {
         localNames = fh.get('../Files/local/' + localFile);

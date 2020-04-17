@@ -3,6 +3,10 @@ const fh = require('./FileHandler');
 var Streamers = fh.get('../Files/local/Streamers.json');
 var OnlineStreamers = new Set();
 
+/**
+ * @usage !twitch <optional: add> <NAME>
+ * @does checks if Streamer is live or adds him to AutoCheck list
+ */
 module.exports = {
     twitch: function (message) {
 

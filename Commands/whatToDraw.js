@@ -5,6 +5,11 @@ const localFile = 'whatToDraw.json';
 var localList; // represents whatToDraw.json
 var List; // Combined List of localList and characters
 
+/**
+ * @usage !whatToDraw
+ * @does returns a random Anime Character and its MAL link
+ * @hasOwnHelp
+ */
 module.exports = {
     whatToDraw: function (message) {
 
