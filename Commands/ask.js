@@ -1,3 +1,8 @@
+/**
+ * @usage !ask <question>
+ * @does will executed given Command
+ * @Shortcut a
+ */
 module.exports = {
     ask: function(message) {
         var Answers = [

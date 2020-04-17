@@ -1,3 +1,7 @@
+/**
+ * @usage !notify <Your Message (Allows spaces)> , <time in minutes> : <time in seconds>
+ * @does notifies you on your set time (!notify Pizza is ready,10:00)
+ */
 module.exports = {
     notify: function(message) {
         try {

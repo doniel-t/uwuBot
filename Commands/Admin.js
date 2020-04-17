@@ -4,9 +4,18 @@ const fh = require('./FileHandler');
 const { version } = require('../package.json');
 const Logger = require('./Logger.js');
 
+/**
+ * @usage uwuadmin <command>
+ * @does will execute given Command
+ * @hasOwnHelp
+ */
 module.exports = {
 
-    getLogFile: function (message) { //Bot will give you the current LogFile
+    /**
+     * @summary Bot will give you the current LogFile
+     * @returns LogFile to Discord-Chat 
+     */
+    getLogFile: function (message) {
 
         var logFile;
         let array = fh.readdirSync('.');
@@ -27,7 +36,11 @@ module.exports = {
 
     },
 
-    isAdmin: function (message) { //Checks if User that called an AdminCommand is an Admin, is useless if called in Discord
+    /**
+     * @summary Checks if User that called an AdminCommand is an Admin, is useless if called in Discord
+     * @returns boolean
+     */
+    isAdmin: function (message) {
         if (Admins.includes(message.author.id)) {
             return true;
         } else {
@@ -36,23 +49,32 @@ module.exports = {
         }
     },
 
-    update: function (message) { //Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
-        message.channel.send("Updating now");
+    /**
+     * @summary Updates the Bot to the newest version on github, will restart the Bot so LogFile is lost
+     */
+    update: function (message, bot) {
+        message.channel.send("Updating now").then(_ => {
 
-        let pro = spawn('start', ['cmd.exe', '/c', '.\\Files\\Updater.bat'], { shell: true });
-
-        pro.on('exit', m => {
-            process.exit(0);
-        })
-
+            spawn('start', ['cmd.exe', '/c', '.\\Files\\Updater.bat'], { shell: true })
+                .on('exit', _ => {
+                    process.exit(0);
+                })
+        });
     },
 
-    stop: function (message) { //Stops the Bot if called twice within 10 Seconds
+    /**
+     * @summary Stops the Bot if called twice within 10 Seconds
+     */
+    stop: function (message, bot) {
 
         if (stopvar) {
 
-            message.channel.send("Stoping now");
-            process.exit(0);
+            message.channel.send("Stopping now").then(_ => {
+                bot.user.setPresence({ game: { name: 'on ' + version }, status: 'offline' }).then(_ => {
+                    process.exit(0);
+                })
+            });
+
         } else {
 
             message.channel.send("If you really want to stop the Bot call this function again within 10 sec");
@@ -61,36 +83,55 @@ module.exports = {
         }
     },
 
-    restart: function () { //Restarts the Bot, will delete the LogFile until now so be careful
-
-        let pro2 = spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true });
-
-        pro2.on('exit', m => {
-            process.exit(0);
+    /**
+     * @summary Restarts the Bot, will delete the LogFile until now so be careful
+     */
+    restart: function (message) {
+        message.channel.send('Restarting now').then(_ => {
+            
+            ('start', ['cmd.exe', '/c', 'run.bat'], { shell: true })
+                .on('exit', m => {
+                    process.exit(0);
+                })
         })
-
     },
 
-    version: function (message) { //returns current version
+    /**
+     * @summary returns current version
+     */
+    version: function (message) {
         message.channel.send(version);
     },
 
+    /**
+    * @summary sets to LeagueChannel to the current Channel
+    */
     setLeagueChannel: function (message) {
         fh.write('LeagueChannel.json', message.channel.id);
         message.channel.send('This is now the Standard LoL Channel');
     },
 
+    /**
+    * @summary sets to TwitchChannel to the current Channel
+    */
     setTwitchChannel: function (message) {
         fh.write('TwitchChannel.json', message.channel.id);
         message.channel.send('This is now the Standard Twitch Channel');
     },
 
+    /**
+    * @summary sets to StandardChannel to the current Channel
+    */
     setStandardChannel: function (message) {
         fh.write('StandardChannel.json', message.channel.id);
         message.channel.send('This is now the Standard Channel for automated Messages');
     },
 
-    settings: function (message, bot) { //SettingsHandler
+    /**
+     * @summary SettingsHandler
+     * @returns Settings-Embed to Discord-Chat
+     */
+    settings: function (message, bot) {
         var Settings = fh.getSettings(); //Get Settings
         var etn = {};
         var msg;

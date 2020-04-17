@@ -1,3 +1,8 @@
+/**
+ * @usage !emoji <EmojiName / all>
+ * @does sends Emoji with given name
+ * @Shortcut e
+ */
 module.exports = {
     emoji: function (message, bot) {
 

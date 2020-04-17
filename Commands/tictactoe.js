@@ -1,3 +1,7 @@
+/**
+ * @usage !tictactoe <optional: stop>
+ * @does play a Game of TicTacToe with a friend or stop it
+ */
 module.exports = {
     tictactoe: function(message, bot) {
         tictactoe(message, bot);

@@ -1,6 +1,11 @@
 const Logger = require("./Logger.js");
 const translate = require('@vitalets/google-translate-api');
 
+/**
+ * @usage !jap <sentence>
+ * @does translates sentence to japanese, or english if it was japanese
+ * @Shortcut j
+ */
 module.exports = {
     jap: function(message) {
 

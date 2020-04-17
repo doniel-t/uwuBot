@@ -3,7 +3,11 @@ const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
 //This file is not reachable through Commands-only, method must be called through corresponded .js
-
+/**
+ * @usage N/A
+ * @does Can play YT-Videos/YT-Playlists
+ * @hasOwnHelp
+ */
 module.exports = {
 
     join: function (message, bot) { //Joins VoiceChannel of Caller

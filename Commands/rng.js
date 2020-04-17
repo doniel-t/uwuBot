@@ -1,3 +1,7 @@
+/**
+ * @usage !rng <min> <max>
+ * @does gives you a random number between min and max
+ */
 module.exports = {
     rng: function(message) {
         let contentArgs = message.content.split(" ");

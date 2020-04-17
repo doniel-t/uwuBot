@@ -1,5 +1,9 @@
 const Discord = require('discord.js');
 
+/**
+ * @usage !poll <title> or !poll <title>; <option 1>; <option 2>; ... <option n>
+ * @does gives you a reaction poll or gives you a poll based on your title
+ */
 module.exports = {
     poll: function (message) {
         let contentArgs = message.content.split(";"); //Split Message for simpler Access

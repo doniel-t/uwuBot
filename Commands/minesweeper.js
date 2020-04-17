@@ -7,6 +7,10 @@ var GameSize;
 var GameBombs;
 var isRunning = false;
 
+/**
+ * @usage !minesweeper <FieldSize/stop> <optional:BombNumber>
+ * @does creates a Game of Minesweeper with FieldSize² Squares or stops current game
+ */
 module.exports = {
     minesweeper: function (message, bot) {
         minesweeper(message, bot);

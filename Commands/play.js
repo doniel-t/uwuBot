@@ -2,6 +2,11 @@ const Music = require('./Music.js');
 const fh = require('./FileHandler')
 const Shortcuts = fh.get('../Files/MusicShortcut.json');
 
+/**
+ * @usage !play <Link>
+ * @does plays the given Link
+ * @Shortcut p
+ */
 module.exports = {
     play: function (message, bot) {
 

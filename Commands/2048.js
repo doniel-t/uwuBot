@@ -6,6 +6,10 @@ var nSqaures = 0;
 var maxSquare = 0;
 var collector;
 
+/**
+ * @usage !2048 <optional: stop>
+ * @does starts a Game of 2048 or stops it
+ */
 module.exports = {
     2048: function (message) {
         start(message);
