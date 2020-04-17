@@ -10,7 +10,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.1.0",
     "@vitalets/google-translate-api": "^3.0.0",
-    "annotations": "^1.1.2",
+    "annotations": "git+https://github.com/ackhack/annotations.git",
     "child_process": "^1.0.2",
     "cleverbot-free": "^1.0.3",
     "discord.js": "11.6.4",

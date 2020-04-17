@@ -17,23 +17,17 @@ module.exports = {
      */
     getLogFile: function (message) {
 
-        var logFile;
         let array = fh.readdirSync('.');
 
         for (var i = 0; i < array.length; i++) { //Search for File ending on .log
             if (array[i].endsWith('.log')) {
-                logFile = array[i];
+                message.channel.send("LogFile", { files: [array[i]] }); //Send File
+                return;
             }
         }
 
-        if (logFile == null) {
-            Logger.log("NO LOG FILE");
-            message.channel.send("There is no LogFile");
-        } else {
-            message.channel.send("LogFile", { files: [logFile] }); //Send File
-        }
-
-
+        Logger.log("NO LOG FILE");
+        message.channel.send("There is no LogFile");
     },
 
     /**
@@ -88,7 +82,7 @@ module.exports = {
      */
     restart: function (message) {
         message.channel.send('Restarting now').then(_ => {
-            
+
             ('start', ['cmd.exe', '/c', 'run.bat'], { shell: true })
                 .on('exit', m => {
                     process.exit(0);
@@ -104,7 +98,7 @@ module.exports = {
     },
 
     /**
-    * @summary sets to LeagueChannel to the current Channel
+    * @summary sets the LeagueChannel to the current Channel
     */
     setLeagueChannel: function (message) {
         fh.write('LeagueChannel.json', message.channel.id);
@@ -112,7 +106,7 @@ module.exports = {
     },
 
     /**
-    * @summary sets to TwitchChannel to the current Channel
+    * @summary sets the TwitchChannel to the current Channel
     */
     setTwitchChannel: function (message) {
         fh.write('TwitchChannel.json', message.channel.id);
@@ -120,7 +114,7 @@ module.exports = {
     },
 
     /**
-    * @summary sets to StandardChannel to the current Channel
+    * @summary sets the StandardChannel to the current Channel
     */
     setStandardChannel: function (message) {
         fh.write('StandardChannel.json', message.channel.id);

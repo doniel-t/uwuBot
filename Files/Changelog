@@ -1,6 +1,9 @@
 3.7.7: 17.04.2020
     -Fixed Error in help
     -Added getNextMidnight function in Auto
+    -Changed help to not show nonusable Commands
+    -Added !help admin
+    -Changed Admin.getLogFile
 
 3.7.6: 17.04.2020
     -Added Comments to various Functions

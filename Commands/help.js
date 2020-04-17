@@ -19,6 +19,9 @@ module.exports = {
             case 'name':
                 nameHelp(message);
                 break;
+            case 'admin':
+                adminHelp(message);
+                break;
             default:
                 normalHelp(message);
                 break;
@@ -40,31 +43,34 @@ function normalHelp(message) {
                 message.channel.send("Error in help.js, check Log for Details");
             }
 
-            if (res.module.usage && res.module.does) {
+            if (command.charAt(0) == command.charAt(0).toLowerCase() || command == 'Admin') {
 
-                helpMessage = helpMessage.concat("Command:   ").concat(command)
-                    .concat('\nUsage:           ').concat(res.module.usage)
-                    .concat('\nDoes:             ').concat(res.module.does);
+                if (res.module.usage && res.module.does) {
 
-                if (res.module.hasOwnHelp) {
-                    helpMessage = helpMessage.concat('\nMore:            !help ' + command.toLocaleLowerCase() + ' for more info')
+                    helpMessage = helpMessage.concat("Command:   ").concat(command)
+                        .concat('\nUsage:           ').concat(res.module.usage)
+                        .concat('\nDoes:             ').concat(res.module.does);
+
+                    if (res.module.hasOwnHelp) {
+                        helpMessage = helpMessage.concat('\nMore:            !help ' + command.toLocaleLowerCase() + ' for more info')
+                    }
+
+                    if (res.module.Shortcut) {
+                        helpMessage = helpMessage.concat('\nShortcut:       !' + res.module.Shortcut)
+                    }
+
+                } else {
+                    helpMessage = helpMessage.concat("Command:   ").concat(command)
+                        .concat('\nUsage:           ').concat('N/A')
+                        .concat('\nDoes:             ').concat('N/A');
                 }
 
-                if (res.module.Shortcut) {
-                    helpMessage = helpMessage.concat('\nShortcut:       !' + res.module.Shortcut)
+                helpMessage = helpMessage.concat("\n-----------------------------------\n");
+
+                if (helpMessage.length > 1500) {
+                    message.channel.send(helpMessage);
+                    helpMessage = '';
                 }
-
-            } else {
-                helpMessage = helpMessage.concat("Command:   ").concat(command)
-                    .concat('\nUsage:           ').concat('N/A')
-                    .concat('\nDoes:             ').concat('N/A');
-            }
-
-            helpMessage = helpMessage.concat("\n-----------------------------------\n");
-
-            if (helpMessage.length > 1500) {
-                message.channel.send(helpMessage);
-                helpMessage = '';
             }
         }
 
@@ -164,4 +170,39 @@ function nameHelp(message) {
         Logger.log(error);
         message.channel.send("Error in nameHelp.json");
     }
+}
+
+function adminHelp(message) {
+    
+    try {
+        let ans = annotations.getSync('./Commands/Admin.js');
+        var helpMessage = '';
+
+        for (let ann in ans) {
+
+            if (Object.keys(ans[ann]).length == 0 || ann == 'module') {
+                continue;
+            }
+
+            helpMessage = helpMessage.concat('\nCommand: ' + ann);
+
+            for (let an in ans[ann]) {
+                helpMessage = helpMessage.concat('\n' + an + ': ' + ans[ann][an]);
+            }
+
+            helpMessage = helpMessage.concat("\n-----------------------------------");
+
+            if (helpMessage.length > 1500) {
+                message.channel.send(helpMessage);
+                helpMessage = '';
+            }
+        }
+
+        if (helpMessage.length > 0) {
+            message.channel.send(helpMessage);
+        }
+    } catch (error) {
+        Logger.log(error);
+        message.channel.send("Error in Admin.js");
+    } 
 }
