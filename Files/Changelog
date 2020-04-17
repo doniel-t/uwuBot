@@ -1,3 +1,7 @@
+3.7.7: 17.04.2020
+    -Fixed Error in help
+    -Added getNextMidnight function in Auto
+
 3.7.6: 17.04.2020
     -Added Comments to various Functions
     -Updated Admin.update

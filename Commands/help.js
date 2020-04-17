@@ -36,7 +36,7 @@ function normalHelp(message) {
             let res = annotations.getSync('./Commands/' + command + '.js');
 
             if (!res.module) {
-                Logger.log(err + '\n' + command);
+                Logger.log('Error at' + command);
                 message.channel.send("Error in help.js, check Log for Details");
             }
 
