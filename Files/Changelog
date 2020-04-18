@@ -4,6 +4,7 @@
     -Changed help to not show nonusable Commands
     -Added !help admin
     -Changed Admin.getLogFile
+    -Removed all executeFunctionByName
 
 3.7.6: 17.04.2020
     -Added Comments to various Functions

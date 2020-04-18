@@ -53,15 +53,13 @@ bot.on('message', (message) => { //When Message sent
 
         if (!commands.play.playKey(message, bot)) { //Checks if command is shortcut for music and plays it
 
-            if (command.length == 1) {  //Go to Shortcut for command
-                command = 'Shortcuts.'.concat(command);
-            } else {    //Normal Command
-                command = command.concat('.').concat(command);
-            }
-
             try {//Example !osurecent calls commands.osurecent.osurecent(message,bot)
 
-                executeFunctionByName(command, commands, message, bot); //Calls function
+                if (command.length == 1) {
+                    commands['Shortcuts'][command](message, bot);
+                } else {
+                    commands[command][command](message, bot);
+                }
 
             } catch (error) {
                 Logger.log(error);
@@ -79,7 +77,7 @@ bot.on('message', (message) => { //When Message sent
             }
 
             if (Admin.isAdmin(message)) {
-                executeFunctionByName(contentArgs[1], Admin, message, bot);
+                Admin[contentArgs[1]](message,bot);
             } else {
                 message.channel.send('You are not an Admin');
             }
@@ -95,7 +93,7 @@ bot.on('message', (message) => { //When Message sent
     }
 
     if (Settings['emojiDetection']) { //Emoji detection in plain Text
-        executeFunctionByName("emoji.emojiDetection", commands, message, bot);
+        commands['emoji']['emojiDetection'](message,bot);
     }
 });
 
@@ -103,13 +101,3 @@ bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
     Logger.log('botToken.json is invalid: ' + err);
     return;
 }); //Starts Bot
-
-function executeFunctionByName(functionName, context /*, args */) {    //Executes functionName at context with args
-    var args = Array.prototype.slice.call(arguments, 2);
-    var namespaces = functionName.split(".");
-    var func = namespaces.pop();
-    for (var i = 0; i < namespaces.length; i++) {
-        context = context[namespaces[i]];
-    }
-    return context[func].apply(context, args);
-}
