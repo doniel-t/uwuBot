@@ -279,66 +279,28 @@ function updateField(isFinished) {    //Updates the Message containing the GameF
 }
 
 function getEmoteNumber(number) { //Returns an Emoji
-    switch (number) {
-        case 0:
-            return '0️⃣';
-        case 1:
-            return '1️⃣';
-        case 2:
-            return '2️⃣';
-        case 3:
-            return '3️⃣';
-        case 4:
-            return '4️⃣';
-        case 5:
-            return '5️⃣';
-        case 6:
-            return '6️⃣';
-        case 7:
-            return '7️⃣';
-        case 8:
-            return '8️⃣';
-        case 9:
-            return '9️⃣';
-        case 10:
-            return '0️⃣';
+    let emojis = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
 
-        default:
-            return '👍';
+    if (emojis[number]) {
+        return emojis[number];
+    } else {
+        return '⬜';
     }
 }
 
 function getEmoteLetter(letter) { //Returns an Emoji
-    switch (letter) {
-        case 0:
-            return '🇦';
-        case 1:
-            return '🇧';
-        case 2:
-            return '🇨';
-        case 3:
-            return '🇩';
-        case 4:
-            return '🇪';
-        case 5:
-            return '🇫';
-        case 6:
-            return '🇬';
-        case 7:
-            return '🇭';
-        case 8:
-            return '🇮';
-        case 9:
-            return '🇯';
-        default:
-            return '👍';
+    let emojis = ['🇦','🇧','🇨','🇩','🇪','🇫','🇬','🇭','🇮','🇯'];
+
+    if (emojis[letter]) {
+        return emojis[letter];
+    } else {
+        return '⬜';
     }
 }
 
 function stop() {   //Stops the Game
     updateField(true);
     dcbot.removeListener('message', listener);
-    dcbot = undefined;
     ogmessage = undefined;
     GameField = undefined;
     gamemessage = undefined;

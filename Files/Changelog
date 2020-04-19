@@ -1,3 +1,7 @@
+3.7.8: 18.04.2020
+    -Changed some unefficient Code
+    -HelpMessages are now EmbedMessages
+
 3.7.7: 17.04.2020
     -Fixed Error in help
     -Added getNextMidnight function in Auto

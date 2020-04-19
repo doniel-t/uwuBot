@@ -41,29 +41,12 @@ module.exports = {
     }
 }
 
-function getEmote(number) { //Returns an Emoji
-    switch (number) {
-        case 0:
-            return '0️⃣';
-        case 1:
-            return '1️⃣';
-        case 2:
-            return '2️⃣';
-        case 3:
-            return '3️⃣';
-        case 4:
-            return '4️⃣';
-        case 5:
-            return '5️⃣';
-        case 6:
-            return '6️⃣';
-        case 7:
-            return '7️⃣';
-        case 8:
-            return '8️⃣';
-        case 9:
-            return '9️⃣';
-        default:
-            return '👍';
+function getEmoteNumber(number) { //Returns an Emoji
+    let emojis = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+
+    if (emojis[number]) {
+        return emojis[number];
+    } else {
+        return '⬜';
     }
 }
