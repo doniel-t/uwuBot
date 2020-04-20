@@ -4,7 +4,7 @@ const Shortcuts = fh.get('../Files/MusicShortcut.json');
 
 /**
  * @usage !play <Link>
- * @does plays the given Link
+ * @does plays the given Link (YT-Video,YT-Playlist)
  * @Shortcut p
  */
 module.exports = {

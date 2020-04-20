@@ -35,7 +35,7 @@ function normalHelp(message) {
     try {
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('General Settings 0');
+        let emb = new Discord.RichEmbed().setTitle('General Settings');
 
         for (let command in requireDir('.')) {
 
@@ -53,7 +53,7 @@ function normalHelp(message) {
                 for (let annotation in res.module) {
                     tmpstring = tmpstring.concat(annotation.charAt(0).toUpperCase() + annotation.slice(1) + ': ' + res.module[annotation] + '\n');
                 }
-                emb.addField('Command: ' + command,tmpstring);
+                emb.addField('Command: ' + command, tmpstring);
 
                 helpcounter++;
 
@@ -80,7 +80,7 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
         let music = fh.get('../Files/helpFiles/musicHelp.json');
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('Music Settings 0');
+        let emb = new Discord.RichEmbed().setTitle('Music Settings');
 
         for (let com in music) {
 
@@ -97,11 +97,18 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
             }
         }
 
-        let tmpString = '';
-        for (let com in musicShortcut) { //ADD LENGTH DETECTION
-            tmpString = tmpString.concat(com + '\n');
+        let shortcuts = '';
+        for (let com in musicShortcut) {
+
+            if (shortcuts.concat(com + '\n') >= 256) {
+                emb.addField('Shortcuts', shortcuts);
+                shortcuts = com + '\n';
+            } else {
+                shortcuts = shortcuts.concat(com + '\n');
+            }
+
         }
-        emb.addField('Shortcuts', tmpString);
+        emb.addField('Shortcuts', shortcuts);
         message.channel.send(emb);
 
     } catch (error) {
@@ -115,7 +122,7 @@ function whatToDrawHelp(message) {
         let whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('whatToDraw Settings 0');
+        let emb = new Discord.RichEmbed().setTitle('whatToDraw Settings');
 
         for (let com in whatToDraw) {
 
@@ -146,7 +153,7 @@ function nameHelp(message) {
         let names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('Name Settings 0');
+        let emb = new Discord.RichEmbed().setTitle('Name Settings');
 
         for (let com in names) {
 
@@ -178,7 +185,7 @@ function adminHelp(message) {
         let functions = annotations.getSync('./Commands/Admin.js');
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('Admin Settings 0');
+        let emb = new Discord.RichEmbed().setTitle('Admin Settings');
 
         for (let func in functions) {
 

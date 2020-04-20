@@ -279,23 +279,15 @@ function updateField(isFinished) {    //Updates the Message containing the GameF
 }
 
 function getEmoteNumber(number) { //Returns an Emoji
-    let emojis = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+    let emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
-    if (emojis[number]) {
-        return emojis[number];
-    } else {
-        return '⬜';
-    }
+    return emojis[number] || '⬜';
 }
 
 function getEmoteLetter(letter) { //Returns an Emoji
-    let emojis = ['🇦','🇧','🇨','🇩','🇪','🇫','🇬','🇭','🇮','🇯'];
+    let emojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯'];
 
-    if (emojis[letter]) {
-        return emojis[letter];
-    } else {
-        return '⬜';
-    }
+    return emojis[letter] || '⬜';
 }
 
 function stop() {   //Stops the Game
