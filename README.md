@@ -8,6 +8,11 @@
 * Fill botToken.json with your Token from Discord
 * Start Bot with run.bat
 
+## VS-Code-Extension
+    ```
+    code --install-extension ./Files/extension.vsix
+    ```
+
 ## TODO
 - [x] TODO im Repo
 - [x] League Support

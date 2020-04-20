@@ -1,6 +1,6 @@
 {
   "name": "discordbot",
-  "version": "3.7.7",
+  "version": "3.7.9",
   "main": "botMain.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

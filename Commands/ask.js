@@ -1,3 +1,5 @@
+const Logger = require('./Logger.js');
+
 /**
  * @usage !ask <question>
  * @does will executed given Command
@@ -25,7 +27,8 @@ module.exports = {
         ];
         try {
             message.channel.send(Answers[Math.floor(Math.random() * Answers.length)]);
-        }catch (ignored) {
+        }catch (err) {
+            Logger.log(err);
             message.channel.send("There was a problem, please try again");
         }
     }

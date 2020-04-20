@@ -1,3 +1,12 @@
+3.7.9: 19.04.2020
+    -Changed some unefficient Code
+    -Fixed Bug in help when there are too many MusicShortcuts
+    -Added VS-Code-Extension uwu-commands 1.0.0
+
+3.7.8: 18.04.2020
+    -Changed some unefficient Code
+    -HelpMessages are now EmbedMessages
+
 3.7.7: 17.04.2020
     -Fixed Error in help
     -Added getNextMidnight function in Auto

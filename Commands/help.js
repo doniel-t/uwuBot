@@ -1,4 +1,5 @@
-const Logger = require("./Logger.js");
+const Discord = require('discord.js');
+const Logger = require("./Logger");
 const fh = require('./FileHandler');
 const annotations = require('annotations');
 const requireDir = require('require-dir')
@@ -9,11 +10,11 @@ const requireDir = require('require-dir')
  */
 module.exports = {
     help: function (message) {
-        switch (message.content.substring(5)) {
+        switch (message.content.substring(5).toLowerCase()) {
             case 'music':
                 musicHelp(message);
                 break;
-            case 'whatToDraw':
+            case 'whattodraw':
                 whatToDrawHelp(message);
                 break;
             case 'name':
@@ -32,7 +33,9 @@ module.exports = {
 function normalHelp(message) {
 
     try {
-        var helpMessage = '';
+        let msgcounter = 0;
+        let helpcounter = 0;
+        let emb = new Discord.RichEmbed().setTitle('General Settings');
 
         for (let command in requireDir('.')) {
 
@@ -45,37 +48,25 @@ function normalHelp(message) {
 
             if (command.charAt(0) == command.charAt(0).toLowerCase() || command == 'Admin') {
 
-                if (res.module.usage && res.module.does) {
+                let tmpstring = '';
 
-                    helpMessage = helpMessage.concat("Command:   ").concat(command)
-                        .concat('\nUsage:           ').concat(res.module.usage)
-                        .concat('\nDoes:             ').concat(res.module.does);
-
-                    if (res.module.hasOwnHelp) {
-                        helpMessage = helpMessage.concat('\nMore:            !help ' + command.toLocaleLowerCase() + ' for more info')
-                    }
-
-                    if (res.module.Shortcut) {
-                        helpMessage = helpMessage.concat('\nShortcut:       !' + res.module.Shortcut)
-                    }
-
-                } else {
-                    helpMessage = helpMessage.concat("Command:   ").concat(command)
-                        .concat('\nUsage:           ').concat('N/A')
-                        .concat('\nDoes:             ').concat('N/A');
+                for (let annotation in res.module) {
+                    tmpstring = tmpstring.concat(annotation.charAt(0).toUpperCase() + annotation.slice(1) + ': ' + res.module[annotation] + '\n');
                 }
+                emb.addField('Command: ' + command, tmpstring);
 
-                helpMessage = helpMessage.concat("\n-----------------------------------\n");
+                helpcounter++;
 
-                if (helpMessage.length > 1500) {
-                    message.channel.send(helpMessage);
-                    helpMessage = '';
+                if (helpcounter == 25) {
+                    message.channel.send(emb);
+                    msgcounter++;
+                    emb = new Discord.RichEmbed().setTitle('General Settings ' + msgcounter);;
                 }
             }
         }
 
-        if (helpMessage.length > 0) {
-            message.channel.send(helpMessage);
+        if (helpcounter > 0) {
+            message.channel.send(emb);
         }
 
     } catch (error) {
@@ -85,35 +76,41 @@ function normalHelp(message) {
 
 function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
     try {
-        var musicShortcut = fh.get('../Files/MusicShortcut.json'); //Get File
-        var music = fh.get('../Files/helpFiles/musicHelp.json');
-        var helpMessage = '';
+        let musicShortcut = fh.get('../Files/MusicShortcut.json'); //Get File
+        let music = fh.get('../Files/helpFiles/musicHelp.json');
+        let msgcounter = 0;
+        let helpcounter = 0;
+        let emb = new Discord.RichEmbed().setTitle('Music Settings');
 
-        for (var com in music) {
+        for (let com in music) {
 
-            var comm = music[com];
-            helpMessage = helpMessage.concat("Command:   ").concat(com)
-                .concat('\nUsage:           ').concat(comm.usage)
-                .concat('\nDoes:             ').concat(comm.does)
-                .concat("\n-----------------------------------\n");
+            let comm = music[com];
 
-            if (helpMessage.length > 1500) {
-                message.channel.send(helpMessage);
-                helpMessage = '';
+            emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+
+            helpcounter++;
+
+            if (helpcounter == 25) {
+                message.channel.send(emb);
+                msgcounter++;
+                emb = new Discord.RichEmbed().setTitle('Music Settings ' + msgcounter);;
             }
         }
 
-        for (var com in musicShortcut) {
-            helpMessage = helpMessage.concat("Shortcut:   ").concat(com).concat("\n-----------------------------------\n");
-            if (helpMessage.length > 1500) {
-                message.channel.send(helpMessage);
-                helpMessage = '';
-            }
-        }
+        let shortcuts = '';
+        for (let com in musicShortcut) {
 
-        if (helpMessage.length > 0) {
-            message.channel.send(helpMessage);
+            if (shortcuts.concat(com + '\n') >= 256) {
+                emb.addField('Shortcuts', shortcuts);
+                shortcuts = com + '\n';
+            } else {
+                shortcuts = shortcuts.concat(com + '\n');
+            }
+
         }
+        emb.addField('Shortcuts', shortcuts);
+        message.channel.send(emb);
+
     } catch (error) {
         Logger.log(error);
         message.channel.send("Error in MusicShortcut.json orr musicHelp.json");
@@ -122,23 +119,28 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
 
 function whatToDrawHelp(message) {
     try {
-        var whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
-        var helpMessage = '';
+        let whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
+        let msgcounter = 0;
+        let helpcounter = 0;
+        let emb = new Discord.RichEmbed().setTitle('whatToDraw Settings');
 
-        for (var com in whatToDraw) {
-            var comm = whatToDraw[com];
-            helpMessage = helpMessage.concat("Command:   ").concat(com)
-                .concat('\nUsage:           ').concat(comm.usage)
-                .concat('\nDoes:             ').concat(comm.does)
-                .concat("\n-----------------------------------\n");
-            if (helpMessage.length > 1500) {
-                message.channel.send(helpMessage);
-                helpMessage = '';
+        for (let com in whatToDraw) {
+
+            let comm = whatToDraw[com];
+
+            emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+
+            helpcounter++;
+
+            if (helpcounter == 25) {
+                message.channel.send(emb);
+                msgcounter++;
+                emb = new Discord.RichEmbed().setTitle('whatToDraw Settings ' + msgcounter);;
             }
         }
 
-        if (helpMessage.length > 0) {
-            message.channel.send(helpMessage);
+        if (helpcounter > 0) {
+            message.channel.send(emb);
         }
     } catch (error) {
         Logger.log(error);
@@ -148,23 +150,28 @@ function whatToDrawHelp(message) {
 
 function nameHelp(message) {
     try {
-        var names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
-        var helpMessage = '';
+        let names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
+        let msgcounter = 0;
+        let helpcounter = 0;
+        let emb = new Discord.RichEmbed().setTitle('Name Settings');
 
-        for (var com in names) {
-            var comm = names[com];
-            helpMessage = helpMessage.concat("Command:   ").concat(com)
-                .concat('\nUsage:           ').concat(comm.usage)
-                .concat('\nDoes:             ').concat(comm.does)
-                .concat("\n-----------------------------------\n");
-            if (helpMessage.length > 1500) {
-                message.channel.send(helpMessage);
-                helpMessage = '';
+        for (let com in names) {
+
+            let comm = names[com];
+
+            emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+
+            helpcounter++;
+
+            if (helpcounter == 25) {
+                message.channel.send(emb);
+                msgcounter++;
+                emb = new Discord.RichEmbed().setTitle('Name Settings ' + msgcounter);;
             }
         }
 
-        if (helpMessage.length > 0) {
-            message.channel.send(helpMessage);
+        if (helpcounter > 0) {
+            message.channel.send(emb);
         }
     } catch (error) {
         Logger.log(error);
@@ -173,36 +180,40 @@ function nameHelp(message) {
 }
 
 function adminHelp(message) {
-    
+
     try {
-        let ans = annotations.getSync('./Commands/Admin.js');
-        var helpMessage = '';
+        let functions = annotations.getSync('./Commands/Admin.js');
+        let msgcounter = 0;
+        let helpcounter = 0;
+        let emb = new Discord.RichEmbed().setTitle('Admin Settings');
 
-        for (let ann in ans) {
+        for (let func in functions) {
 
-            if (Object.keys(ans[ann]).length == 0 || ann == 'module') {
+            if (Object.keys(functions[func]).length == 0 || func == 'module') {
                 continue;
             }
 
-            helpMessage = helpMessage.concat('\nCommand: ' + ann);
+            let tmpstring = '';
 
-            for (let an in ans[ann]) {
-                helpMessage = helpMessage.concat('\n' + an + ': ' + ans[ann][an]);
+            for (let annotation in functions[func]) {
+                tmpstring = tmpstring.concat('\n' + annotation.charAt(0).toUpperCase() + annotation.slice(1) + ': ' + functions[func][annotation]);
             }
 
-            helpMessage = helpMessage.concat("\n-----------------------------------");
+            emb.addField('Command: ' + func, tmpstring);
+            helpcounter++;
 
-            if (helpMessage.length > 1500) {
-                message.channel.send(helpMessage);
-                helpMessage = '';
+            if (helpcounter == 25) {
+                message.channel.send(emb);
+                msgcounter++;
+                emb = new Discord.RichEmbed().setTitle('Admin Settings ' + msgcounter);;
             }
         }
 
-        if (helpMessage.length > 0) {
-            message.channel.send(helpMessage);
+        if (helpcounter > 0) {
+            message.channel.send(emb);
         }
     } catch (error) {
         Logger.log(error);
         message.channel.send("Error in Admin.js");
-    } 
+    }
 }

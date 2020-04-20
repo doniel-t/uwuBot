@@ -45,7 +45,6 @@ function start(message) {
 }
 
 function stop() {   //Stops the Game
-    dcbot = undefined;
     ogmessage = undefined;
     gamemessage = undefined;
     GameField = undefined;
@@ -60,30 +59,10 @@ function setUp() {
     isRunning = true;
 
     GameField = [ //Init GameField
-        [
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            0
-        ]
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
     ]
 }
 
@@ -102,32 +81,9 @@ function updateField() {    //Updates the Message containing the GameField
 }
 
 function getEmoteNumber(number) { //Returns an Emoji
-    switch (number) {
-        case 0:
-            return '0️⃣';
-        case 1:
-            return '1️⃣';
-        case 2:
-            return '2️⃣';
-        case 3:
-            return '3️⃣';
-        case 4:
-            return '4️⃣';
-        case 5:
-            return '5️⃣';
-        case 6:
-            return '6️⃣';
-        case 7:
-            return '7️⃣';
-        case 8:
-            return '8️⃣';
-        case 9:
-            return '9️⃣';
-        case 10:
-            return '🔟';
-        default:
-            return '⬜';
-    }
+    let emojis = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+
+    return emojis[number] || '⬜';
 }
 
 function addNumber() {  //Adds Number after Player moved

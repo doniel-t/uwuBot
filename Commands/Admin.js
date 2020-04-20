@@ -35,12 +35,7 @@ module.exports = {
      * @returns boolean
      */
     isAdmin: function (message) {
-        if (Admins.includes(message.author.id)) {
-            return true;
-        } else {
-            Logger.log(message.author.username + " executed an Admin command");
-            return false;
-        }
+        return Admins.includes(message.author.id);
     },
 
     /**
@@ -126,24 +121,11 @@ module.exports = {
      * @returns Settings-Embed to Discord-Chat
      */
     settings: function (message, bot) {
+        
         var Settings = fh.getSettings(); //Get Settings
+        var Emojis = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟','⬜'];
         var etn = {};
         var msg;
-
-        var Emojis = [
-            '0️⃣',
-            '1️⃣',
-            '2️⃣',
-            '3️⃣',
-            '4️⃣',
-            '5️⃣',
-            '6️⃣',
-            '7️⃣',
-            '8️⃣',
-            '9️⃣',
-            '🔟',
-            '⬜'
-        ]
 
         var writeMessage = function () { //Returns Embed Message
             var emb = new Discord.RichEmbed().setTitle('Settings (Will be removed after 5 minutes)');

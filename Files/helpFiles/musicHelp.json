@@ -8,8 +8,8 @@
         "does": "pauses the song that is currently playing"
     },
     "play": {
-        "usage": "!play <YT-URL> or !p <YT-URL>",
-        "does": "plays a YT-Video in your Channel"
+        "usage": "!play <Link> or !p <Link>",
+        "does": "plays the given Link in your Channel (YT-Video,YT-Playlist)"
     },
     "resume": {
         "usage": "!resume",

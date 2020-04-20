@@ -71,14 +71,15 @@ bot.on('message', (message) => { //When Message sent
     if (contentArgs[0].startsWith('uwuadmin')) { //AdminCommands
         try {
 
-            if (contentArgs[1] == undefined) {
+            if (!contentArgs[1]) {
                 message.channel.send('No Command entered');
                 return;
             }
 
             if (Admin.isAdmin(message)) {
-                Admin[contentArgs[1]](message,bot);
+                Admin[contentArgs[1]](message, bot);
             } else {
+                Logger.log(message.author.username + " executed an Admin command");
                 message.channel.send('You are not an Admin');
             }
 
@@ -93,7 +94,7 @@ bot.on('message', (message) => { //When Message sent
     }
 
     if (Settings['emojiDetection']) { //Emoji detection in plain Text
-        commands['emoji']['emojiDetection'](message,bot);
+        commands.emoji.emojiDetection(message, bot);
     }
 });
 
