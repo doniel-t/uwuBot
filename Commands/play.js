@@ -23,13 +23,9 @@ module.exports = {
 
         message.content = message.content.substring(1); //Remove !
 
-        var notShortcut = false;
+        let notShortcut = false;
 
-        if (Shortcuts[message.content] != undefined) {
-            message.content = Shortcuts[message.content];
-        } else {
-            notShortcut = true;
-        }
+        Shortcuts[message.content] ? message.content = Shortcuts[message.content] : notShortcut = true;
 
         if (!notShortcut) { //Handling for botMain
             Music.play(message, bot); //All Logic is in Music

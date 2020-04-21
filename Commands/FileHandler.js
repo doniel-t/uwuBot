@@ -40,7 +40,7 @@ module.exports = {
      * @returns {Object} Returns require('../Files/local/settings.json')
      */
     getSettings: function () {
-        var set;
+        let set;
         try {
             set = require('../Files/local/settings.json'); //Test if settings.json is valid
 
@@ -60,9 +60,9 @@ module.exports = {
             }
         }
 
-        var initset = require('../Files/initsettings.json');
+        const initset = require('../Files/initsettings.json');
 
-        for (var setting in initset) { //Test for new Settings in initsettings.json
+        for (let setting in initset) { //Test for new Settings in initsettings.json
             if (set[setting] == undefined) {
                 set[setting] = initset[setting];
             }

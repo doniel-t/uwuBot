@@ -16,7 +16,7 @@ module.exports = {
         } else {
 
             let title = contentArgs[0].substring(contentArgs[0].indexOf(' '));  //Get Title
-            var args = [];
+            let args = [];
             let counter = 0;
 
             for (var x of contentArgs) {  //Get Answers excludeding contentArgs[0] becuase its the Title
@@ -26,14 +26,14 @@ module.exports = {
                 }
             }
 
-            const Embed = new Discord.RichEmbed().setTitle(title);  //Build an Embeded Message
+            let Embed = new Discord.RichEmbed().setTitle(title);  //Build an Embeded Message
 
-            for (var p = 0; p < args.length; p++) {
+            for (let p = 0; p < args.length; p++) {
                 Embed.addField(getEmote(p) + ' ' + args[p], '----');
             }
 
             message.channel.send(Embed).then(function (answer) {
-                for (var o = 0; o < args.length; o++) { //Reacts to message with Emojis
+                for (let o = 0; o < args.length; o++) { //Reacts to message with Emojis
                     answer.react(getEmote(o));
                 }
             });
@@ -41,7 +41,7 @@ module.exports = {
     }
 }
 
-function getEmoteNumber(number) { //Returns an Emoji
+function getEmote(number) { //Returns an Emoji
     let emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
     return emojis[number] || '⬜';

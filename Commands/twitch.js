@@ -44,12 +44,7 @@ module.exports = {
                     message.channel.send('An Error occured or Player isn`t ingame');
                     return;
                 }
-
-                if (data.startsWith('Online')) {
-                    message.channel.send('https://www.twitch.tv/' + name + ' is online');
-                } else {
-                    message.channel.send('https://www.twitch.tv/' + name + ' is offline');
-                }
+                message.channel.send('https://www.twitch.tv/' + name + ' is ' + (data.startsWith('Online') ? 'online' : 'offline'));
             });
         });
     },

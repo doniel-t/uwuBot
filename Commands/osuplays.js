@@ -31,7 +31,7 @@ module.exports = {
             scores = result[0];
             AccArray = result[1];
             
-            var emb = new Discord.RichEmbed()
+            let emb = new Discord.RichEmbed()
                 .setTitle(name + '`s Top 5 Plays');
             for (let index = 0; index < 5; index++) {
                 let Link = '[' + [scores[index]._beatmap.title] + '](https://osu.ppy.sh/beatmapsets/' + scores[index]._beatmap.beatmapSetId + '#osu/' + scores[index]._beatmap.id + ')';
@@ -48,10 +48,5 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    if (contentArgs[1] == null) {
-        return require('./name').getName('osu',message.author.username); //Get name from local/names.json
-    }
-    else {
-        return message.content.substring(contentArgs[0].length+1);  //When Name given
-    }
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username);
 }

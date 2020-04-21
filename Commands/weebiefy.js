@@ -4,33 +4,11 @@
  * @Shortcut w
  */
 module.exports = {
-    weebiefy: function(message) {
-        let returnString = "";
-
-        let words = message.content.split(' ');
-        words.splice(0, 1);
-
-        for (let word of words) {
-            let wordSplit = word.match(/.{1,2}/g);
-            word = "";
-
-            for (let part of wordSplit) {
-
-                if (part.includes("l")) {
-                    if (part == "ll") {
-                        part = "uru";
-                    } else {
-                        part = part.replace("l", "uru");
-                    }
-                }
-                word += part;
-            }
-
-            if (!word.endsWith('o')) {
-                word += 'o';
-            }
-            returnString += word + " ";
-        }
-        message.channel.send(returnString);
+    weebiefy: function (message) {
+        message.channel.send(
+            message.content.substring(message.content.indexOf(' ') + 1)
+                .replace(/l{1,2}/g, 'uru')
+                .replace(/(?<!o)( |$)/g, 'o ')
+        );
     }
 }

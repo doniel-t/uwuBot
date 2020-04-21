@@ -51,7 +51,7 @@ module.exports = { //!hangman starts the game
 
 var listener = function (inputLetter) { //Listens to all Messages
 
-    if (ogMessage == undefined) { //Game stopped
+    if (!ogMessage) { //Game stopped
         return;
     }
 

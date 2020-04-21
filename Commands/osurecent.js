@@ -46,7 +46,7 @@ module.exports = {
             let percentagePassed = (ScoreCount / ObjectCount) * 100;
             let parsedMods = result[1];
 
-            var emb = new Discord.RichEmbed()
+            let emb = new Discord.RichEmbed()
                 .setTitle(recentScore._beatmap.artist + ' - ' + recentScore._beatmap.title)
                 .setURL('https://osu.ppy.sh/beatmapsets/' + recentScore._beatmap.beatmapSetId + '#osu/' + recentScore._beatmap.id)
                 .setColor('#0099ff')
@@ -87,15 +87,10 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    if (contentArgs[1] == null) {
-        return require('./name').getName('osu', message.author.username); //Get name from local/names.json
-    }
-    else {
-        return message.content.substring(contentArgs[0].length + 1);  //When Name given
-    }
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username);
 }
 
 function getEmoji(emojiName, bot) {
-    var emoji = bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
+    let emoji = bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
     return '<:' + emoji.name + ':' + emoji.id + '>'; //Build emojiString
 }

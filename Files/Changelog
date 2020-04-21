@@ -1,3 +1,9 @@
+3.7.10: 21.04.2020
+    -Changed some unefficient Code
+    -Refractored weebiefy.js
+    -Fixed Admin.restart
+    -Fixed poll command
+
 3.7.9: 19.04.2020
     -Changed some unefficient Code
     -Fixed Bug in help when there are too many MusicShortcuts

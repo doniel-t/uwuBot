@@ -32,10 +32,10 @@ module.exports = {
             contentArgs.shift();
         }
 
-        var counter = 0;
-        var sendMessage = '';
+        let counter = 0;
+        let sendMessage = '';
 
-        for (var word of contentArgs) {
+        for (let word of contentArgs) {
 
             let emoji = bot.emojis.find(e => e.name == word);   //Find emoji
 
@@ -56,22 +56,14 @@ module.exports = {
 }
 
 function getEmojiString(emoji) {
-    var emojiname = '';
 
-    if (emoji.animated) { //Difference between animated and still
-        emojiname = '<a:';
-    } else {
-        emojiname = '<:';
-    }
-
-    emojiname = emojiname + emoji.name + ':' + emoji.id + '>'; //Build emojiString
-    return emojiname;
+    return (emoji.animated ? '<a:' : '<:') + emoji.name + ':' + emoji.id + '>'; //Build emojiString
 }
 
 function printAll(message, bot) {
-    var sendMessage = '';
-    var counter = 0;
-    for (var val of bot.emojis) {
+    let sendMessage = '';
+    let counter = 0;
+    for (let val of bot.emojis) {
         sendMessage = sendMessage.concat(getEmojiString(val[1]));
         counter++;
         if (counter == 27) {
