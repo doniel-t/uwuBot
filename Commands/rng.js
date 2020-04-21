@@ -12,10 +12,7 @@ module.exports = {
             message.channel.send("Please use numbers >= 0");
             return;
         }
-        if (min > max) {
-            message.channel.send("Your min value was bigger than max value");
-        } else {
-            message.channel.send(Math.round(Math.random() * (max - min)) + min);
-        }
+
+        min > max ? message.channel.send("Your min value was bigger than max value") : message.channel.send(Math.round(Math.random() * (max - min)) + min);
     }
 }

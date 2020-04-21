@@ -77,7 +77,7 @@ function normalHelp(message) {
 function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
     try {
         let musicShortcut = fh.get('../Files/MusicShortcut.json'); //Get File
-        let music = fh.get('../Files/helpFiles/musicHelp.json');
+        const music = fh.get('../Files/helpFiles/musicHelp.json');
         let msgcounter = 0;
         let helpcounter = 0;
         let emb = new Discord.RichEmbed().setTitle('Music Settings');
@@ -119,7 +119,7 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
 
 function whatToDrawHelp(message) {
     try {
-        let whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
+        const whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
         let msgcounter = 0;
         let helpcounter = 0;
         let emb = new Discord.RichEmbed().setTitle('whatToDraw Settings');
@@ -150,7 +150,7 @@ function whatToDrawHelp(message) {
 
 function nameHelp(message) {
     try {
-        let names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
+        const names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
         let msgcounter = 0;
         let helpcounter = 0;
         let emb = new Discord.RichEmbed().setTitle('Name Settings');
@@ -182,7 +182,7 @@ function nameHelp(message) {
 function adminHelp(message) {
 
     try {
-        let functions = annotations.getSync('./Commands/Admin.js');
+        const functions = annotations.getSync('./Commands/Admin.js');
         let msgcounter = 0;
         let helpcounter = 0;
         let emb = new Discord.RichEmbed().setTitle('Admin Settings');

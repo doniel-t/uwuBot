@@ -78,7 +78,7 @@ module.exports = {
     restart: function (message) {
         message.channel.send('Restarting now').then(_ => {
 
-            ('start', ['cmd.exe', '/c', 'run.bat'], { shell: true })
+            spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true })
                 .on('exit', m => {
                     process.exit(0);
                 })

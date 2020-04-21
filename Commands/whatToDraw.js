@@ -17,7 +17,7 @@ module.exports = {
 
         List = localList.concat(characters);
 
-        var contentArgs = message.content.split(' ');
+        let contentArgs = message.content.split(' ');
 
 
 

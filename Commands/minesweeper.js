@@ -178,11 +178,7 @@ class Field {
 
 function letterToNumber(letter) {   //A->0 B->1 C->3
     let number = letter.toLowerCase().charCodeAt(0);
-    if (number < 97 || number > 122) {
-        return 'error'
-    } else {
-        return number - 97;
-    }
+    return number < 97 || number > 122 ? 'error' : number - 97;
 }
 
 var listener = function (guess) {   //Processes Answers
@@ -248,14 +244,7 @@ function revealField(h, w) {    //Reveals a Field and if its 0 it reveals its Ne
 
 function getIcon(FieldIcon, revAll) {   //Gets Icon to show in Message
 
-    if (FieldIcon.isRevealed || revAll) {
-        if (FieldIcon.isBomb) {
-            return '💣';
-        }
-        return getEmoteNumber(FieldIcon.points);
-    } else {
-        return '⬜';
-    }
+    return FieldIcon.isRevealed || revAll ? FieldIcon.isBomb ? '💣' : getEmoteNumber(FieldIcon.points) : '⬜';
 }
 
 function updateField(isFinished) {    //Updates the Message containing the GameField
