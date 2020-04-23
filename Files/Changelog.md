@@ -1,7 +1,6 @@
 4.0.0: 23.04.2020
     -Added MultiServer-Support
     -Added Auto.getTimeUntil for future use
-    -Added websocket-as-promised module
     -Added FileHandler.initSettings
     -Removed FileHandler.getSettings
     -Fixed neko Command
