@@ -1,3 +1,16 @@
+4.0.0: 23.04.2020
+    -Added MultiServer-Support
+    -Added Auto.getTimeUntil for future use
+    -Added websocket-as-promised module
+    -Added FileHandler.initSettings
+    -Removed FileHandler.getSettings
+    -Fixed neko Command
+    -Added Channel.js for Handling Channels
+    -Added Admin.addAdmin/Admin.removeAdmin per Server
+    -Made Music/league/twitch/name/FileHandler/Auto/Admin/neko/osuplays/osurecent MultiServer-functional
+    -Added ws.close() to every WS-Connection
+    -Changed Changelog to Changelog.md
+
 3.7.10: 21.04.2020
     -Changed some unefficient Code
     -Refractored weebiefy.js

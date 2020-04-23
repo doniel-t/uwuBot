@@ -5,8 +5,8 @@ const Music = require('./Music.js');
  * @does skips the current Song
  */
 module.exports = {
-    next: function () {
+    next: function (message) {
 
-        Music.next(); //All Logic is in Music
+        Music.next(message); //All Logic is in Music
     }
 }

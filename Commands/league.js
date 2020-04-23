@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fh = require('./FileHandler');
+const Channel = require('./Channel');
 const WebSocket = require('ws');
-const RunningGames = [];
 
 /**
  * @usage !league <optional: leagueName>
@@ -28,6 +28,7 @@ module.exports = {
                 }
 
                 message.channel.send(makeEmbed(JSON.parse(data)[1]));
+                ws.close();
             });
         });
     },
@@ -41,10 +42,10 @@ function makeEmbed(players) {
     return new Discord.RichEmbed().setColor('#0099ff').setTitle("League Game")
 
         .addField("Blue Team", '[' + players[0].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[0].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[1].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[1].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[2].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[2].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[3].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[3].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[4].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[4].name.replace(/ /g, '_') + ')\n', true)
+            '[' + players[1].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[1].name.replace(/ /g, '_') + ')\n' +
+            '[' + players[2].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[2].name.replace(/ /g, '_') + ')\n' +
+            '[' + players[3].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[3].name.replace(/ /g, '_') + ')\n' +
+            '[' + players[4].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[4].name.replace(/ /g, '_') + ')\n', true)
 
         .addField("Champion", players[0].champion + "\n" +
             players[1].champion + "\n" +
@@ -59,10 +60,10 @@ function makeEmbed(players) {
             players[4].playerlevel + " " + players[4].rank, true)
 
         .addField("Red Team", '[' + players[5].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[5].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[6].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[6].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[7].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[7].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[8].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[8].name.replace(/ /g, '_') + ')\n' +
-        '[' + players[9].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[9].name.replace(/ /g, '_') + ')\n', true)
+            '[' + players[6].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[6].name.replace(/ /g, '_') + ')\n' +
+            '[' + players[7].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[7].name.replace(/ /g, '_') + ')\n' +
+            '[' + players[8].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[8].name.replace(/ /g, '_') + ')\n' +
+            '[' + players[9].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[9].name.replace(/ /g, '_') + ')\n', true)
 
         .addField("Champion", players[5].champion + "\n" +
             players[6].champion + "\n" +
@@ -82,73 +83,109 @@ function getleagueName(message) { //Gives back a NameString
     let contentArgs = message.content.split(" ");
 
     if (contentArgs[1] == null) { //Hardcoded Names
-        return require('./name').getName('lol', message.author.username); //Get name from local/names.json
+        return require('./name').getName('lol', message.author.username,message.guild.id); //Get name from local/names.json
     } else {
         return message.content.substring(contentArgs[0].length + 1); //When Name given
     }
 }
 
+var RunningGames = []; //Saves which games have already been send
+var Pairs = {}; //Saves Guild to Channel/Name
+var CheckNames = {}; //Saves names which will be send to WS
+
 function autoCheck(bot) {
 
-    let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server    
-    let leaguechannel = bot.channels.get(fh.get('../Files/local/LeagueChannel.json'));
-    let StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
-    let Names = fh.get('../Files/local/names.json');
+    let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
-    ws.on('error', function error() {
-        if (leaguechannel)
-            leaguechannel.send('League: Websocket-Server is unreachable');
-    })
+    for (let nameX in CheckNames) { //Remove name if Person is not inGame
+        let name = CheckNames[nameX];
+        let bool = true;
 
-    if (!fh.get('../Files/local/settings.json').checkForLOLGames) { //Stop loop if boolean is false or leaguechannel is undefined
-        return;
+        try {
+            bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+        } catch (ignored) {
+            bool = false;
+        }
+        if (!bool) {
+            delete CheckNames[nameX];
+        }
     }
 
-    if(!leaguechannel && StandardChannel) {
-        StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
-        return;
+    for (let guild of bot.guilds) { //Create Pairs for different Guilds
+        Pairs[guild[0]] = {
+            id: guild[0],
+            LeagueChannel: Channel.get('League', guild[0]),
+            StandardChannel: Channel.get('Standard', guild[0]),
+            Names: fh.get('../Files/local/' + guild[0] + '/names.json')
+        };
     }
+    
 
-    ws.on('open', function open() {
+    for (let p in Pairs) { //Create Object with LoL-Name with Array of Guilds
 
-        for (let nameX in Names) {
+        let pair = Pairs[p];
+        
+        if (!fh.get('../Files/local/' + pair.id + '/settings.json').checkForLOLGames) { //Ignore Guilds with Settings off
+            continue;
+        }
 
-            let name = Names[nameX];
+        if (!pair.LeagueChannel && pair.StandardChannel) { //Ignore Guilds with missing Channels
+            pair.StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
+            continue;
+        }
+
+        for (let nameX in pair.Names) { //Add names to RequestList
+            let name = pair.Names[nameX];
+
             let bool = true;
 
             try {
-                bool = (bot.users.get(name['id']).presence.game.timestamps != null) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
             } catch (ignored) {
                 bool = false;
             }
-
-            if (name['lol'] != undefined && bool) { //Has LolName in names.json and is ingame
-
-                ws.send('LeagueAPI ' + name['lol']); //Requests for every name that has a lol-name
-
+            
+            if (name['lol'] && bool) { //Has LolName in names.json and is ingame
+                if (!CheckNames[name.lol]) { //Add Name to RequestList
+                    CheckNames[name.lol] = { id: name['id'], guilds: [pair.id] };
+                } else {
+                    CheckNames[name.lol].guilds.push(pair.id);
+                }
             }
         }
-        setTimeout(() => { //Loop
-            leaguechannel = undefined;
-            Names = undefined;
-            ws = undefined;
-            autoCheck(bot);
+    }
 
+    ws.on('error', function error() {
+        Channel.sendAll('League', 'League: Websocket-Server is unreachable');
+    });
+
+    ws.on('open', function open() {
+
+        for (let name in CheckNames) { //Send RequestList   
+            ws.send('LeagueAPI ' + name);
+        }
+
+        setTimeout(() => { //Loop
+            Pairs = {};
+            autoCheck(bot);
         }, 300000);
     });
+
     ws.on('message', function incoming(data) { //Answer
 
         if (data == 'ERROR') {
             return;
         }
 
-        activeGames = JSON.parse(data);
+        let response = JSON.parse(data);
 
-        if (RunningGames.includes(activeGames[0])) { //Dont send message if there is already a message with this game
-            return;
+        if (!RunningGames.includes(response[0])) { //Dont send message if there is already a message with this game   
+
+            for (let id of CheckNames[response[2]].guilds) { //Send GameMessage to corresponding Guilds
+                
+                Pairs[id].LeagueChannel.send(makeEmbed(response[1]));
+            }
+            RunningGames.push(response[0]);
         }
-
-        RunningGames.push(activeGames[0]);
-        leaguechannel.send(makeEmbed(activeGames[1]));
     });
 }

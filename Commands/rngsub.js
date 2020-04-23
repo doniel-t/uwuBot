@@ -29,6 +29,7 @@ module.exports = {
             }
             let submission = JSON.parse(data);
             message.channel.send(!submission.permalink ? 'Reddit returned undefined (Subreddit disabled random)' : "http://reddit.com" + submission.permalink);
+            ws.close();
         });
     }
 }

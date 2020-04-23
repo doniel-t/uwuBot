@@ -10,50 +10,45 @@ const Logger = require("./Logger.js");
  */
 module.exports = {
 
-    join: function (message, bot) { //Joins VoiceChannel of Caller
-        join(message, bot);
-    },
-
     play: function (message, bot) { //Adds Music to Queue and starts Playing if not playing already
         play(message, bot);
     },
 
-    stop: function () {     //Stops Music, cleares Queue and leaves Channel
-        stop();
+    stop: function (message) {     //Stops Music, cleares Queue and leaves Channel
+        stop(message.guild.id);
     },
 
-    pause: function () {    //Stops Music, remains Queue and stays in Channel
-        pause();
+    pause: function (message) {    //Stops Music, remains Queue and stays in Channel
+        pause(message);
     },
 
-    resume: function () {   //Returns Music if pause was called before
-        resume();
+    resume: function (message) {   //Returns Music if pause was called before
+        resume(message);
     },
 
-    next: function () {     //Skips to next Song in Queue, calls stop when Queue is empty
-        next();
+    next: function (message) {     //Skips to next Song in Queue, calls stop when Queue is empty
+        next(message);
     }
 }
 
 var dcbot;
-var Musicdispatcher;
-var Musicconnection;
-var MusicQueue = new Set();
-var inChannel = false;
+var Musicdispatcher = {};
+var Musicconnection = {};
+var MusicQueues = {};
 
 async function playSong(first, Channel) { //Plays a Song
 
-    let Song = getNextSong();
+    let Song = getNextSong(Channel.guild.id);
     if (!first) Channel.send("Now playing " + Song);
 
-    playyt(Song).then(dispatcher => { //Throws error in console if url isnt valid
-        Musicdispatcher = dispatcher;
-        Musicdispatcher.on('end', () => {
-            if (MusicQueue.size > 0) {
+    playyt(Song, Channel.guild.id).then(dispatcher => { //Throws error in console if url isnt valid
+        Musicdispatcher[Channel.guild.id] = dispatcher;
+        Musicdispatcher[Channel.guild.id].on('end', () => {
+            if (MusicQueues[Channel.guild.id].size > 0) {
                 playSong(false, Channel);
             } else {
                 Channel.send('End of Queue');
-                stop();
+                stop(Channel.guild.id);
             }
         })
     })
@@ -63,8 +58,7 @@ function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
     dcbot.channels.get(voiceID).join().then(connection => {
 
-        Musicconnection = connection;
-        inChannel = true;
+        Musicconnection[Channel.guild.id] = connection;
         playSong(true, Channel);
     });
 }
@@ -79,12 +73,12 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
         ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
 
-            MusicQueue.add(Link);
+            addSong(Link, message.guild.id);
 
-            if (!inChannel) {
+            if (!Musicconnection[message.guild.id]) {
                 join(message.author.lastMessage.member.voiceChannelID, message.channel);
             } else {
-                message.channel.send("Added Song to Queue: " + MusicQueue.size);
+                message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].size);
             }
 
         }).catch(() => { //Not a Video
@@ -94,11 +88,11 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
                 ytpl(Link).then(playlist => { //Get Playlist
 
                     for (var song of playlist.items) { //Iterate through Songs in Playlist
-                        MusicQueue.add(song.url_simple);
+                        addSong(song.url_simple, message.guild.id);
                     }
 
-                    if (!inChannel) {
-                        join();
+                    if (!Musicconnection[message.guild.id]) {
+                        join(message.author.lastMessage.member.voiceChannelID, message.channel);
                     } else {
                         message.channel.send("Added Playlist to Queue");
                     }
@@ -115,29 +109,29 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
     }
 }
 
-function stop() {       //Stops Music, cleares Queue and leaves Channel
+function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
+    try {
+        dcbot.channels.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
+    } catch (ignored) { }
+    MusicQueues[guildID] = undefined;
+    Musicdispatcher[guildID] = undefined;
+    Musicconnection[guildID] = undefined;
 
-    dcbot.channels.get(Musicconnection.channel.id).leave();
-    MusicQueue = new Set();
-    inChannel = false;
-    dcbot = undefined;
-    Musicdispatcher = undefined;
-    Musicconnection = undefined;
 }
 
-function pause() {      //Stops Music, remains Queue and stays in Channel
-    Musicdispatcher.pause();
+function pause(message) {      //Stops Music, remains Queue and stays in Channel
+    Musicdispatcher[message.guild.id].pause();
 }
 
-function resume() {     //Returns Music if pause was called before
-    Musicdispatcher.resume();
+function resume(message) {     //Returns Music if pause was called before
+    Musicdispatcher[message.guild.id].resume();
 }
 
-function next() {       //Ends current Song
-    Musicdispatcher.end();
+function next(message) {       //Ends current Song
+    Musicdispatcher[message.guild.id].end();
 }
 
-async function playyt(url) {    //Plays the URL
+async function playyt(url, guildID) {    //Plays the URL
 
     var stream = ytdl(url, { filter: 'audioonly' });
 
@@ -145,11 +139,18 @@ async function playyt(url) {    //Plays the URL
         Logger.log(err);
     });
 
-    return Musicconnection.playStream(stream, { seek: 0, volume: 1 });
+    return Musicconnection[guildID].playStream(stream, { seek: 0, volume: 1 });
 }
 
-function getNextSong() { //Returns next Song on MusicQueue and deletes it from Queue
-    var ret = Array.from(MusicQueue)[0];
-    MusicQueue.delete(ret);
+function getNextSong(guildID) { //Returns next Song on MusicQueues and deletes it from Queue   
+    var ret = Array.from(MusicQueues[guildID])[0];
+    MusicQueues[guildID].delete(ret);
     return ret;
+}
+
+function addSong(Link, guildID) {
+    if (!MusicQueues[guildID]) {
+        MusicQueues[guildID] = new Set();
+    }
+    MusicQueues[guildID].add(Link);
 }

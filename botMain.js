@@ -7,28 +7,34 @@ const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
 
 const { version } = require('./package.json');
-var Settings = fh.getSettings();
 var BotID;
 
 bot.on('ready', () => { //At Startup
+
+    commands.Channel.init(bot);
+    fh.initSettings(bot);
+
     bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' });
 
-    let StandardChannel = bot.channels.get(fh.get('../Files/local/StandardChannel.json'));
+    for (let guild of bot.guilds) {
+        
+        let StandardChannel = commands.Channel.get('Standard',guild[1].id);
+        
+        if (!StandardChannel) {
 
-    if (!StandardChannel) {
+            for (let ch of guild[1].channels) {
 
-        for (let ch of bot.channels) {
-
-            if (ch[1].type == 'text') {
-
-                fh.write('../Files/local/StandardChannel.json', ch[1].id);
-                StandardChannel = bot.channels.get(ch[1].id);
-                break;
+                if (ch[1].type == 'text') {
+                    commands.Channel.set('Standard',ch[1].id,guild[1].id);
+                    StandardChannel = bot.channels.get(ch[1].id);
+                    break;
+                }
             }
+            StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
         }
-        StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
     }
-    StandardChannel.send('I am now ready to use: Version ' + version);
+
+    commands.Channel.sendAll('Standard','I am now ready to use: Version ' + version);
 
     commands.league.checkForLOLGames(bot);
     commands.twitch.checkForStreams(bot);
@@ -93,7 +99,7 @@ bot.on('message', (message) => { //When Message sent
         commands.chat.chat(message);
     }
 
-    if (Settings['emojiDetection']) { //Emoji detection in plain Text
+    if (fh.get('../Files/local/' + message.guild.id + '/settings.json')['emojiDetection']) { //Emoji detection in plain Text
         commands.emoji.emojiDetection(message, bot);
     }
 });

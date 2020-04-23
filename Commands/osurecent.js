@@ -78,7 +78,7 @@ module.exports = {
                 .setImage('https://assets.ppy.sh/beatmaps/' + recentScore._beatmap.beatmapSetId + '/covers/cover.jpg');
 
             message.channel.send(emb);
-
+            ws.close();
         });
     }
 }
@@ -87,7 +87,7 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username);
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username,message.guild.id);
 }
 
 function getEmoji(emojiName, bot) {

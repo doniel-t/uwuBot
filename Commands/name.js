@@ -1,5 +1,4 @@
 const fh = require('./FileHandler');
-const localFile = 'names.json';
 var localNames; // represents whatToDraw.json
 const games = [
     'lol',
@@ -13,7 +12,7 @@ const games = [
  */
 module.exports = {
     name: function (message) {
-        localNames = fh.get('../Files/local/' + localFile);
+        localNames = fh.get('../Files/local/'+ message.guild.id + '/names.json');
 
         let contentArgs = message.content.split(' ');
 
@@ -23,23 +22,23 @@ module.exports = {
         }
 
         if (contentArgs[1] == 'add') { //Add Person
-            add(message, contentArgs[2]);
+            add(message, contentArgs[2],message.guild.id);
         }
 
         if (contentArgs[1] == 'remove') { //Remove Person
-            remove(message, contentArgs[2]);
+            remove(message, contentArgs[2],message.guild.id);
         }
         if (contentArgs[1] == 'get') {  //Get Name
             get(message, contentArgs[2]);
         }
     },
 
-    getName: function (game, name) { //Only for other .js-Files
-        return getP(game, name);
+    getName: function (game, name, guildID) { //Only for other .js-Files
+        return getP(game, name, guildID);
     }
 }
 
-function add(message, game) { //!name add GAME NAME
+function add(message, game, guildID) { //!name add GAME NAME
 
     let name = message.author.username;
     let igname = message.content.substring(game.length + 10);
@@ -51,12 +50,12 @@ function add(message, game) { //!name add GAME NAME
     localNames[name][game] = igname; //Add name to game
     localNames[name]['id'] = message.author.id;
 
-    writeJSON();
+    writeJSON(guildID);
     message.channel.send('Added ' + igname + ' to ' + name + '`s ' + game);
 
 }
 
-function remove(message, game) {//!name remove GAME
+function remove(message, game, guildID) {//!name remove GAME
 
     let name = message.author.username;
 
@@ -67,7 +66,7 @@ function remove(message, game) {//!name remove GAME
 
     localNames[name][game] = undefined; //Remove name from game
 
-    writeJSON();
+    writeJSON(guildID);
     message.channel.send('Removed name from ' + name + '`s ' + game);
 }
 
@@ -83,14 +82,14 @@ function get(message, game) { //!name get GAME
     message.channel.send(localNames[name][game]);
 }
 
-function getP(game, name) {
+function getP(game, name, guildID) {
     try {
-        return fh.get('../Files/local/names.json')[name][game];
+        return fh.get('../Files/local/'+ guildID +'/names.json')[name][game];
     } catch (ignored) {
         return undefined;
     }
 }
 
-function writeJSON() { //Overwrites names.json with localNames
-    fh.write(localFile, localNames);
+function writeJSON(guildID) { //Overwrites names.json with localNames
+    fh.write('names.json', localNames, guildID);
 }
