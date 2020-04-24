@@ -23,6 +23,8 @@ bot.on('message', (message) => { //When Message sent
     if (message.content.startsWith(Prefixs[message.guild.id])) {
 
         let command = message.content.substring(Prefixs[message.guild.id].length); //Get commandName
+        command = command.substring(0, command.indexOf(' '));
+        message.content = message.content.replace(Prefixs[message.guild.id], '!'); //Replacing Prefix for compability
 
         if (command.length == 0) {
             message.channel.send('No Command entered');
@@ -127,7 +129,7 @@ function init(bot) {
         if (Prefixs[guild[0]] == '') {
             Prefixs[guild[0]] = '!';
         }
-        StandardChannel.send('I am now ready to use: Prefix ' + Prefixs[guild[0]])
+        StandardChannel.send('I am now ready to use: Prefix \'' + Prefixs[guild[0]] + '\'');
     }
 
     //Any Background tasks
