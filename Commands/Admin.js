@@ -251,6 +251,19 @@ module.exports = {
         } else {
             message.channel.send('<@!' + user + '> is not on the AdminList');
         }
+    },
+    /**
+     * @summary changes prefix of normal Commands (default: !)
+     * @usage uwuadmin changePrefix ANY PREFIX_YOU:WANT!?%
+     */
+    changePrefix(message) {
+        let prefix = message.content.substring(message.content.indexOf(' '));
+        fh.write('prefix.json',prefix,message.guild.id);
+
+        message.channel.send('Changed Prefix to: ' + prefix);
+        Channel.get('Standard',message.guild.id).send(message.author.username + ' changed the Prefix to: ' + prefix);
+        let { UpdatePrefix } = require('../botMain');
+        UpdatePrefix(prefix,message.guild.id);
     }
 }
 

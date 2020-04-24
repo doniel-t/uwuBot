@@ -8,38 +8,10 @@ const fh = require('./Commands/FileHandler');
 
 const { version } = require('./package.json');
 var BotID;
+var Prefixs;
 
 bot.on('ready', () => { //At Startup
-
-    commands.Channel.init(bot);
-    fh.initSettings(bot);
-
-    bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' });
-
-    for (let guild of bot.guilds) {
-        
-        let StandardChannel = commands.Channel.get('Standard',guild[1].id);
-        
-        if (!StandardChannel) {
-
-            for (let ch of guild[1].channels) {
-
-                if (ch[1].type == 'text') {
-                    commands.Channel.set('Standard',ch[1].id,guild[1].id);
-                    StandardChannel = bot.channels.get(ch[1].id);
-                    break;
-                }
-            }
-            StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
-        }
-    }
-
-    commands.Channel.sendAll('Standard','I am now ready to use: Version ' + version);
-
-    commands.league.checkForLOLGames(bot);
-    commands.twitch.checkForStreams(bot);
-    commands.Auto.goodbadBot(bot, true);
-    BotID = '<@!' + bot.user.id + '>';
+    init(bot); //inits some variables
 });
 
 bot.on('message', (message) => { //When Message sent
@@ -48,7 +20,7 @@ bot.on('message', (message) => { //When Message sent
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    if (contentArgs[0].charAt(0) == '!') {
+    if (contentArgs[0].charAt(0) == Prefixs[message.guild.id]) {
 
         let command = contentArgs[0].substring(1); //Get commandName
 
@@ -108,3 +80,48 @@ bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
     Logger.log('botToken.json is invalid: ' + err);
     return;
 }); //Starts Bot
+
+module.exports = {
+    /**
+     * @param {String} prefix Any new Prefix
+     * @param {Number} guildID The guildId of the Guild to change
+     */
+    updatePrefix: function(prefix,guildID) {
+        Prefixs[guildID] = prefix;
+    }
+}
+
+function init(bot) {
+
+    commands.Channel.init(bot); //Init dcbot var in Channel
+    fh.initSettings(bot); //Init dcbot var in fh
+    BotID = '<@!' + bot.user.id + '>'; //Get BotID
+
+    bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' }); //Set Bot as online
+
+    for (let guild of bot.guilds) { 
+
+        let StandardChannel = commands.Channel.get('Standard', guild[1].id);//Init StandardChannels for all Guilds
+
+        if (!StandardChannel) { //AutoPick a StandardChannel if none is set
+
+            for (let ch of guild[1].channels) {
+
+                if (ch[1].type == 'text') {
+                    commands.Channel.set('Standard', ch[1].id, guild[1].id);
+                    StandardChannel = bot.channels.get(ch[1].id);
+                    break;
+                }
+            }
+            StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
+        }
+
+        Prefixs[guild[0]] = fh.get('./Files/local/' + guild[0] + '/prefix.json'); //Init Prefix
+        StandardChannel.send('I am now ready to use: Prefix ' + Prefixs[guild[0]])
+    }
+
+    //Any Background tasks
+    commands.league.checkForLOLGames(bot);
+    commands.twitch.checkForStreams(bot);
+    commands.Auto.goodbadBot(bot, true);
+}

@@ -1,3 +1,6 @@
+4.1.0: 24.04.2020
+    -Custom Prefix for every Server
+
 4.0.1: 24.04.2020
     -Fixed error in FileHandler.create
     -Added FailSafes to name.getName Calls
