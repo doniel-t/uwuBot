@@ -8,9 +8,14 @@ const WebSocket = require('ws');
 module.exports = {
     osuplays: function (message) { //Gets Top 5 PP Plays!
 
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-        
         name = getosuName(message);
+
+        if (!name) {
+            message.channel.send('No name specified');
+            return;
+        }
+        
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
         
         ws.on('error', function error(){
             message.channel.send('Websocket-Server is unreachable');

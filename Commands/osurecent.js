@@ -9,9 +9,14 @@ module.exports = {
 
     osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
 
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-
         name = getosuName(message);
+
+        if (!name) {
+            message.channel.send('No name specified');
+            return;
+        }
+        
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         ws.on('open', function open() { //Request
 

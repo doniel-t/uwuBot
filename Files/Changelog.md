@@ -1,3 +1,7 @@
+4.0.1: 24.04.2020
+    -Fixed error in FileHandler.create
+    -Added FailSafes to name.getName Calls
+
 4.0.0: 23.04.2020
     -Added MultiServer-Support
     -Added Auto.getTimeUntil for future use

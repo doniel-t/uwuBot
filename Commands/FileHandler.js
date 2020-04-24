@@ -16,7 +16,7 @@ module.exports = {
         try {
             return require(Path);
         } catch (error) {
-            Logger.log(error);
+            Logger.log('File not found :' + error);
             return create(Path);
         }
     },
@@ -95,15 +95,16 @@ module.exports = {
     }
 }
 
-function create(Path, guildID) {
-
-    if (!fs.existsSync('Files/local/' + guildID)) {
-        fs.mkdirSync('Files/local/' + guildID);
-    }
+function create(Path) {
 
     let splitted = Path.split('/');
     let Filename = splitted[splitted.length - 1];
+    let guildID = splitted[splitted.length - 2];
     let File;
+
+    if (!isNaN(guildID) && !fs.existsSync('Files/local/' + guildID)) {
+        fs.mkdirSync('Files/local/' + guildID);
+    }
 
     switch (Filename) {
 
@@ -136,7 +137,7 @@ function create(Path, guildID) {
             break;
 
         case 'settings.json': //Should never happen, but just in case
-            File = JSON.stringify(require('../Files/initsettings.json'));
+            File = require('../Files/initsettings.json');
             break;
 
         default:

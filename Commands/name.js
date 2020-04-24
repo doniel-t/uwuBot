@@ -85,7 +85,7 @@ function get(message, game) { //!name get GAME
 function getP(game, name, guildID) {
     try {
         return fh.get('../Files/local/'+ guildID +'/names.json')[name][game];
-    } catch (ignored) {
+    } catch (ignored) {       
         return undefined;
     }
 }

@@ -11,8 +11,14 @@ module.exports = {
 
     league: function (message) {
 
+        name = getleagueName(message);
+
+        if (!name) {
+            message.channel.send('No name specified');
+            return;
+        }
+        
         let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-        let name = getleagueName(message);
 
         ws.on('error', function error() {
             message.channel.send('Websocket-Server is unreachable');
