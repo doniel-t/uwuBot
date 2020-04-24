@@ -140,6 +140,10 @@ function create(Path) {
             File = require('../Files/initsettings.json');
             break;
 
+        case 'prefix.json':
+            File = '!';
+            break;
+
         default:
             File = undefined;
             break;

@@ -1,5 +1,6 @@
 4.1.0: 24.04.2020
     -Custom Prefix for every Server
+    -Updated ytdl-core to 2.1.1
 
 4.0.1: 24.04.2020
     -Fixed error in FileHandler.create

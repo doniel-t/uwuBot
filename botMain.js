@@ -8,7 +8,7 @@ const fh = require('./Commands/FileHandler');
 
 const { version } = require('./package.json');
 var BotID;
-var Prefixs;
+var Prefixs = {};
 
 bot.on('ready', () => { //At Startup
     init(bot); //inits some variables
@@ -20,9 +20,9 @@ bot.on('message', (message) => { //When Message sent
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    if (contentArgs[0].charAt(0) == Prefixs[message.guild.id]) {
+    if (message.content.startsWith(Prefixs[message.guild.id])) {
 
-        let command = contentArgs[0].substring(1); //Get commandName
+        let command = message.content.substring(Prefixs[message.guild.id].length); //Get commandName
 
         if (command.length == 0) {
             message.channel.send('No Command entered');
@@ -84,10 +84,17 @@ bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
 module.exports = {
     /**
      * @param {String} prefix Any new Prefix
-     * @param {Number} guildID The guildId of the Guild to change
+     * @param {Number} guildID The guildID of the Guild to change
      */
-    updatePrefix: function(prefix,guildID) {
+    updatePrefix: function (prefix, guildID) {
         Prefixs[guildID] = prefix;
+    },
+    /**
+     * @param {Number} guildID The guildID of the Guild you want the Prefix from
+     * @returns {Prefix} The searched Prefix
+     */
+    getPrefix: function (guildID) {
+        return Prefixs[guildID];
     }
 }
 
@@ -99,7 +106,7 @@ function init(bot) {
 
     bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' }); //Set Bot as online
 
-    for (let guild of bot.guilds) { 
+    for (let guild of bot.guilds) {
 
         let StandardChannel = commands.Channel.get('Standard', guild[1].id);//Init StandardChannels for all Guilds
 
@@ -116,7 +123,10 @@ function init(bot) {
             StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
         }
 
-        Prefixs[guild[0]] = fh.get('./Files/local/' + guild[0] + '/prefix.json'); //Init Prefix
+        Prefixs[guild[0]] = fh.get('../Files/local/' + guild[0] + '/prefix.json'); //Init Prefix
+        if (Prefixs[guild[0]] == '') {
+            Prefixs[guild[0]] = '!';
+        }
         StandardChannel.send('I am now ready to use: Prefix ' + Prefixs[guild[0]])
     }
 

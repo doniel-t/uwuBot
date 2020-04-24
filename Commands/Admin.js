@@ -209,7 +209,7 @@ module.exports = {
     /**
      * @summary Adds a DiscordUser to AdminList for this Server/Guild
      */
-    addAdmin(message,bot) {
+    addAdmin: function (message, bot) {
         let Admins = fh.get('../Files/local/' + message.guild.id + '/Admins.json');
         let user = message.content.substring(message.content.indexOf(' ') + 9);
         user = user.substring(4, user.length - 1);
@@ -233,7 +233,7 @@ module.exports = {
     /**
      * @summary Removes a DiscordUser to AdminList for this Server/Guild
      */
-    removeAdmin(message,bot) {
+    removeAdmin: function (message, bot) {
         let Admins = fh.get('../Files/local/' + message.guild.id + '/Admins.json');
         let user = message.content.substring(message.content.indexOf(' ') + 12);
         user = user.substring(4, user.length - 1);
@@ -244,7 +244,7 @@ module.exports = {
         }
 
         if (Admins.indexOf(user) > -1) {
-            Admins.splice(Admins.indexOf(user),1);
+            Admins.splice(Admins.indexOf(user), 1);
             fh.write('Admins.json', Admins, message.guild.id);
             message.channel.send('Removed <@!' + user + '> from the AdminList');
 
@@ -253,17 +253,30 @@ module.exports = {
         }
     },
     /**
-     * @summary changes prefix of normal Commands (default: !)
-     * @usage uwuadmin changePrefix ANY PREFIX_YOU:WANT!?%
+     * @summary sets prefix of normal Commands (default: !)
+     * @usage uwuadmin setPrefix PREFIX
+     * @note if you want a space at the end, but \n instead => please\n
      */
-    changePrefix(message) {
-        let prefix = message.content.substring(message.content.indexOf(' '));
-        fh.write('prefix.json',prefix,message.guild.id);
+    setPrefix: function (message) {
+
+        let prefix = message.content.substring(message.content.indexOf(' ') + 11);
+        if (prefix.endsWith('\\n')) {
+            prefix = prefix.substring(0, prefix.length - 2) + ' ';
+        }
+        
+        fh.write('prefix.json', prefix, message.guild.id);
 
         message.channel.send('Changed Prefix to: ' + prefix);
-        Channel.get('Standard',message.guild.id).send(message.author.username + ' changed the Prefix to: ' + prefix);
-        let { UpdatePrefix } = require('../botMain');
-        UpdatePrefix(prefix,message.guild.id);
+        Channel.get('Standard', message.guild.id).send(message.author.username + ' changed the Prefix to: \'' + prefix + '\'');
+        let { updatePrefix } = require('../botMain');
+        updatePrefix(prefix, message.guild.id);
+    },
+    /**
+     * @returns Prefix to DiscordChat
+     */
+    getPrefix: function (message) {
+        let { getPrefix } = require('../botMain');
+        message.channel.send(getPrefix(message.guild.id));
     }
 }
 
