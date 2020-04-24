@@ -23,7 +23,11 @@ bot.on('message', (message) => { //When Message sent
     if (message.content.startsWith(Prefixs[message.guild.id])) {
 
         let command = message.content.substring(Prefixs[message.guild.id].length); //Get commandName
-        command = command.substring(0, command.indexOf(' '));
+
+        if (command.indexOf(' ') > 0) {
+            command = command.substring(0, command.indexOf(' '));
+        }
+        
         message.content = message.content.replace(Prefixs[message.guild.id], '!'); //Replacing Prefix for compability
 
         if (command.length == 0) {

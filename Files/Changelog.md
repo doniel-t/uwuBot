@@ -1,3 +1,6 @@
+4.1.1: 24.04.2020
+    -Fixed Commands without args not working
+
 4.1.0: 24.04.2020
     -Custom Prefix for every Server
     -Updated ytdl-core to 2.1.1
