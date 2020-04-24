@@ -1,6 +1,7 @@
 4.0.1: 24.04.2020
     -Fixed error in FileHandler.create
     -Added FailSafes to name.getName Calls
+    -Fixed twitch.checkForStreams
 
 4.0.0: 23.04.2020
     -Added MultiServer-Support

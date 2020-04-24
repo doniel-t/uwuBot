@@ -117,7 +117,7 @@ function autoCheck(bot) {
 
         let response = data.split(' '); //0 status 1 name
 
-        if (!ActiveStreamers.has(response[1])) { //Dont send message if there is already a message with this game  
+        if (!ActiveStreamers.has(response[1]) && response[0] == 'Online') { //Dont send message if there is already a message with this game  
 
             for (let id of CheckNames[response[1]]) { //Send GameMessage to corresponding Guilds
 
