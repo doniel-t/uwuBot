@@ -1,5 +1,6 @@
 4.1.2: 25.04.2020
     -Emojis are case insensitive
+    -Fixed league-Detection
 
 4.1.1: 24.04.2020
     -Fixed Commands without args not working

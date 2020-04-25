@@ -103,69 +103,68 @@ function autoCheck(bot) {
 
     let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
-    for (let nameX in CheckNames) { //Remove name if Person is not inGame
-        let name = CheckNames[nameX];
-        let bool = true;
-
-        try {
-            bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
-        } catch (ignored) {
-            bool = false;
-        }
-        if (!bool) {
-            delete CheckNames[nameX];
-        }
-    }
-
-    for (let guild of bot.guilds) { //Create Pairs for different Guilds
-        Pairs[guild[0]] = {
-            id: guild[0],
-            LeagueChannel: Channel.get('League', guild[0]),
-            StandardChannel: Channel.get('Standard', guild[0]),
-            Names: fh.get('../Files/local/' + guild[0] + '/names.json')
-        };
-    }
-    
-
-    for (let p in Pairs) { //Create Object with LoL-Name with Array of Guilds
-
-        let pair = Pairs[p];
-        
-        if (!fh.get('../Files/local/' + pair.id + '/settings.json').checkForLOLGames) { //Ignore Guilds with Settings off
-            continue;
-        }
-
-        if (!pair.LeagueChannel && pair.StandardChannel) { //Ignore Guilds with missing Channels
-            pair.StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
-            continue;
-        }
-
-        for (let nameX in pair.Names) { //Add names to RequestList
-            let name = pair.Names[nameX];
-
-            let bool = true;
-
-            try {
-                bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
-            } catch (ignored) {
-                bool = false;
-            }
-            
-            if (name['lol'] && bool) { //Has LolName in names.json and is ingame
-                if (!CheckNames[name.lol]) { //Add Name to RequestList
-                    CheckNames[name.lol] = { id: name['id'], guilds: [pair.id] };
-                } else {
-                    CheckNames[name.lol].guilds.push(pair.id);
-                }
-            }
-        }
-    }
-
     ws.on('error', function error() {
         Channel.sendAll('League', 'League: Websocket-Server is unreachable');
     });
 
     ws.on('open', function open() {
+
+        for (let nameX in CheckNames) { //Remove name if Person is not inGame
+            let name = CheckNames[nameX];
+            let bool = true;
+    
+            try {
+                bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+            } catch (ignored) {
+                bool = false;
+            }
+            if (!bool) {
+                delete CheckNames[nameX];
+            }
+        }
+    
+        for (let guild of bot.guilds) { //Create Pairs for different Guilds
+            Pairs[guild[0]] = {
+                id: guild[0],
+                LeagueChannel: Channel.get('League', guild[0]),
+                StandardChannel: Channel.get('Standard', guild[0]),
+                Names: fh.get('../Files/local/' + guild[0] + '/names.json')
+            };
+        }
+        
+        for (let p in Pairs) { //Create Object with LoL-Name with Array of Guilds
+    
+            let pair = Pairs[p];
+            
+            if (!fh.get('../Files/local/' + pair.id + '/settings.json').checkForLOLGames) { //Ignore Guilds with Settings off
+                continue;
+            }
+    
+            if (!pair.LeagueChannel && pair.StandardChannel) { //Ignore Guilds with missing Channels
+                pair.StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
+                continue;
+            }
+    
+            for (let nameX in pair.Names) { //Add names to RequestList
+                let name = pair.Names[nameX];
+    
+                let bool = true;
+    
+                try {
+                    bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                } catch (ignored) {
+                    bool = false;
+                }
+                
+                if (name['lol'] && bool) { //Has LolName in names.json and is ingame
+                    if (!CheckNames[name.lol]) { //Add Name to RequestList
+                        CheckNames[name.lol] = { id: name['id'], guilds: [pair.id] };
+                    } else {
+                        CheckNames[name.lol].guilds.push(pair.id);
+                    }
+                }
+            }
+        }
 
         for (let name in CheckNames) { //Send RequestList   
             ws.send('LeagueAPI ' + name);
