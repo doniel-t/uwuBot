@@ -8,12 +8,14 @@ module.exports = {
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
+        contentArgs[1] = contentArgs[1].toLowerCase();
+
         if (contentArgs[1] == 'all') {
             printAll(message, bot);
             return;
         }
 
-        var emoji = bot.emojis.find(e => e.name == contentArgs[1]);   //get Emoji from Server
+        var emoji = bot.emojis.find(e => e.name.toLowerCase() == contentArgs[1]);   //get Emoji from Server
 
         if (emoji == null) { //Error detection
             message.channel.send('No Emoji found with this name');
@@ -37,7 +39,9 @@ module.exports = {
 
         for (let word of contentArgs) {
 
-            let emoji = bot.emojis.find(e => e.name == word);   //Find emoji
+            word = word.toLowerCase();
+
+            let emoji = bot.emojis.find(e => e.name.toLowerCase() == word);   //Find emoji
 
             if (emoji) {
                 sendMessage = sendMessage.concat(getEmojiString(emoji));
