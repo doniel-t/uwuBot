@@ -1,6 +1,5 @@
 git clone https://github.com/danieltheil/uwuBot.git
 cd uwuBot
 call npm install
-cd Files
-mkdir local
-copy .\initsettings.json .\local\settings.json
+git config merge.theirs.name "Keep changes of upstream branch"
+git config merge.theirs.driver "cp -f '%B' '%A'"
