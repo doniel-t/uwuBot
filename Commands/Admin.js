@@ -72,12 +72,12 @@ module.exports = {
      * @summary Stops the Bot if called twice within 10 Seconds
      * @DevOnly
      */
-    stop: function (message, bot) {
+    stop: function (message) {
         if (this.isDev(message)) {
             if (stopvar) {
 
                 message.channel.send("Stopping now").then(_ => {
-                    bot.user.setPresence({ game: { name: 'on ' + version }, status: 'offline' }).then(_ => {
+                    global.bot.user.setPresence({ game: { name: 'on ' + version }, status: 'offline' }).then(_ => {
                         process.exit(0);
                     })
                 });
@@ -146,7 +146,7 @@ module.exports = {
      * @summary SettingsHandler
      * @returns Settings-Embed to Discord-Chat
      */
-    settings: function (message, bot) {
+    settings: function (message) {
 
         var Settings = fh.get('../Files/local/' + message.guild.id + '/settings.json'); //Get Settings
         var Emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⬜'];
@@ -167,7 +167,7 @@ module.exports = {
 
         var listener = function (emoji) { //EmojiListener
 
-            emoji.users.delete(bot.user.id);
+            emoji.users.delete(global.bot.user.id);
 
             if (Settings[etn[emoji._emoji.name]] == undefined) {
                 return;
@@ -209,12 +209,12 @@ module.exports = {
     /**
      * @summary Adds a DiscordUser to AdminList for this Server/Guild
      */
-    addAdmin: function (message, bot) {
+    addAdmin: function (message) {
         let Admins = fh.get('../Files/local/' + message.guild.id + '/Admins.json');
         let user = message.content.substring(message.content.indexOf(' ') + 9);
         user = user.substring(4, user.length - 1);
 
-        if (!bot.users.find(u => u.id == user)) {
+        if (!global.bot.users.find(u => u.id == user)) {
             message.channel.send('No User tagged');
             return;
         }
@@ -233,12 +233,12 @@ module.exports = {
     /**
      * @summary Removes a DiscordUser to AdminList for this Server/Guild
      */
-    removeAdmin: function (message, bot) {
+    removeAdmin: function (message) {
         let Admins = fh.get('../Files/local/' + message.guild.id + '/Admins.json');
         let user = message.content.substring(message.content.indexOf(' ') + 12);
         user = user.substring(4, user.length - 1);
 
-        if (!bot.users.find(u => u.id == user)) {
+        if (!global.bot.users.find(u => u.id == user)) {
             message.channel.send('No User tagged');
             return;
         }

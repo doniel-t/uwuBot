@@ -4,18 +4,18 @@
  * @Shortcut e
  */
 module.exports = {
-    emoji: function (message, bot) {
+    emoji: function (message) {
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
         contentArgs[1] = contentArgs[1].toLowerCase();
 
         if (contentArgs[1] == 'all') {
-            printAll(message, bot);
+            printAll(message);
             return;
         }
 
-        var emoji = bot.emojis.find(e => e.name.toLowerCase() == contentArgs[1]);   //get Emoji from Server
+        var emoji = global.bot.emojis.find(e => e.name.toLowerCase() == contentArgs[1]);   //get Emoji from Server
 
         if (emoji == null) { //Error detection
             message.channel.send('No Emoji found with this name');
@@ -25,7 +25,7 @@ module.exports = {
         message.channel.send(getEmojiString(emoji)); //Send Message
     },
 
-    emojiDetection(message, bot) {
+    emojiDetection(message) {
 
         let contentArgs = message.content.replace(/:/g, ' ').split(" "); //Replace : with Space and split Message
 
@@ -41,7 +41,7 @@ module.exports = {
 
             word = word.toLowerCase();
 
-            let emoji = bot.emojis.find(e => e.name.toLowerCase() == word);   //Find emoji
+            let emoji = global.bot.emojis.find(e => e.name.toLowerCase() == word);   //Find emoji
 
             if (emoji) {
                 sendMessage = sendMessage.concat(getEmojiString(emoji));
@@ -64,10 +64,10 @@ function getEmojiString(emoji) {
     return (emoji.animated ? '<a:' : '<:') + emoji.name + ':' + emoji.id + '>'; //Build emojiString
 }
 
-function printAll(message, bot) {
+function printAll(message) {
     let sendMessage = '';
     let counter = 0;
-    for (let val of bot.emojis) {
+    for (let val of global.bot.emojis) {
         sendMessage = sendMessage.concat(getEmojiString(val[1]));
         counter++;
         if (counter == 27) {

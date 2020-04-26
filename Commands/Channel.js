@@ -6,12 +6,6 @@ const fh = require('./FileHandler');
 */
 module.exports = {
    /**
-    * @param {DiscordBot} bot 
-    */
-   init: function (bot) {
-      dcbot = bot;
-   },
-   /**
     * @param {String} name Name of the Channel eg. Standard
     * @param {Number} guildID The guildID (message.guild.id)
     */
@@ -41,12 +35,10 @@ module.exports = {
    },
 }
 
-var dcbot;
-
 function get(name, guildID) {
    try {
       let Channels = fh.get('../Files/local/' + guildID + '/Channels.json');   
-      return dcbot.channels.get(Channels[name]);
+      return global.bot.channels.get(Channels[name]);
 
    } catch (err) {     
       Logger.log(err);
@@ -67,14 +59,14 @@ function set(name, channelID, guildID) {
 
 function getAll(name) {
    let arr = {};
-   for (let guild of dcbot.guilds) {
+   for (let guild of global.bot.guilds) {
       arr[guild.id] = get(name, guild.id);
    }
    return arr;
 }
 
 function sendAll(name, msg) {
-   for (let guild of dcbot.guilds) {
+   for (let guild of global.bot.guilds) {
       try {
          get(name, guild[1].id).send(msg);
       }catch (ignored) {}

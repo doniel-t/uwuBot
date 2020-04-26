@@ -4,6 +4,9 @@
     -Updated ws to 7.2.5
     -Updated run.bat
     -Fixed error when trying to merge with package.json/package-lock.json
+    -Made validGames in !help name dynamic
+    -Names are now safe via ID, not DiscordName
+    -Made bot a global variable and replaced it everywhere
 
 4.1.1: 24.04.2020
     -Fixed Commands without args not working

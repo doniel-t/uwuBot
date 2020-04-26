@@ -10,8 +10,8 @@ const Logger = require("./Logger.js");
  */
 module.exports = {
 
-    play: function (message, bot) { //Adds Music to Queue and starts Playing if not playing already
-        play(message, bot);
+    play: function (message) { //Adds Music to Queue and starts Playing if not playing already
+        play(message);
     },
 
     stop: function (message) {     //Stops Music, cleares Queue and leaves Channel
@@ -31,7 +31,6 @@ module.exports = {
     }
 }
 
-var dcbot;
 var Musicdispatcher = {};
 var Musicconnection = {};
 var MusicQueues = {};
@@ -56,16 +55,14 @@ async function playSong(first, Channel) { //Plays a Song
 
 function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
-    dcbot.channels.get(voiceID).join().then(connection => {
+    global.bot.channels.get(voiceID).join().then(connection => {
 
         Musicconnection[Channel.guild.id] = connection;
         playSong(true, Channel);
     });
 }
 
-async function play(message, bot) { //Adds Music to Queue and starts Playing if not playing already
-
-    dcbot = bot;
+async function play(message) { //Adds Music to Queue and starts Playing if not playing already
 
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
@@ -111,7 +108,7 @@ async function play(message, bot) { //Adds Music to Queue and starts Playing if 
 
 function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
     try {
-        dcbot.channels.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
+        global.bot.channels.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
     } catch (ignored) { }
     MusicQueues[guildID] = undefined;
     Musicdispatcher[guildID] = undefined;

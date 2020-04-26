@@ -50,7 +50,7 @@ module.exports = {
     /**
      * @summary inits all settings.json
      */
-    initSettings(bot) {
+    initSettings() {
 
         try {   //Try to create the local Folder
             fs.mkdirSync('Files/local');
@@ -58,7 +58,7 @@ module.exports = {
 
         const initset = require('../Files/initsettings.json');
 
-        for (let guild of bot.guilds) {
+        for (let guild of global.bot.guilds) {
 
             var set;
             try {

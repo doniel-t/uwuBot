@@ -1,4 +1,3 @@
-var dcbot;
 var ogmessage;
 var GameField;
 var gamemessage;
@@ -12,13 +11,12 @@ var isRunning = false;
  * @does creates a Game of Minesweeper with FieldSize² Squares or stops current game
  */
 module.exports = {
-    minesweeper: function (message, bot) {
-        minesweeper(message, bot);
+    minesweeper: function (message) {
+        minesweeper(message);
     }
 }
 
-function minesweeper(message, bot) {    //Starts the Game
-    dcbot = bot;
+function minesweeper(message) {    //Starts the Game
     ogmessage = message;
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
@@ -35,7 +33,7 @@ function minesweeper(message, bot) {    //Starts the Game
 
     if (contentArgs.length == 1) {    //Start a Game with 5, 10 if no Size/Bombs are given
         message.content = '!minesweeper 5';
-        minesweeper(message, bot);
+        minesweeper(message);
         return;
     }
     if (contentArgs[1] > 9) {
@@ -75,7 +73,7 @@ function minesweeper(message, bot) {    //Starts the Game
         updateField(false);
     });
 
-    bot.on('message', listener);
+    global.bot.on('message', listener);
 }
 
 function randomize(size, nBombs) {  //Inits GameField
@@ -281,7 +279,7 @@ function getEmoteLetter(letter) { //Returns an Emoji
 
 function stop() {   //Stops the Game
     updateField(true);
-    dcbot.removeListener('message', listener);
+    global.bot.removeListener('message', listener);
     ogmessage = undefined;
     GameField = undefined;
     gamemessage = undefined;

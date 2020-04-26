@@ -39,8 +39,8 @@ module.exports = {
         });
     },
 
-    checkForLOLGames: function (bot) {
-        autoCheck(bot);
+    checkForLOLGames: function () {
+        autoCheck();
     }
 }
 
@@ -89,7 +89,7 @@ function getleagueName(message) { //Gives back a NameString
     let contentArgs = message.content.split(" ");
 
     if (contentArgs[1] == null) { //Hardcoded Names
-        return require('./name').getName('lol', message.author.username,message.guild.id); //Get name from local/names.json
+        return require('./name').getName('lol', message.author.id,message.guild.id); //Get name from local/names.json
     } else {
         return message.content.substring(contentArgs[0].length + 1); //When Name given
     }
@@ -99,7 +99,7 @@ var RunningGames = []; //Saves which games have already been send
 var Pairs = {}; //Saves Guild to Channel/Name
 var CheckNames = {}; //Saves names which will be send to WS
 
-function autoCheck(bot) {
+function autoCheck() {
 
     let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
@@ -114,7 +114,7 @@ function autoCheck(bot) {
             let bool = true;
     
             try {
-                bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                bool = (global.bot.users.get(name['id']).presence.game.timestamps) && (global.bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
             } catch (ignored) {
                 bool = false;
             }
@@ -123,7 +123,7 @@ function autoCheck(bot) {
             }
         }
     
-        for (let guild of bot.guilds) { //Create Pairs for different Guilds
+        for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
             Pairs[guild[0]] = {
                 id: guild[0],
                 LeagueChannel: Channel.get('League', guild[0]),
@@ -151,7 +151,7 @@ function autoCheck(bot) {
                 let bool = true;
     
                 try {
-                    bool = (bot.users.get(name['id']).presence.game.timestamps) && (bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                    bool = (global.bot.users.get(name['id']).presence.game.timestamps) && (global.bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
                 } catch (ignored) {
                     bool = false;
                 }
@@ -172,7 +172,7 @@ function autoCheck(bot) {
 
         setTimeout(() => { //Loop
             Pairs = {};
-            autoCheck(bot);
+            autoCheck();
         }, 300000);
     });
 

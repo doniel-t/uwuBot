@@ -50,8 +50,8 @@ module.exports = {
         });
     },
 
-    checkForStreams: function (bot) {
-        autoCheck(bot);
+    checkForStreams: function () {
+        autoCheck();
     }
 }
 
@@ -59,11 +59,11 @@ var ActiveStreamers = new Set(); //Saves which games have already been send
 var Pairs = {}; //Saves Guild to Channel/Name
 var CheckNames = {}; //Saves names which will be send to WS
 
-function autoCheck(bot) {
+function autoCheck() {
 
     let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
-    for (let guild of bot.guilds) { //Create Pairs for different Guilds
+    for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
         Pairs[guild[0]] = {
             id: guild[0],
             TwitchChannel: Channel.get('Twitch', guild[0]),
@@ -105,7 +105,7 @@ function autoCheck(bot) {
 
         setTimeout(() => { //Loop
             Pairs = {};
-            autoCheck(bot);
+            autoCheck();
         }, 300000);
     });
 

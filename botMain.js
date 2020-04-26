@@ -1,20 +1,21 @@
 const Discord = require('discord.js');
 const requireDir = require('require-dir');
-const bot = new Discord.Client();
 const Logger = require("./Commands/Logger.js");
 const Admin = require('./Commands/Admin.js');
 const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
 
 const { version } = require('./package.json');
+global.bot = new Discord.Client();
 var BotID;
 var Prefixs = {};
 
-bot.on('ready', () => { //At Startup
-    init(bot); //inits some variables
+
+global.bot.on('ready', () => { //At Startup
+    init(); //inits some variables
 });
 
-bot.on('message', (message) => { //When Message sent
+global.bot.on('message', (message) => { //When Message sent
 
     if (message.author.bot) { return; } //If Author is a Bot, return
 
@@ -35,14 +36,14 @@ bot.on('message', (message) => { //When Message sent
             return;
         }
 
-        if (!commands.play.playKey(message, bot)) { //Checks if command is shortcut for music and plays it
+        if (!commands.play.playKey(message)) { //Checks if command is shortcut for music and plays it
 
-            try {//Example !osurecent calls commands.osurecent.osurecent(message,bot)
+            try {//Example !osurecent calls commands.osurecent.osurecent(message)
 
                 if (command.length == 1) {
-                    commands['Shortcuts'][command](message, bot);
+                    commands['Shortcuts'][command](message);
                 } else {
-                    commands[command][command](message, bot);
+                    commands[command][command](message);
                 }
 
             } catch (error) {
@@ -61,7 +62,7 @@ bot.on('message', (message) => { //When Message sent
             }
 
             if (Admin.isAdmin(message)) {
-                Admin[contentArgs[1]](message, bot);
+                Admin[contentArgs[1]](message);
             } else {
                 Logger.log(message.author.username + " executed an Admin command");
                 message.channel.send('You are not an Admin');
@@ -78,11 +79,11 @@ bot.on('message', (message) => { //When Message sent
     }
 
     if (fh.get('../Files/local/' + message.guild.id + '/settings.json')['emojiDetection']) { //Emoji detection in plain Text
-        commands.emoji.emojiDetection(message, bot);
+        commands.emoji.emojiDetection(message);
     }
 });
 
-bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
+global.bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
     Logger.log('botToken.json is invalid: ' + err);
     return;
 }); //Starts Bot
@@ -104,15 +105,14 @@ module.exports = {
     }
 }
 
-function init(bot) {
+function init() {
 
-    commands.Channel.init(bot); //Init dcbot var in Channel
-    fh.initSettings(bot); //Init dcbot var in fh
-    BotID = '<@!' + bot.user.id + '>'; //Get BotID
+    fh.initSettings(); //Init Settings for all Guilds
+    BotID = '<@!' + global.bot.user.id + '>'; //Get BotID
 
-    bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' }); //Set Bot as online
+    global.bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' }); //Set Bot as online
 
-    for (let guild of bot.guilds) {
+    for (let guild of global.bot.guilds) {
 
         let StandardChannel = commands.Channel.get('Standard', guild[1].id);//Init StandardChannels for all Guilds
 
@@ -122,7 +122,7 @@ function init(bot) {
 
                 if (ch[1].type == 'text') {
                     commands.Channel.set('Standard', ch[1].id, guild[1].id);
-                    StandardChannel = bot.channels.get(ch[1].id);
+                    StandardChannel = global.bot.channels.get(ch[1].id);
                     break;
                 }
             }
@@ -137,7 +137,7 @@ function init(bot) {
     }
 
     //Any Background tasks
-    commands.league.checkForLOLGames(bot);
-    commands.twitch.checkForStreams(bot);
-    commands.Auto.goodbadBot(bot, true);
+    commands.league.checkForLOLGames();
+    commands.twitch.checkForStreams();
+    commands.Auto.goodbadBot();
 }

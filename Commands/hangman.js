@@ -1,6 +1,5 @@
 const Logger = require("./Logger.js");
 
-var dcBot;
 var ogMessage;
 var inputWord = "";
 var hiddenMessage = "";
@@ -11,10 +10,9 @@ var hp = 7; //Amount of failed Tries
  * @does plays a Game of Hangman with the word from users PM or stops it
  */
 module.exports = { //!hangman starts the game
-    hangman: function (message, bot) {
+    hangman: function (message,) {
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
-        dcBot = bot;
         ogMessage = message;
 
         if (contentArgs[1] == 'stop') {
@@ -44,7 +42,7 @@ module.exports = { //!hangman starts the game
             Logger.log(error);
         });
 
-        bot.on('message', listener);
+        global.bot.on('message', listener);
     }
 }
 
@@ -82,7 +80,7 @@ var listener = function (inputLetter) { //Listens to all Messages
 
 function stop() {
     hp = 7;
-    dcBot.removeListener('message', listener);
+    global.bot.removeListener('message', listener);
     ogMessage = undefined;
     inputWord = "";
     hiddenMessage = "";

@@ -7,7 +7,7 @@ const WebSocket = require('ws');
  */
 module.exports = {
 
-    osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
+    osurecent: function (message) { //Gets most recent Play(passed or unpassed)
 
         name = getosuName(message);
 
@@ -75,10 +75,10 @@ module.exports = {
 
 
             emb.addField('Accuracy', Acc + '%', true)
-                .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
-                    .concat(recentScore.counts["100"]).concat(getEmoji('hit100', bot) + " ")
-                    .concat(recentScore.counts["50"]).concat(getEmoji('hit50', bot) + " ")
-                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "), true)
+                .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300') + " ")
+                    .concat(recentScore.counts["100"]).concat(getEmoji('hit100') + " ")
+                    .concat(recentScore.counts["50"]).concat(getEmoji('hit50') + " ")
+                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0') + " "), true)
 
                 .setImage('https://assets.ppy.sh/beatmaps/' + recentScore._beatmap.beatmapSetId + '/covers/cover.jpg');
 
@@ -92,10 +92,10 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username,message.guild.id);
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.id,message.guild.id);
 }
 
-function getEmoji(emojiName, bot) {
-    let emoji = bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
-    return '<:' + emoji.name + ':' + emoji.id + '>'; //Build emojiString
+function getEmoji(emojiName) {
+    let emoji = global.bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
+    return emoji ? '<:' + emoji.name + ':' + emoji.id + '>' : emojiName; //Build emojiString
 }

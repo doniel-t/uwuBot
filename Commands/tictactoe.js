@@ -3,8 +3,8 @@
  * @does play a Game of TicTacToe with a friend or stop it
  */
 module.exports = {
-    tictactoe: function(message, bot) {
-        tictactoe(message, bot);
+    tictactoe: function(message) {
+        tictactoe(message);
     }
 }
 
@@ -13,7 +13,6 @@ var players = [];
 var ogMessage;
 var gameField = [];
 var xTurn = true;
-var dcBot;
 var isRunning = false;
 var nTurns = 0;
 const Emoji = ['❌', '⭕']
@@ -27,20 +26,18 @@ class Player {
 }
 
 function stop() {
-    dcBot.removeListener('message', listener); // finish game 
+    global.Bot.removeListener('message', listener); // finish game 
     isRunning = false;
     xTurn = false;
     ogMessage = undefined;
     fieldMessage = undefined;
     players = [];
     gameField = [];
-    dcBot = undefined;
     nTurns = 0;
 }
 
-function tictactoe(message, bot) {
+function tictactoe(message) {
 
-    dcBot = bot;
     ogMessage = message;
 
     if (isRunning) { //Doesnt start a Game if one is already running
@@ -60,7 +57,7 @@ function tictactoe(message, bot) {
 
     isRunning = true;
     message.channel.send("Only two players can join!\nWrite join to join the game!");
-    dcBot.on('message', listener);
+    global.Bot.on('message', listener);
 }
 
 var listener = function(input) { //Listens to all Messages and ends game

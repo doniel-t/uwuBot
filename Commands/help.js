@@ -170,9 +170,18 @@ function nameHelp(message) {
             }
         }
 
-        if (helpcounter > 0) {
-            message.channel.send(emb);
+        let { validGames } = require('./name');
+        let tmp = 'All valid Games that can be added to the List:\n';
+        console.log(validGames);
+        
+
+        for (let game of validGames) {
+            tmp = tmp.concat(game + '\n');
         }
+
+        emb.addField('Valid Games',tmp);
+        message.channel.send(emb);
+
     } catch (error) {
         Logger.log(error);
         message.channel.send("Error in nameHelp.json");

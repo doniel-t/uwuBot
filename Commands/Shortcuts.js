@@ -7,34 +7,34 @@ const Logger = require('./Logger');
  * @does handels all Shortcuts
  */
 module.exports = { //Redirects Shortcuts to Commands
-    a: function (message, bot) {
-        call('ask', message, bot);
+    a: function (message) {
+        call('ask', message);
     },
-    d: function (message, bot) {
+    d: function (message) {
         message.content = 'dorime';
-        call('play', message, bot);
+        call('play', message);
     },
-    e: function (message, bot) {
-        call('emoji', message, bot);
+    e: function (message) {
+        call('emoji', message);
     },
-    j: function (message, bot) {
-        call('jap', message, bot);
+    j: function (message) {
+        call('jap', message);
     },
-    p: function (message, bot) {
-        call('play', message, bot);
+    p: function (message) {
+        call('play', message);
     },
-    s: function (message, bot) {
-        call('stop', message, bot);
+    s: function (message) {
+        call('stop', message);
     },
-    w: function (message, bot) {
-        call('weebiefy', message, bot);
+    w: function (message) {
+        call('weebiefy', message);
     }
 
 }
 
-function call(name, message, bot) {
+function call(name, message) {
     try {
-        commands[name][name](message, bot);
+        commands[name][name](message);
     } catch (error) {
         Logger.log(error);
         message.channel.send('Command not Found, use !help for help');
