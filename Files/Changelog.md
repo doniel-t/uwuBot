@@ -1,3 +1,6 @@
+4.1.3: 28.04.2020
+    -Fixed league Detection not working
+
 4.1.2: 25.04.2020
     -Emojis are case insensitive
     -Fixed league-Detection

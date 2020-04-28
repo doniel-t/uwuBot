@@ -110,11 +110,10 @@ function autoCheck() {
     ws.on('open', function open() {
 
         for (let nameX in CheckNames) { //Remove name if Person is not inGame
-            let name = CheckNames[nameX];
             let bool = true;
     
             try {
-                bool = (global.bot.users.get(name['id']).presence.game.timestamps) && (global.bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                bool = (global.bot.users.get(nameX).presence.game.timestamps) && (global.bot.users.get(nameX).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
             } catch (ignored) {
                 bool = false;
             }
@@ -151,14 +150,14 @@ function autoCheck() {
                 let bool = true;
     
                 try {
-                    bool = (global.bot.users.get(name['id']).presence.game.timestamps) && (global.bot.users.get(name['id']).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
+                    bool = (global.bot.users.get(nameX).presence.game.timestamps) && (global.bot.users.get(nameX).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
                 } catch (ignored) {
                     bool = false;
                 }
                 
                 if (name['lol'] && bool) { //Has LolName in names.json and is ingame
                     if (!CheckNames[name.lol]) { //Add Name to RequestList
-                        CheckNames[name.lol] = { id: name['id'], guilds: [pair.id] };
+                        CheckNames[name.lol] = { id: nameX, guilds: [pair.id] };
                     } else {
                         CheckNames[name.lol].guilds.push(pair.id);
                     }
