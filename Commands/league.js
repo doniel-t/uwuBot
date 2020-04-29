@@ -28,8 +28,8 @@ module.exports = {
             ws.send('LeagueAPI ' + name);
 
             ws.on('message', function incoming(data) { //Answer
-                if (data == "ERROR") {
-                    message.channel.send('An Error occured or Player isn`t ingame');
+                if (data.startsWith('ERROR')) {
+                    message.channel.send('An Error occured or Player isn`t ingame: ' + data);
                     return;
                 }
 
@@ -177,7 +177,7 @@ function autoCheck() {
 
     ws.on('message', function incoming(data) { //Answer
 
-        if (data == 'ERROR') {
+        if (data.startsWith('ERROR')) {
             return;
         }
 

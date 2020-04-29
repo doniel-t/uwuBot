@@ -23,7 +23,7 @@ module.exports = {
 
         ws.on('message', function incoming(data) { //Answer
 
-            if (data == 'ERROR') {
+            if (data.startsWith('ERROR')) {
                 message.channel.send('An Error occured');
                 return;
             }
