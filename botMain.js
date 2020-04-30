@@ -8,8 +8,9 @@ const fh = require('./Commands/FileHandler');
 const { version } = require('./package.json');
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
+global.guilds = {};
+global.prefix = {};
 var BotID;
-var Prefixs = {};
 
 
 global.bot.on('ready', () => { //At Startup
@@ -22,15 +23,15 @@ global.bot.on('message', (message) => { //When Message sent
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    if (message.content.startsWith(Prefixs[message.guild.id])) {
+    if (message.content.startsWith(global.prefix[message.guild.id])) {
 
-        let command = message.content.substring(Prefixs[message.guild.id].length); //Get commandName
+        let command = message.content.substring(global.prefix[message.guild.id].length); //Get commandName
 
         if (command.indexOf(' ') > 0) {
             command = command.substring(0, command.indexOf(' '));
         }
 
-        message.content = message.content.replace(Prefixs[message.guild.id], '!'); //Replacing Prefix for compability
+        message.content = message.content.replace(global.prefix[message.guild.id], '!'); //Replacing Prefix for compability
 
         if (command.length == 0) {
             message.channel.send('No Command entered');
@@ -79,7 +80,7 @@ global.bot.on('message', (message) => { //When Message sent
         commands.chat.chat(message);
     }
 
-    if (fh.get('../Files/local/' + message.guild.id + '/settings.json')['emojiDetection']) { //Emoji detection in plain Text
+    if (global.guilds[guild[0]]['settings']['emojiDetection']) { //Emoji detection in plain Text
         commands.emoji.emojiDetection(message);
     }
 });
@@ -88,23 +89,6 @@ global.bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
     Logger.log('botToken.json is invalid: ' + err);
     return;
 }); //Starts Bot
-
-module.exports = {
-    /**
-     * @param {String} prefix Any new Prefix
-     * @param {Number} guildID The guildID of the Guild to change
-     */
-    updatePrefix: function (prefix, guildID) {
-        Prefixs[guildID] = prefix;
-    },
-    /**
-     * @param {Number} guildID The guildID of the Guild you want the Prefix from
-     * @returns {Prefix} The searched Prefix
-     */
-    getPrefix: function (guildID) {
-        return Prefixs[guildID];
-    }
-}
 
 function init() {
 
@@ -116,6 +100,13 @@ function init() {
     let names = fh.get('../Files/local/names.json');
 
     for (let guild of global.bot.guilds) {
+
+        //Init Channels for all Guilds
+        let Channels = fh.get('../Files/local/' + guild[0] + '/Channels.json');
+
+        for (let channelname in Channels) {
+            global.guilds[guild[0]][channelname] = Channels[channelname];
+        }
 
         //Init StandardChannels for all Guilds
         let StandardChannel = commands.Channel.get('Standard', guild[1].id);
@@ -134,10 +125,13 @@ function init() {
         }
 
         //Init Prefix for all Guilds
-        Prefixs[guild[0]] = fh.get('../Files/local/' + guild[0] + '/prefix.json');
-        if (Prefixs[guild[0]] == '') {
-            Prefixs[guild[0]] = '!';
+        global.guilds[guild[0]]['prefix'] = fh.get('../Files/local/' + guild[0] + '/prefix.json');
+
+        if (global.guilds[guild[0]]['prefix'] == '') {
+            global.guilds[guild[0]]['prefix'] = '!';
         }
+
+        global.prefix[guild[0]] = global.guilds[guild[0]]['prefix'];
 
         //Init names.json
         for (let member of guild[1].members) {
@@ -159,7 +153,7 @@ function init() {
 
         //Ready Message
         if (!debug) {
-            StandardChannel.send('I am now ready to use: Prefix \'' + Prefixs[guild[0]] + '\'');
+            StandardChannel.send('I am now ready to use: Prefix \'' + global.guilds[guild[0]]['prefix'] + '\'');
         }
     }
 

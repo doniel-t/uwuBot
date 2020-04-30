@@ -37,8 +37,7 @@ module.exports = {
 
 function get(name, guildID) {
    try {
-      let Channels = fh.get('../Files/local/' + guildID + '/Channels.json');   
-      return global.bot.channels.get(Channels[name]);
+      return global.bot.channels.get(global.guilds[guildID][name]);
 
    } catch (err) {     
       Logger.log(err);
@@ -48,6 +47,7 @@ function get(name, guildID) {
 
 function set(name, channelID, guildID) {
    try {
+      global.guilds[guildID][name] = channelID;
       let Channels = fh.get('../Files/local/' + guildID + '/Channels.json');
       Channels[name] = channelID;
       return fh.write('Channels.json', Channels, guildID);
@@ -68,7 +68,7 @@ function getAll(name) {
 function sendAll(name, msg) {
    for (let guild of global.bot.guilds) {
       try {
-         get(name, guild[1].id).send(msg);
+         get(name, guild[0]).send(msg);
       }catch (ignored) {}
    }
 }

@@ -3,6 +3,8 @@
 4.1.4: 30.04.2020
     -Refractored league Detection
     -Refractored name to botwide Names
+    -Made Settings/Prefix/Channels global Object
+    -Added Documentation
     -Added DebugMode
 
 4.1.3: 28.04.2020

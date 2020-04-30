@@ -148,7 +148,7 @@ module.exports = {
      */
     settings: function (message) {
 
-        var Settings = fh.get('../Files/local/' + message.guild.id + '/settings.json'); //Get Settings
+        var Settings = global.guilds[message.guild.id]['settings']; //Get Settings
         var Emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⬜'];
         var etn = {};
         var msg;
@@ -157,8 +157,8 @@ module.exports = {
             var emb = new Discord.RichEmbed().setTitle('Settings (Will be removed after 5 minutes)');
 
             let i = 0;
-            for (let setting in Settings) {
-                emb.addField(Emojis[i] + ' ' + setting, Settings[setting]);
+            for (let setting in global.guilds[message.guild.id]['settings']) {
+                emb.addField(Emojis[i] + ' ' + setting, global.guilds[message.guild.id]['settings'][setting]);
                 etn[Emojis[i]] = setting;
                 i++;
             }
@@ -169,7 +169,7 @@ module.exports = {
 
             emoji.users.delete(global.bot.user.id);
 
-            if (Settings[etn[emoji._emoji.name]] == undefined) {
+            if (global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] == undefined) {
                 return;
             }
 
@@ -179,14 +179,14 @@ module.exports = {
 
                     msg.clearReactions();
 
-                    Settings[etn[emoji._emoji.name]] = !Settings[etn[emoji._emoji.name]];
+                    global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] = !global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]];
 
-                    if (!fh.write('settings.json', Settings, message.guild.id)) { //Save Settings to settings.json
+                    if (!fh.write('settings.json', global.guilds[message.guild.id]['settings'], message.guild.id)) { //Save Settings to settings.json
                         message.channel.send('An Error occured while saving Settings');
                     }
 
                     msg.edit(writeMessage());
-                    for (let x = 0; x < Object.keys(Settings).length; x++) {
+                    for (let x = 0; x < Object.keys(global.guilds[message.guild.id]['settings']).length; x++) {
                         msg.react(Emojis[x]);
                     }
                 }
@@ -196,7 +196,7 @@ module.exports = {
         message.channel.send(writeMessage()).then(ans => {
             msg = ans;
 
-            for (let x = 0; x < Object.keys(Settings).length; x++) {
+            for (let x = 0; x < Object.keys(global.guilds[message.guild.id]['settings']).length; x++) {
                 ans.react(Emojis[x]);
             }
 
@@ -268,15 +268,13 @@ module.exports = {
 
         message.channel.send('Changed Prefix to: ' + prefix);
         Channel.get('Standard', message.guild.id).send(message.author.username + ' changed the Prefix to: \'' + prefix + '\'');
-        let { updatePrefix } = require('../botMain');
-        updatePrefix(prefix, message.guild.id);
+        global.guilds[message.guild.id]['prefix'] = prefix;
     },
     /**
      * @returns Prefix to DiscordChat
      */
     getPrefix: function (message) {
-        let { getPrefix } = require('../botMain');
-        message.channel.send(getPrefix(message.guild.id));
+        message.channel.send(global.guilds[message.guild.id]['prefix']);
     }
 }
 

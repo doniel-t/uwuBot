@@ -10,6 +10,7 @@ module.exports = {
     /**
      * @summary Failsafe require(Path)
      * @param {string} Path eg '../Files/local/FILENAME'
+     * @hint dont get any settings.json, use the global.guilds instead
      */
     get: function (Path) {
 
@@ -60,7 +61,9 @@ module.exports = {
 
         for (let guild of global.bot.guilds) {
 
-            var set;
+            global.guilds[guild[0]] = {}; //Init global.guilds
+
+            let set = undefined;
             try {
                 set = require('../Files/local/' + guild[0] + '/settings.json'); //Test if settings.json is valid
 
@@ -72,7 +75,7 @@ module.exports = {
 
                 try {
                     fs.writeFileSync('Files/local/' + guild[0] + '/settings.json', JSON.stringify(initset)); //Create settings.json
-                    set = undefined;
+                    global.guilds[guild[0]]['settings'] = set; //Init global.guilds.settings
                     continue;
                 } catch (error) {
                     Logger.log(error);
@@ -90,7 +93,7 @@ module.exports = {
             } catch (error) {
                 Logger.log(error);
             }
-            set = undefined;
+            global.guilds[guild[0]]['settings'] = set; //Init global.guilds.settings
         }
     }
 }

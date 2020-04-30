@@ -8,7 +8,7 @@ const talkedRecently = new Set();
 module.exports = {
     neko: function (message) {
 
-        if (!fh.get('../Files/local/' + message.guild.id + '/settings.json').canspamneko) {
+        if (!global.guilds[message.guild.id].settings.canspamneko) {
 
             if (talkedRecently.has(message.author.id)) {
                 message.channel.send("Wait 15 Seconds before typing this again. - " + message.author);

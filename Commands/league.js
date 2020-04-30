@@ -44,7 +44,7 @@ module.exports = {
         global.bot.on("presenceUpdate", function (_, newMember) {
             try {
                 if (newMember.user.presence.game.name == 'League of Legends') {
-                    if (newMember.user.presence.assets.largeText) {
+                    if (newMember.user.presence.game.assets.largeText) { //Shows Champion of Player only in LoadingScreen/InGame
                         checkPlayer(newMember.user.id);
                     }
                 }
@@ -112,10 +112,11 @@ var NameStack = [];
 function checkPlayer(user) {
 
     if (first) {
-        NameStack = [user.id];
+        first = false;
+        NameStack = [user];
     } else {
-        if (!NameStack.includes(user.id)) {
-            NameStack.push(user.id); //Add name to List        
+        if (!NameStack.includes(user)) {
+            NameStack.push(user); //Add name to List        
         }
         return;
     }
@@ -140,8 +141,8 @@ function checkPlayer(user) {
 
             for (let id of NameStack) { //Check every id of NameStack
                 if (names[id]) {
-                    if (names[id][lol]) {
-                        ws.send('LeagueAPI ' + names[id][lol]);
+                    if (names[id]['lol']) {
+                        ws.send('LeagueAPI ' + names[id]['lol']);
                     }
                 }
             }
@@ -158,15 +159,24 @@ function checkPlayer(user) {
 
             //response[0] == gameID
             //response[1] == gameObject
-            //response[2] == userID
+            //response[2] == ingame name of requester
 
             if (!RunningGames.includes(response[0])) { //Dont send message if there is already a message with this game   
 
                 RunningGames.push(response[0]);
 
-                for (let id of names[response[2]].guilds) { //Send GameMessage to corresponding Guilds
+                let nameIndex = '';
 
-                    if (!fh.get('../Files/local/' + id + '/settings.json').checkForLOLGames) { //Ignore Guilds with Settings off
+                for (let name in names) {
+                    if (names[name].lol == response[2]) {
+                        nameIndex = names[name];
+                        break;
+                    }
+                }
+
+                for (let id of nameIndex.guilds) { //Send GameMessage to corresponding Guilds
+
+                    if (!global.guilds[id].settings.checkForLOLGames) { //Ignore Guilds with Settings off
                         continue;
                     }
 
