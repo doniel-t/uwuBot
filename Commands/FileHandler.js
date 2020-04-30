@@ -110,15 +110,15 @@ function create(Path) {
 
         case 'counter.json': //Only one per Bot
             writeFile('Files/local/botToken.json', { "good": 0, "bad": 0, "called": false });
-            return;
+            return { "good": 0, "bad": 0, "called": false };
 
         case 'botToken.json': //Only one per Bot
             writeFile('Files/local/botToken.json', { "token": "" });
-            return;
+            return { "token": "" };
 
         case 'whatToDraw.json': //Only one per Bot
             writeFile('Files/local/whatToDraw.json', []);
-            return;
+            return [];
 
         case 'Streamers.json':
         case 'Admins.json':
@@ -133,7 +133,7 @@ function create(Path) {
 
         case 'names.json':
             writeFile('Files/local/names.json', {});
-            return;
+            return {};
         case 'Channels.json':
             File = {};
             break;
