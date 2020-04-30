@@ -80,7 +80,7 @@ global.bot.on('message', (message) => { //When Message sent
         commands.chat.chat(message);
     }
 
-    if (global.guilds[guild[0]]['settings']['emojiDetection']) { //Emoji detection in plain Text
+    if (global.guilds[message.guild.id]['settings']['emojiDetection']) { //Emoji detection in plain Text
         commands.emoji.emojiDetection(message);
     }
 });
