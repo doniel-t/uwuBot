@@ -92,7 +92,7 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.id,message.guild.id);
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.id);
 }
 
 function getEmoji(emojiName) {

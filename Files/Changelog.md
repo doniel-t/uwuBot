@@ -1,3 +1,10 @@
+//SET DEBUG TO FALSE AGAIN
+
+4.1.4: 30.04.2020
+    -Refractored league Detection
+    -Refractored name to botwide Names
+    -Added DebugMode
+
 4.1.3: 28.04.2020
     -Fixed league Detection not working
     -Fixed WebSocket-Error-Handling

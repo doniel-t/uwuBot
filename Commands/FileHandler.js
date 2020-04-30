@@ -132,6 +132,8 @@ function create(Path) {
             break;
 
         case 'names.json':
+            writeFile('Files/local/names.json', {});
+            return;
         case 'Channels.json':
             File = {};
             break;

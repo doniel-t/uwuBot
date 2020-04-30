@@ -17,7 +17,7 @@ module.exports = {
             message.channel.send('No name specified');
             return;
         }
-        
+
         let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
         ws.on('error', function error() {
@@ -40,7 +40,16 @@ module.exports = {
     },
 
     checkForLOLGames: function () {
-        autoCheck();
+
+        global.bot.on("presenceUpdate", function (_, newMember) {
+            try {
+                if (newMember.user.presence.game.name == 'League of Legends') {
+                    if (newMember.user.presence.assets.largeText) {
+                        checkPlayer(newMember.user.id);
+                    }
+                }
+            } catch (ignored) { } //Not in a game
+        });
     }
 }
 
@@ -89,7 +98,7 @@ function getleagueName(message) { //Gives back a NameString
     let contentArgs = message.content.split(" ");
 
     if (contentArgs[1] == null) { //Hardcoded Names
-        return require('./name').getName('lol', message.author.id,message.guild.id); //Get name from local/names.json
+        return require('./name').getName('lol', message.author.id); //Get name from local/names.json
     } else {
         return message.content.substring(contentArgs[0].length + 1); //When Name given
     }
@@ -97,99 +106,78 @@ function getleagueName(message) { //Gives back a NameString
 
 var RunningGames = []; //Saves which games have already been send
 var Pairs = {}; //Saves Guild to Channel/Name
-var CheckNames = {}; //Saves names which will be send to WS
+var first = true;
+var NameStack = [];
 
-function autoCheck() {
+function checkPlayer(user) {
 
-    let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-
-    ws.on('error', function error() {
-        Channel.sendAll('League', 'League: Websocket-Server is unreachable');
-    });
-
-    ws.on('open', function open() {
-
-        for (let nameX in CheckNames) { //Remove name if Person is not inGame
-            let bool = true;
-    
-            try {
-                bool = (global.bot.users.get(nameX).presence.game.timestamps) && (global.bot.users.get(nameX).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
-            } catch (ignored) {
-                bool = false;
-            }
-            if (!bool) {
-                delete CheckNames[nameX];
-            }
+    if (first) {
+        NameStack = [user.id];
+    } else {
+        if (!NameStack.includes(user.id)) {
+            NameStack.push(user.id); //Add name to List        
         }
-    
-        for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
-            Pairs[guild[0]] = {
-                id: guild[0],
-                LeagueChannel: Channel.get('League', guild[0]),
-                StandardChannel: Channel.get('Standard', guild[0]),
-                Names: fh.get('../Files/local/' + guild[0] + '/names.json')
-            };
-        }
-        
-        for (let p in Pairs) { //Create Object with LoL-Name with Array of Guilds
-    
-            let pair = Pairs[p];
-            
-            if (!fh.get('../Files/local/' + pair.id + '/settings.json').checkForLOLGames) { //Ignore Guilds with Settings off
-                continue;
+        return;
+    }
+
+
+    setTimeout(_ => { //Wait a second for more PresenceUpdates
+        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let names = fh.get('../Files/local/names.json')
+
+        ws.on('error', function error() {
+            Channel.sendAll('League', 'League: Websocket-Server is unreachable');
+        });
+
+        ws.on('open', function open() {
+
+            for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
+                Pairs[guild[0]] = {
+                    LeagueChannel: Channel.get('League', guild[0]),
+                    StandardChannel: Channel.get('Standard', guild[0]),
+                };
             }
-    
-            if (!pair.LeagueChannel && pair.StandardChannel) { //Ignore Guilds with missing Channels
-                pair.StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
-                continue;
-            }
-    
-            for (let nameX in pair.Names) { //Add names to RequestList
-                let name = pair.Names[nameX];
-    
-                let bool = true;
-    
-                try {
-                    bool = (global.bot.users.get(nameX).presence.game.timestamps) && (global.bot.users.get(nameX).presence.game.name == 'League of Legends'); //Test if DiscordUser is ingame
-                } catch (ignored) {
-                    bool = false;
-                }
-                
-                if (name['lol'] && bool) { //Has LolName in names.json and is ingame
-                    if (!CheckNames[name.lol]) { //Add Name to RequestList
-                        CheckNames[name.lol] = { id: nameX, guilds: [pair.id] };
-                    } else {
-                        CheckNames[name.lol].guilds.push(pair.id);
+
+            for (let id of NameStack) { //Check every id of NameStack
+                if (names[id]) {
+                    if (names[id][lol]) {
+                        ws.send('LeagueAPI ' + names[id][lol]);
                     }
                 }
             }
-        }
+            first = true;
+        });
 
-        for (let name in CheckNames) { //Send RequestList   
-            ws.send('LeagueAPI ' + name);
-        }
+        ws.on('message', function incoming(data) { //Answer
 
-        setTimeout(() => { //Loop
-            Pairs = {};
-            autoCheck();
-        }, 300000);
-    });
-
-    ws.on('message', function incoming(data) { //Answer
-
-        if (data.startsWith('ERROR')) {
-            return;
-        }
-
-        let response = JSON.parse(data);
-
-        if (!RunningGames.includes(response[0])) { //Dont send message if there is already a message with this game   
-
-            for (let id of CheckNames[response[2]].guilds) { //Send GameMessage to corresponding Guilds
-                
-                Pairs[id].LeagueChannel.send(makeEmbed(response[1]));
+            if (data.startsWith('ERROR')) {
+                return;
             }
-            RunningGames.push(response[0]);
-        }
-    });
+
+            let response = JSON.parse(data);
+
+            //response[0] == gameID
+            //response[1] == gameObject
+            //response[2] == userID
+
+            if (!RunningGames.includes(response[0])) { //Dont send message if there is already a message with this game   
+
+                RunningGames.push(response[0]);
+
+                for (let id of names[response[2]].guilds) { //Send GameMessage to corresponding Guilds
+
+                    if (!fh.get('../Files/local/' + id + '/settings.json').checkForLOLGames) { //Ignore Guilds with Settings off
+                        continue;
+                    }
+
+                    if (!Pairs[id].LeagueChannel && Pairs[id].StandardChannel) { //Ignore Guilds with missing Channels
+                        Pairs[id].StandardChannel.send('Please set a LeagueChannel or disable checkForLOLGames in Settings');
+                        continue;
+                    }
+
+                    Pairs[id].LeagueChannel.send(makeEmbed(response[1]));
+                }
+            }
+        });
+    }, 1000)
 }

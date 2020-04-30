@@ -6,6 +6,7 @@ const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
 
 const { version } = require('./package.json');
+const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 var BotID;
 var Prefixs = {};
@@ -28,7 +29,7 @@ global.bot.on('message', (message) => { //When Message sent
         if (command.indexOf(' ') > 0) {
             command = command.substring(0, command.indexOf(' '));
         }
-        
+
         message.content = message.content.replace(Prefixs[message.guild.id], '!'); //Replacing Prefix for compability
 
         if (command.length == 0) {
@@ -112,9 +113,12 @@ function init() {
 
     global.bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' }); //Set Bot as online
 
+    let names = fh.get('../Files/local/names.json');
+
     for (let guild of global.bot.guilds) {
 
-        let StandardChannel = commands.Channel.get('Standard', guild[1].id);//Init StandardChannels for all Guilds
+        //Init StandardChannels for all Guilds
+        let StandardChannel = commands.Channel.get('Standard', guild[1].id);
 
         if (!StandardChannel) { //AutoPick a StandardChannel if none is set
 
@@ -129,15 +133,42 @@ function init() {
             StandardChannel.send('I have automatically picked this Channel as StandardChannel.\nYou can change it with setStandardChannel');
         }
 
-        Prefixs[guild[0]] = fh.get('../Files/local/' + guild[0] + '/prefix.json'); //Init Prefix
+        //Init Prefix for all Guilds
+        Prefixs[guild[0]] = fh.get('../Files/local/' + guild[0] + '/prefix.json');
         if (Prefixs[guild[0]] == '') {
             Prefixs[guild[0]] = '!';
         }
-        StandardChannel.send('I am now ready to use: Prefix \'' + Prefixs[guild[0]] + '\'');
+
+        //Init names.json
+        for (let member of guild[1].members) {
+
+            if (!names[member[1].user.id]) { //Create User
+                names[member[1].user.id] = {};
+            }
+
+            if (!names[member[1].user.id]['guilds']) { //Create guilds Array
+                names[member[1].user.id]['guilds'] = [guild[0]];
+
+            } else {
+
+                if (!names[member[1].user.id]['guilds'].includes(guild[0])) { //Add guildID to guilds Array
+                    names[member[1].user.id]['guilds'].push(guild[0]);
+                }
+            }
+        }
+
+        //Ready Message
+        if (!debug) {
+            StandardChannel.send('I am now ready to use: Prefix \'' + Prefixs[guild[0]] + '\'');
+        }
     }
 
+    fh.write('names.json', names); //Write names back to names.json
+
     //Any Background tasks
-    commands.league.checkForLOLGames();
-    commands.twitch.checkForStreams();
-    commands.Auto.goodbadBot();
+    if (!debug) {
+        commands.league.checkForLOLGames();
+        commands.twitch.checkForStreams();
+        commands.Auto.goodbadBot();
+    }
 }

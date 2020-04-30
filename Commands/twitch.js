@@ -63,41 +63,42 @@ function autoCheck() {
 
     let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
 
-    for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
-        Pairs[guild[0]] = {
-            id: guild[0],
-            TwitchChannel: Channel.get('Twitch', guild[0]),
-            StandardChannel: Channel.get('Standard', guild[0])
-        };
-    }
-
-    for (let p in Pairs) {
-        let pair = Pairs[p];
-
-        if (!fh.get('../Files/local/' + pair.id + '/settings.json').checkForTwitchStreams) { //Ignore Guilds with Settings off
-            continue;
-        }
-
-        if (!pair.TwitchChannel && pair.StandardChannel) { //Ignore Guilds with missing Channels
-            pair.StandardChannel.send('Please set a TwitchChannel or disable checkForLOLGames in Settings');
-            continue;
-        }
-
-        for (let streamer of fh.get('../Files/local/' + pair.id + '/Streamers.json')) {
-
-            if (!CheckNames[streamer]) { //Add Name to RequestList
-                CheckNames[streamer] = [pair.id];
-            } else {
-                CheckNames[streamer].push(pair.id);
-            }
-        }
-    }   
 
     ws.on('error', function error() {
         Channel.sendAll('Twitch', 'Twitch: Websocket-Server is unreachable');
     });
 
     ws.on('open', function open() {
+
+        for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
+            Pairs[guild[0]] = {
+                id: guild[0],
+                TwitchChannel: Channel.get('Twitch', guild[0]),
+                StandardChannel: Channel.get('Standard', guild[0])
+            };
+        }
+
+        for (let p in Pairs) {
+            let pair = Pairs[p];
+
+            if (!fh.get('../Files/local/' + pair.id + '/settings.json').checkForTwitchStreams) { //Ignore Guilds with Settings off
+                continue;
+            }
+
+            if (!pair.TwitchChannel && pair.StandardChannel) { //Ignore Guilds with missing Channels
+                pair.StandardChannel.send('Please set a TwitchChannel or disable checkForLOLGames in Settings');
+                continue;
+            }
+
+            for (let streamer of fh.get('../Files/local/' + pair.id + '/Streamers.json')) {
+
+                if (!CheckNames[streamer]) { //Add Name to RequestList
+                    CheckNames[streamer] = [pair.id];
+                } else {
+                    CheckNames[streamer].push(pair.id);
+                }
+            }
+        }
 
         for (let name in CheckNames) { //Send RequestList
             ws.send('TwitchAPI ' + name);
