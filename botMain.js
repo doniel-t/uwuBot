@@ -9,7 +9,6 @@ const { version } = require('./package.json');
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
-global.prefix = {};
 var BotID;
 
 
@@ -23,15 +22,15 @@ global.bot.on('message', (message) => { //When Message sent
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-    if (message.content.startsWith(global.prefix[message.guild.id])) {
+    if (message.content.startsWith(global.guilds[message.guild.id]['prefix'])) {
 
-        let command = message.content.substring(global.prefix[message.guild.id].length); //Get commandName
+        let command = message.content.substring(global.guilds[message.guild.id]['prefix'].length); //Get commandName
 
         if (command.indexOf(' ') > 0) {
             command = command.substring(0, command.indexOf(' '));
         }
 
-        message.content = message.content.replace(global.prefix[message.guild.id], '!'); //Replacing Prefix for compability
+        message.content = message.content.replace(global.guilds[message.guild.id]['prefix'], '!'); //Replacing Prefix for compability
 
         if (command.length == 0) {
             message.channel.send('No Command entered');
@@ -130,8 +129,6 @@ function init() {
         if (global.guilds[guild[0]]['prefix'] == '') {
             global.guilds[guild[0]]['prefix'] = '!';
         }
-
-        global.prefix[guild[0]] = global.guilds[guild[0]]['prefix'];
 
         //Init names.json
         for (let member of guild[1].members) {
