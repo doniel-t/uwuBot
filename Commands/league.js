@@ -44,10 +44,13 @@ module.exports = {
         global.bot.on("presenceUpdate", function (_, newMember) {
             try {
                 if (newMember.user.presence.game.name == 'League of Legends') {
-                    if (newMember.user.presence.game.assets.largeText) { //Shows Champion of Player only in LoadingScreen/InGame
+                    if (newMember.user.presence.game.assets.largeText && !inGamePlayers.has(newMember.user.id)) { //Shows Champion of Player only in LoadingScreen/InGame
                         checkPlayer(newMember.user.id);
+                        return;
                     }
                 }
+                checkedPlayers.delete(newMember.user.id);
+                inGamePlayers.delete(newMember.user.id); //Remove Player if he isnt ingame
             } catch (ignored) { } //Not in a game
         });
     }
@@ -104,20 +107,19 @@ function getleagueName(message) { //Gives back a NameString
     }
 }
 
-var RunningGames = []; //Saves which games have already been send
+var RunningGames = []; //Saves which games have already been sent
 var Pairs = {}; //Saves Guild to Channel/Name
 var first = true;
-var NameStack = [];
+var inGamePlayers = new Set(); //Players that are inGame
+var checkedPlayers = new Set(); //Players that have been checked
 
 function checkPlayer(user) {
 
+    inGamePlayers.add(user);
+
     if (first) {
         first = false;
-        NameStack = [user];
     } else {
-        if (!NameStack.includes(user)) {
-            NameStack.push(user); //Add name to List        
-        }
         return;
     }
 
@@ -139,8 +141,9 @@ function checkPlayer(user) {
                 };
             }
 
-            for (let id of NameStack) { //Check every id of NameStack
-                if (names[id]) {
+            for (let id of inGamePlayers) { //Check every id of NameStack
+                if (names[id] && !checkedPlayers.has(id)) {
+                    checkedPlayers.add(id);
                     if (names[id]['lol']) {
                         ws.send('LeagueAPI ' + names[id]['lol']);
                     }

@@ -43,7 +43,7 @@ global.bot.on('message', (message) => { //When Message sent
             try {//Example !osurecent calls commands.osurecent.osurecent(message)
 
                 if (command.length == 1) {
-                    commands['Shortcuts'][command](message);
+                    commands['Shortcuts']['Shortcuts'](message,commands,command);
                 } else {
                     commands[command][command](message);
                 }
