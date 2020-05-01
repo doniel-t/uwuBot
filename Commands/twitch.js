@@ -28,7 +28,7 @@ module.exports = {
 
         }
 
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
         let name = message.content.substring(contentArgs[0].length + 1);
 
         ws.on('error', function error() {
@@ -61,7 +61,7 @@ var CheckNames = {}; //Saves names which will be send to WS
 
 function autoCheck() {
 
-    let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+    let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
 
 
     ws.on('error', function error() {

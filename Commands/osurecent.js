@@ -16,7 +16,7 @@ module.exports = {
             return;
         }
         
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
 
         ws.on('open', function open() { //Request
 

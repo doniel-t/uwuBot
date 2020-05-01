@@ -9,6 +9,7 @@ const { version } = require('./package.json');
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
+global.wsip = 'ws://leftdoge.de:60001';
 var BotID;
 
 

@@ -6,7 +6,6 @@
         - Commands that are not accessable like Music should start with a UpperCase letter
     - global.bot saves the Discord.Client
     - global.guilds saves Channels/settings/prefix, so you dont have to require them everytime -> global.guilds[message.guild.id]['settings']
-    - global.prefix saves all prefixs -> global.prefix[message.guild.id]
     - botMain.debug disables readyMessage and BackgroundTasks, so debugging doesnt spam chats
 
 

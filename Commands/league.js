@@ -18,7 +18,7 @@ module.exports = {
             return;
         }
 
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
 
         ws.on('error', function error() {
             message.channel.send('Websocket-Server is unreachable');
@@ -125,7 +125,7 @@ function checkPlayer(user) {
 
 
     setTimeout(_ => { //Wait a second for more PresenceUpdates
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
         let names = fh.get('../Files/local/names.json')
 
         ws.on('error', function error() {
