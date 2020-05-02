@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.1.6: 02.05.2020
+    -Added better Title to league-Embed    
+
 4.1.5: 01.05.2020
     -Refractored Shortcuts.js
     -Changed league Detection

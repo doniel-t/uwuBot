@@ -33,7 +33,9 @@ module.exports = {
                     return;
                 }
 
-                message.channel.send(makeEmbed(JSON.parse(data)[1]));
+                let game =  JSON.parse(data);
+
+                message.channel.send(makeEmbed(game[1],game[3]));
                 ws.close();
             });
         });
@@ -56,8 +58,8 @@ module.exports = {
     }
 }
 
-function makeEmbed(players) {
-    return new Discord.RichEmbed().setColor('#0099ff').setTitle("League Game")
+function makeEmbed(players,gameInfo) {
+    return new Discord.RichEmbed().setColor('#0099ff').setTitle(gameInfo)
 
         .addField("Blue Team", '[' + players[0].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[0].name.replace(/ /g, '_') + ')\n' +
             '[' + players[1].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[1].name.replace(/ /g, '_') + ')\n' +
@@ -164,8 +166,9 @@ function checkPlayer(user) {
             let response = JSON.parse(data);
 
             //response[0] == gameID
-            //response[1] == gameObject
+            //response[1] == Players-Array
             //response[2] == ingame name of requester
+            //response[3] == gameInfo
 
             if (!RunningGames.includes(response[0])) { //Dont send message if there is already a message with this game   
 
@@ -191,7 +194,7 @@ function checkPlayer(user) {
                         continue;
                     }
 
-                    Pairs[id].LeagueChannel.send(makeEmbed(response[1]));
+                    Pairs[id].LeagueChannel.send(makeEmbed(response[1],response[3]));
                 }
             }
             if (sentRequests == 0) {
