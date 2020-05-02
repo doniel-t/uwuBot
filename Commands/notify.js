@@ -18,6 +18,7 @@ module.exports = {
                 return;
             }
             let userId = message.author.id;
+            message.channel.send('I will notify you in ' + splitTime[0] + ':' + splitTime[1]);
             setTimeout(() => { message.channel.send("<@" + userId + "> " + notification) }, time);
         } catch (ignored) {
             message.channel.send("You used the wrong syntax! Use !help for help");
