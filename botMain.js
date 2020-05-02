@@ -9,9 +9,13 @@ const { version } = require('./package.json');
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
-global.wsip = 'ws://leftdoge.de:60001';
+global.wsip = 'ws://leftdoge.de:60001'; //IP thats used for every WS-Call
 var BotID;
 
+global.bot.on('error', err => { //ErrorHandling
+    console.error('\nBot crashed, see LogFile for more info\n');
+    Logger.log(err);
+})
 
 global.bot.on('ready', () => { //At Startup
     init(); //inits some variables

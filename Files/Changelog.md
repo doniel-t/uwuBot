@@ -5,6 +5,7 @@
     -Changed league Detection
     -Fixed Prefix change not working
     -Made WebsocketIp as global Object for easy swap
+    -Added bot.on('error')
 
 4.1.4: 30.04.2020
     -Refractored league Detection
