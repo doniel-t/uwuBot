@@ -112,6 +112,7 @@ var Pairs = {}; //Saves Guild to Channel/Name
 var first = true;
 var inGamePlayers = new Set(); //Players that are inGame
 var checkedPlayers = new Set(); //Players that have been checked
+var sentRequests = 0;
 
 function checkPlayer(user) {
 
@@ -143,8 +144,8 @@ function checkPlayer(user) {
 
             for (let id of inGamePlayers) { //Check every id of NameStack
                 if (names[id] && !checkedPlayers.has(id)) {
-                    checkedPlayers.add(id);
                     if (names[id]['lol']) {
+                        sentRequests++;
                         ws.send('LeagueAPI ' + names[id]['lol']);
                     }
                 }
@@ -153,6 +154,8 @@ function checkPlayer(user) {
         });
 
         ws.on('message', function incoming(data) { //Answer
+
+            sentRequests--;
 
             if (data.startsWith('ERROR')) {
                 return;
@@ -190,6 +193,9 @@ function checkPlayer(user) {
 
                     Pairs[id].LeagueChannel.send(makeEmbed(response[1]));
                 }
+            }
+            if (sentRequests == 0) {
+                ws.close();
             }
         });
     }, 1000)
