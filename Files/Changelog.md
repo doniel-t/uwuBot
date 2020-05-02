@@ -6,6 +6,7 @@
     -Fixed Prefix change not working
     -Made WebsocketIp as global Object for easy swap
     -Added bot.on('error')
+    -Made Logger display objects
 
 4.1.4: 30.04.2020
     -Refractored league Detection
