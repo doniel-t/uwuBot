@@ -1,3 +1,66 @@
+//CHANGE VERSION && SET DEBUG TO FALSE AGAIN
+
+4.2.0: 02.05.2020
+    -Added ping Command
+    -Updated ffmpeg-static to 4.2.0
+
+4.1.6: 02.05.2020
+    -Added better Title to league-Embed    
+    -Added ConfirmationMessage to notify
+
+4.1.5: 01.05.2020
+    -Refractored Shortcuts.js
+    -Changed league Detection
+    -Fixed Prefix change not working
+    -Made WebsocketIp as global Object for easy swap
+    -Added bot.on('error')
+    -Made Logger display objects
+
+4.1.4: 30.04.2020
+    -Refractored league Detection
+    -Refractored name to botwide Names
+    -Made Settings/Prefix/Channels global Object
+    -Added Documentation
+    -Added DebugMode
+
+4.1.3: 28.04.2020
+    -Fixed league Detection not working
+    -Fixed WebSocket-Error-Handling
+
+4.1.2: 25.04.2020
+    -Emojis are case insensitive
+    -Fixed league-Detection
+    -Updated ws to 7.2.5
+    -Updated run.bat
+    -Fixed error when trying to merge with package.json/package-lock.json
+    -Made validGames in !help name dynamic
+    -Names are now safe via ID, not DiscordName
+    -Made bot a global variable and replaced it everywhere
+
+4.1.1: 24.04.2020
+    -Fixed Commands without args not working
+
+4.1.0: 24.04.2020
+    -Custom Prefix for every Server
+    -Updated ytdl-core to 2.1.1
+
+4.0.1: 24.04.2020
+    -Fixed error in FileHandler.create
+    -Added FailSafes to name.getName Calls
+    -Fixed twitch.checkForStreams
+
+4.0.0: 23.04.2020
+    -Added MultiServer-Support
+    -Added Auto.getTimeUntil for future use
+    -Added FileHandler.initSettings
+    -Removed FileHandler.getSettings
+    -Fixed neko Command
+    -Added Channel.js for Handling Channels
+    -Added Admin.addAdmin/Admin.removeAdmin per Server
+    -Made Music/league/twitch/name/FileHandler/Auto/Admin/neko/osuplays/osurecent MultiServer-functional
+    -Added ws.close() to every WS-Connection
+    -Changed Changelog to Changelog.md
+
 3.7.10: 21.04.2020
     -Changed some unefficient Code
     -Refractored weebiefy.js
@@ -64,7 +127,7 @@
     -Refractored all toggleX commands to settings
 
 3.6.0: 01.04.2020
-    -Added rng
+    -Added rng Command
 
 3.5.1: 01.04.2020
     -Fixed an error in jap Translator

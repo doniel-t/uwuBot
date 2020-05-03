@@ -5,8 +5,8 @@ const Music = require('./Music.js');
  * @does pauses current Song
  */
 module.exports = {
-    pause: function () {
+    pause: function (message) {
 
-        Music.pause(); //All Logic is in Music
+        Music.pause(message); //All Logic is in Music
     }
 }

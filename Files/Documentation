@@ -1,0 +1,16 @@
+
+
+1.General
+    - To create a new Command, install the vs-extension and run 'create-template'-Command
+        - Commands that are accessable for everyone are lowerCase
+        - Commands that are not accessable like Music should start with a UpperCase letter
+    - global.bot saves the Discord.Client
+    - global.guilds saves Channels/settings/prefix, so you dont have to require them everytime -> global.guilds[message.guild.id]['settings']
+    - botMain.debug disables readyMessage and BackgroundTasks, so debugging doesnt spam chats
+
+
+2.FileHandler
+    - Any Files you write should be in Files/local/
+    - fh.get('../Files/local/counter.json') gives you a Object
+    - fh.write('file.json',OBJECT,guildID) 
+        -only add the guildID if the File differs from Server to Server

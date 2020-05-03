@@ -7,11 +7,16 @@ const WebSocket = require('ws');
  */
 module.exports = {
 
-    osurecent: function (message, bot) { //Gets most recent Play(passed or unpassed)
-
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+    osurecent: function (message) { //Gets most recent Play(passed or unpassed)
 
         name = getosuName(message);
+
+        if (!name) {
+            message.channel.send('No name specified');
+            return;
+        }
+        
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
 
         ws.on('open', function open() { //Request
 
@@ -25,7 +30,7 @@ module.exports = {
 
         ws.on('message', function incoming(data) { //Answer
 
-            if (data == 'ERROR') {
+            if (data.startsWith('ERROR')) {
                 message.channel.send('Username not found or this user has not played today!');
                 return;
             }
@@ -70,15 +75,15 @@ module.exports = {
 
 
             emb.addField('Accuracy', Acc + '%', true)
-                .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300', bot) + " ")
-                    .concat(recentScore.counts["100"]).concat(getEmoji('hit100', bot) + " ")
-                    .concat(recentScore.counts["50"]).concat(getEmoji('hit50', bot) + " ")
-                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0', bot) + " "), true)
+                .addField('Hits', recentScore.counts["300"].concat(getEmoji('hit300') + " ")
+                    .concat(recentScore.counts["100"]).concat(getEmoji('hit100') + " ")
+                    .concat(recentScore.counts["50"]).concat(getEmoji('hit50') + " ")
+                    .concat(recentScore.counts["miss"]).concat(getEmoji('hit0') + " "), true)
 
                 .setImage('https://assets.ppy.sh/beatmaps/' + recentScore._beatmap.beatmapSetId + '/covers/cover.jpg');
 
             message.channel.send(emb);
-
+            ws.close();
         });
     }
 }
@@ -87,10 +92,10 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username);
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.id);
 }
 
-function getEmoji(emojiName, bot) {
-    let emoji = bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
-    return '<:' + emoji.name + ':' + emoji.id + '>'; //Build emojiString
+function getEmoji(emojiName) {
+    let emoji = global.bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
+    return emoji ? '<:' + emoji.name + ':' + emoji.id + '>' : emojiName; //Build emojiString
 }

@@ -1,6 +1,6 @@
 {
   "name": "discordbot",
-  "version": "3.7.10",
+  "version": "4.2.0",
   "main": "botMain.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,15 +15,16 @@
     "cleverbot-free": "^1.0.3",
     "discord.js": "11.6.4",
     "ffmpeg-binaries": "3.2.2-3",
-    "ffmpeg-static": "^4.1.1",
+    "ffmpeg-static": "^4.2.0",
     "fs": "0.0.1-security",
     "leagueapiwrapper": "^1.1.0",
     "minimist": "^1.2.5",
     "node-osu": "^2.2.0",
+    "ping": "^0.2.3",
     "require-dir": "^1.2.0",
     "snoowrap": "^1.21.0",
-    "ws": "^7.2.3",
-    "ytdl-core": "^2.1.0",
+    "ws": "^7.2.5",
+    "ytdl-core": "^2.1.1",
     "ytpl": "^0.1.20"
   },
   "devDependencies": {},

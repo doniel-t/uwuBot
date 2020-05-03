@@ -5,8 +5,8 @@ const Music = require('./Music.js');
  * @does resumes Music
  */
 module.exports = {
-    resume: function () {
+    resume: function (message) {
 
-        Music.resume(); //All Logic is in Music
+        Music.resume(message); //All Logic is in Music
     }
 }

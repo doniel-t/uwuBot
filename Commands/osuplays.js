@@ -8,9 +8,14 @@ const WebSocket = require('ws');
 module.exports = {
     osuplays: function (message) { //Gets Top 5 PP Plays!
 
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
-        
         name = getosuName(message);
+
+        if (!name) {
+            message.channel.send('No name specified');
+            return;
+        }
+        
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
         
         ws.on('error', function error(){
             message.channel.send('Websocket-Server is unreachable');
@@ -22,7 +27,7 @@ module.exports = {
 
         ws.on('message', function incoming(data) { //Answer
 
-            if (data == 'ERROR') {
+            if (data.startsWith('ERROR')) {
                 message.channel.send('Username not found or this user has no TopPlays!');
                 return;
             }
@@ -40,6 +45,7 @@ module.exports = {
                     Link.concat("\nAcc: ").concat(parseFloat(AccArray[index] * 100).toFixed(2)).concat(" %\nPP: ").concat(scores[index].pp));
             }
             message.channel.send(emb);
+            ws.close();
         });
     }
 }
@@ -48,5 +54,5 @@ function getosuName(message) {       //Gives back a NameString
 
     let contentArgs = message.content.split(" ");
 
-    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.username);
+    return contentArgs[1] ? message.content.substring(contentArgs[0].length+1) : require('./name').getName('osu',message.author.id);
 }

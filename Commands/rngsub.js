@@ -8,7 +8,7 @@ module.exports = {
 
     rngsub: function (message) {
         
-        let ws = new WebSocket('ws://leftdoge.de:60001', { handshakeTimeout: 5000 }); //Connection to Server
+        let ws = new WebSocket(global.wsip, { handshakeTimeout: 5000 }); //Connection to Server
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
@@ -23,12 +23,13 @@ module.exports = {
 
         ws.on('message', function incoming(data) { //Answer
 
-            if (data == 'ERROR') {
+            if (data.startsWith('ERROR')) {
                 message.channel.send('An Error occured');
                 return;
             }
             let submission = JSON.parse(data);
             message.channel.send(!submission.permalink ? 'Reddit returned undefined (Subreddit disabled random)' : "http://reddit.com" + submission.permalink);
+            ws.close();
         });
     }
 }

@@ -8,7 +8,7 @@ const Shortcuts = fh.get('../Files/MusicShortcut.json');
  * @Shortcut p
  */
 module.exports = {
-    play: function (message, bot) {
+    play: function (message) {
 
         let song = message.content.substring(message.content.indexOf(' ') + 1);
 
@@ -16,10 +16,10 @@ module.exports = {
             message.content = Shortcuts[song];
         }
         
-        Music.play(message, bot); //All Logic is in Music
+        Music.play(message); //All Logic is in Music
     },
 
-    playKey: function (message, bot) { //Handling for !<shortcut>
+    playKey: function (message) { //Handling for !<shortcut>
 
         message.content = message.content.substring(1); //Remove !
 
@@ -28,7 +28,7 @@ module.exports = {
         Shortcuts[message.content] ? message.content = Shortcuts[message.content] : notShortcut = true;
 
         if (!notShortcut) { //Handling for botMain
-            Music.play(message, bot); //All Logic is in Music
+            Music.play(message); //All Logic is in Music
             return true;            
         } else {
             return false;

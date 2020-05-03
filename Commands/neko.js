@@ -1,4 +1,3 @@
-const redditAPI = require('./rngsub.js');
 const fh = require('./FileHandler');
 const talkedRecently = new Set();
 
@@ -9,7 +8,7 @@ const talkedRecently = new Set();
 module.exports = {
     neko: function (message) {
 
-        if (!fh.getSettings().canspamneko) {
+        if (!global.guilds[message.guild.id].settings.canspamneko) {
 
             if (talkedRecently.has(message.author.id)) {
                 message.channel.send("Wait 15 Seconds before typing this again. - " + message.author);
@@ -33,9 +32,9 @@ module.exports = {
 function execneko(message) {
 
     if (Math.random() <= 0.5) {
-        message.content = "con0 neko";
+        message.content = "con0 nekomimi"; //The same until r/neko is public again
     } else {
         message.content = "con0 nekomimi";
     }
-    redditAPI.rngsub(message);
+    require('./rngsub').rngsub(message);
 }

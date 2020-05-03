@@ -6,8 +6,8 @@ const Music = require('./Music.js');
  * @Shortcut s
  */
 module.exports = {
-    stop: function () {
+    stop: function (message) {
 
-        Music.stop(); //All Logic is in Music
+        Music.stop(message); //All Logic is in Music
     }
 }
