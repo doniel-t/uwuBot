@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.2.0: 02.05.2020
+    -Added ping Command
+    -Updated ffmpeg-static to 4.2.0
+
 4.1.6: 02.05.2020
     -Added better Title to league-Embed    
     -Added ConfirmationMessage to notify
@@ -123,7 +127,7 @@
     -Refractored all toggleX commands to settings
 
 3.6.0: 01.04.2020
-    -Added rng
+    -Added rng Command
 
 3.5.1: 01.04.2020
     -Fixed an error in jap Translator

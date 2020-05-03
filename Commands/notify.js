@@ -9,6 +9,7 @@ module.exports = {
             let notification = contentArgs[0];
             let splitTime = contentArgs[1].split(":");
             let time = parseInt(splitTime[0]) * 60000 + parseInt(splitTime[1]) * 1000;
+            
             if (time < 0) {
                 message.channel.send("Negative time");
                 return;
@@ -17,9 +18,10 @@ module.exports = {
                 message.channel.send("Your time is not a number!");
                 return;
             }
-            let userId = message.author.id;
+
             message.channel.send('I will notify you in ' + splitTime[0] + ':' + splitTime[1]);
-            setTimeout(() => { message.channel.send("<@" + userId + "> " + notification) }, time);
+
+            setTimeout(() => { message.channel.send("<@" + message.author.id + "> " + notification) }, time);
         } catch (ignored) {
             message.channel.send("You used the wrong syntax! Use !help for help");
         }
