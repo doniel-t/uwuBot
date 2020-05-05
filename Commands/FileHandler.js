@@ -75,7 +75,7 @@ module.exports = {
 
                 try {
                     fs.writeFileSync('Files/local/' + guild[0] + '/settings.json', JSON.stringify(initset)); //Create settings.json
-                    global.guilds[guild[0]]['settings'] = set; //Init global.guilds.settings
+                    global.guilds[guild[0]]['settings'] = initset; //Init global.guilds.settings
                     continue;
                 } catch (error) {
                     Logger.log(error);
@@ -148,6 +148,10 @@ function create(Path) {
         case 'prefix.json':
             File = '!';
             break;
+
+        case 'adminprefix.json': //Only one per Bot
+            writeFile('Files/local/adminprefix.json', 'uwuadmin');
+            return 'uwuadmin';
 
         default:
             File = undefined;

@@ -2,6 +2,11 @@
 
 4.3.0: 05.05.2020
     -Added invite Command
+    -uwuBot can now join Servers while running
+    -Added global.guilds.guild.Admins
+    -Changed Admins.isAdmin
+    -Changed Admins.addAdmin
+    -Changed Admins.removeAdmin
 
 4.2.0: 02.05.2020
     -Added ping Command

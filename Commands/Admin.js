@@ -39,7 +39,7 @@ module.exports = {
         if (this.isDev(message)) {
             return true;
         }
-        return fh.get('../Files/local/' + message.guild.id + '/Admins.json').includes(message.author.id); //To be replaced with perServer-Check
+        return global.guilds[message.guild.id]['Admins'].includes(message.author.id);
     },
 
     /**
@@ -148,7 +148,6 @@ module.exports = {
      */
     settings: function (message) {
 
-        var Settings = global.guilds[message.guild.id]['settings']; //Get Settings
         var Emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⬜'];
         var etn = {};
         var msg;
@@ -210,7 +209,7 @@ module.exports = {
      * @summary Adds a DiscordUser to AdminList for this Server/Guild
      */
     addAdmin: function (message) {
-        let Admins = fh.get('../Files/local/' + message.guild.id + '/Admins.json');
+
         let user = message.content.substring(message.content.indexOf(' ') + 9);
         user = user.substring(4, user.length - 1);
 
@@ -219,22 +218,21 @@ module.exports = {
             return;
         }
 
-        if (Admins.indexOf(user) == -1) {
-            Admins.push(user);
-            fh.write('Admins.json', Admins, message.guild.id);
+        if (global.guilds[message.guild.id]['Admins'].indexOf(user) == -1) {
+
+            global.guilds[message.guild.id]['Admins'].push(user);
+            fh.write('Admins.json', global.guilds[message.guild.id]['Admins'], message.guild.id);
             message.channel.send('Added <@!' + user + '> to the AdminList');
 
         } else {
             message.channel.send('<@!' + user + '> is already in the AdminList');
         }
-
-
     },
     /**
      * @summary Removes a DiscordUser to AdminList for this Server/Guild
      */
     removeAdmin: function (message) {
-        let Admins = fh.get('../Files/local/' + message.guild.id + '/Admins.json');
+        
         let user = message.content.substring(message.content.indexOf(' ') + 12);
         user = user.substring(4, user.length - 1);
 
@@ -243,9 +241,11 @@ module.exports = {
             return;
         }
 
-        if (Admins.indexOf(user) > -1) {
-            Admins.splice(Admins.indexOf(user), 1);
-            fh.write('Admins.json', Admins, message.guild.id);
+        if (global.guilds[message.guild.id]['Admins'].indexOf(user) > -1) {
+
+            global.guilds[message.guild.id]['Admins'].splice(global.guilds[message.guild.id]['Admins'].indexOf(user), 1);
+
+            fh.write('Admins.json', global.guilds[message.guild.id]['Admins'], message.guild.id);
             message.channel.send('Removed <@!' + user + '> from the AdminList');
 
         } else {
