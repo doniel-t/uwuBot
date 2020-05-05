@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.3.0: 05.05.2020
+    -Added invite Command
+
 4.2.0: 02.05.2020
     -Added ping Command
     -Updated ffmpeg-static to 4.2.0
