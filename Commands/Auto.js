@@ -22,14 +22,14 @@ function gbBot(rec) { //Evalutes the day
     setTimeout(function () {
 
         if (!counter.called && counter.good == 0 && counter.bad == 0) {
-            Channel.sendAll('Standard', 'Nobody talked to me today 😞');
+            sendMessage('Nobody talked to me today 😞');
         } else {
             let tmp = 'Good: ' + counter.good + ' Bad: ' + counter.bad + ' \n';
 
             if (counter.good > counter.bad) {
-                Channel.sendAll('Standard', tmp + 'I was a good Bot today 😀');
+                sendMessage(tmp + 'I was a good Bot today 😀');
             } else {
-                Channel.sendAll('Standard', tmp + 'I was a bad Bot today 😞');
+                sendMessage(tmp + 'I was a bad Bot today 😞');
             }
         }
 
@@ -64,5 +64,17 @@ function getTimeUntil(hour) {  //Returns time in ms until hour
         return t - (24 - hour) * 3_600_000;
     } else {
         return t + hour * 3_600_000;
+    }
+}
+
+//Sends msg to all StandardChannels that have automatedMessages enabled
+function sendMessage(msg) {
+
+    for (let guild of global.bot.guilds) {
+        try {
+            if (global.guilds[guild[0]].settings.automatedMessages) {
+                Channel.get('Standard', guild[0]).send(msg);
+            }
+        } catch (ignored) { }
     }
 }

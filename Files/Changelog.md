@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.3.1: 06.05.2020
+    -Added setting for automated Messages
+
 4.3.0: 05.05.2020
     -Added invite Command
     -uwuBot can now join Servers while running
