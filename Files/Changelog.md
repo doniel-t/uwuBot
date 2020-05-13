@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.3.2: 13.05.2020
+    -Added helpText to ping Command
+    -Changed Documentation
+
 4.3.1: 06.05.2020
     -Added setting for automated Messages
 
