@@ -7,17 +7,19 @@ const Channel = require('./Channel');
  */
 module.exports = {
     goodbadBot: function () {
-        gbBot();
+        gbBot(true);
     }
 }
 
-function gbBot(rec) { //Evalutes the day
+function gbBot(first) { //Evalutes the day
 
     let counter = fh.get('../Files/local/counter.json'); //is Global
     let offset = 86_400_000;
 
-    if (!rec)
+    if (!first) {
         offset = getNextMidnight();
+    }
+
 
     setTimeout(function () {
 
@@ -38,7 +40,7 @@ function gbBot(rec) { //Evalutes the day
         counter.called = false;
         fh.write('counter.json', counter);
 
-        gbBot(true);
+        gbBot(false);
     }, offset)
 }
 
