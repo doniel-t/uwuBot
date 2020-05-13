@@ -2,7 +2,7 @@ const ping = require('ping');
 
 /**
 * @usage !ping
-* @does WHAT DOES YOUR COMMAND
+* @does checks ping to different Servers
 */
 module.exports = {
    ping: function (message) {
