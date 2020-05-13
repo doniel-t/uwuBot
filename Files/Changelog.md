@@ -1,6 +1,7 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
 4.3.3: 14.05.2020
+    -Made Updater update to package.json-Stats
     -Fixed goodbadBot
     -Removed some Modules
 
