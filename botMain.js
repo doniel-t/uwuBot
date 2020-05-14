@@ -10,8 +10,9 @@ const adminprefix = fh.get('../Files/local/adminprefix.json');
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
-global.wsip = 'ws://leftdoge.de:60001'; //IP thats used for every WS-Call
+global.wsip = 'ws://localhost:60001'; //IP thats used for every WS-Call
 var BotID;
+var first = true;
 
 global.bot.on('error', err => { //ErrorHandling
     console.error('\nBot crashed, see LogFile for more info\n');
@@ -19,7 +20,10 @@ global.bot.on('error', err => { //ErrorHandling
 })
 
 global.bot.on('ready', () => { //At Startup
-    init(); //inits some variables
+    if (first) {
+        first = false;
+        init(); //inits some variables
+    }
 });
 
 global.bot.on('message', (message) => { //When Message sent

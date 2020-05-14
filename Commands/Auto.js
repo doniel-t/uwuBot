@@ -16,10 +16,9 @@ function gbBot(first) { //Evalutes the day
     let counter = fh.get('../Files/local/counter.json'); //is Global
     let offset = 86_400_000;
 
-    if (!first) {
+    if (first) { //Calculate offset if its first time
         offset = getNextMidnight();
     }
-
 
     setTimeout(function () {
 
