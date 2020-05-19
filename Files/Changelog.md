@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.3.4: 19.05.2020
+    -Made WSIP saved in a Localfile
+
 4.3.3: 14.05.2020
     -Fixed Bot initing when DiscordConnection interruptes
     -Made Updater update to package.json-Stats

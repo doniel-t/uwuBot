@@ -10,7 +10,7 @@ const adminprefix = fh.get('../Files/local/adminprefix.json');
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
-global.wsip = 'ws://localhost:60001'; //IP thats used for every WS-Call
+global.wsip = fh.get('../Files/local/wsip.json'); //IP thats used for every WS-Call
 var BotID;
 var first = true;
 
