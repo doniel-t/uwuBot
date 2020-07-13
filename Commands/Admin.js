@@ -4,6 +4,7 @@ const fh = require('./FileHandler');
 const { version } = require('../package.json');
 const Logger = require('./Logger');
 const Channel = require('./Channel');
+const botMain = require('../botMain');
 
 /**
  * @usage uwuadmin <command>
@@ -275,6 +276,16 @@ module.exports = {
      */
     getPrefix: function (message) {
         message.channel.send(global.guilds[message.guild.id]['prefix']);
+    },
+    /**
+     * @summary reloads commands
+     * @usage uwuadmin reload
+     * @note only Devs can use this
+     */
+    reload: function (message) {
+        if (this.isDev(message)) {
+            message.channel.send(require('../botMain').reload());
+        }
     }
 }
 

@@ -1,5 +1,17 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.4.0: 13.07.2020
+    -Added reload Function
+    -Added Module ytdl-core-discord
+    -Fixed Music not playing
+    -Updated Modules:
+        + ytdl-core@2.1.7
+        + ffmpeg-static@4.2.5
+        + cleverbot-free@1.0.4
+        + ytpl@0.1.22
+        + ws@7.3.1
+        + annotations@1.2.0
+
 4.3.5: 30.05.2020
     -Fixed help not working when a File has no Annotations
     -Updated uwu-commands to 1.1.0
