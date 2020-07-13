@@ -1,4 +1,5 @@
 const ytdl = require('ytdl-core');
+const ytdldis = require('ytdl-core-discord');
 const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
@@ -43,14 +44,14 @@ async function playSong(first, Channel) { //Plays a Song
     playyt(Song, Channel.guild.id).then(dispatcher => { //Throws error in console if url isnt valid
         Musicdispatcher[Channel.guild.id] = dispatcher;
         Musicdispatcher[Channel.guild.id].on('end', () => {
-            if (MusicQueues[Channel.guild.id].size > 0) {
+            if (MusicQueues[Channel.guild.id].length > 0) {
                 playSong(false, Channel);
             } else {
                 Channel.send('End of Queue');
                 stop(Channel.guild.id);
             }
         })
-    })
+    }).catch(_ => { })
 }
 
 function join(voiceID, Channel) { //Joins VoiceChannel of Caller
@@ -75,7 +76,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
             if (!Musicconnection[message.guild.id]) {
                 join(message.author.lastMessage.member.voiceChannelID, message.channel);
             } else {
-                message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].size);
+                message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
             }
 
         }).catch(() => { //Not a Video
@@ -130,24 +131,22 @@ function next(message) {       //Ends current Song
 
 async function playyt(url, guildID) {    //Plays the URL
 
-    var stream = ytdl(url, { filter: 'audioonly' });
+    var stream = await ytdldis(url);
 
     stream.on('error', err => {
         Logger.log(err);
     });
 
-    return Musicconnection[guildID].playStream(stream, { seek: 0, volume: 1 });
+    return Musicconnection[guildID].playOpusStream(stream);
 }
 
 function getNextSong(guildID) { //Returns next Song on MusicQueues and deletes it from Queue   
-    var ret = Array.from(MusicQueues[guildID])[0];
-    MusicQueues[guildID].delete(ret);
-    return ret;
+    return MusicQueues[guildID].shift();
 }
 
-function addSong(Link, guildID) {
+function addSong(Link, guildID) { //Adds Song to Queue
     if (!MusicQueues[guildID]) {
-        MusicQueues[guildID] = new Set();
+        MusicQueues[guildID] = [];
     }
-    MusicQueues[guildID].add(Link);
+    MusicQueues[guildID].push(Link);
 }

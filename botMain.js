@@ -2,17 +2,17 @@ const Discord = require('discord.js');
 const requireDir = require('require-dir');
 const Logger = require("./Commands/Logger.js");
 const Admin = require('./Commands/Admin.js');
-const commands = requireDir('./Commands');
 const fh = require('./Commands/FileHandler');
-
 const { version } = require('./package.json');
 const adminprefix = fh.get('../Files/local/adminprefix.json');
-const debug = false; //true > no ready-message and BackgroundTasks
+
+const debug = true; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
 global.wsip = fh.get('../Files/local/wsip.json'); //IP thats used for every WS-Call
 var BotID;
 var first = true;
+var commands = requireDir('./Commands');
 
 global.bot.on('error', err => { //ErrorHandling
     console.error('\nBot crashed, see LogFile for more info\n');
@@ -52,7 +52,7 @@ global.bot.on('message', (message) => { //When Message sent
             try {//Example !osurecent calls commands.osurecent.osurecent(message)
 
                 if (command.length == 1) {
-                    commands['Shortcuts']['Shortcuts'](message,commands,command);
+                    commands['Shortcuts']['Shortcuts'](message, commands, command);
                 } else {
                     commands[command][command](message);
                 }
@@ -102,7 +102,7 @@ global.bot.login(fh.get('../Files/local/botToken.json').token).catch(err => {
     return;
 }); //Starts Bot
 
-global.bot.on('guildCreate',guild => { //Joining a new Guild while bot is active
+global.bot.on('guildCreate', guild => { //Joining a new Guild while bot is active
     serverJoin(guild);
 })
 
@@ -195,7 +195,7 @@ function serverJoin(guild) {
     global.guilds[guild.id] = {}; //Init global.guilds
 
     //Init settings
-    fh.write('settings.json',initset,guild.id);
+    fh.write('settings.json', initset, guild.id);
     global.guilds[guild.id]['settings'] = initset; //Init global.guilds.settings         
 
     //Set StandardChannel
@@ -209,7 +209,7 @@ function serverJoin(guild) {
     }
 
     //Set Prefix
-    fh.write('prefix.json',"!",guild.id);
+    fh.write('prefix.json', "!", guild.id);
     global.guilds[guild.id]['prefix'] = '!';
 
     //Add Members to names.json
@@ -232,10 +232,43 @@ function serverJoin(guild) {
     fh.write('names.json', names); //Write names back to names.json
 
     //Init Admins
-    fh.write('Admins.json',[guild.owner.id],guild.id);
+    fh.write('Admins.json', [guild.owner.id], guild.id);
     global.guilds[guild.id]['Admins'] = [guild.owner.id];
 
     //Ready
-    commands.Channel.get('Standard',guild.id).send('Hello, this is the Standard-Channel of the Server, you can talk to me via !, use !help for help\n I have added '
-    + guild.owner.user.username + ' as Admin on this Server');
+    commands.Channel.get('Standard', guild.id).send('Hello, this is the Standard-Channel of the Server, you can talk to me via !, use !help for help\n I have added '
+        + guild.owner.user.username + ' as Admin on this Server');
+}
+
+module.exports = {
+    reload: function () {
+        try {
+            let Path = '';
+            for (let cmd in require.cache) { //Find absolutePath for uwuBot
+                if (require.cache[cmd].id == '.') {
+                    Path = require.cache[cmd].path;
+                    break;
+                }
+
+            }
+
+            if (Path.includes('/')) { //Win or Linux
+                Path += '/Commands/';
+            } else {
+                Path += '\\Commands\\';
+            }
+
+            for (let cmd in commands) { //Remove modules from cache
+                delete require.cache[Path + cmd + '.js'];
+            }
+
+            commands = {};
+
+            commands = requireDir('./Commands'); //Reload commands var
+            return "Reload Complete";
+        } catch (err) {
+            Logger.log(err);
+            return 'Reload failed, check Log';
+        }
+    }
 }
