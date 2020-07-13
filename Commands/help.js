@@ -50,9 +50,17 @@ function normalHelp(message) {
 
                 let tmpstring = '';
 
+                console.log(res.module);
+
                 for (let annotation in res.module) {
-                    tmpstring = tmpstring.concat(annotation.charAt(0).toUpperCase() + annotation.slice(1) + ': ' + res.module[annotation] + '\n');
+                    tmpstring += (annotation ? annotation.charAt(0).toUpperCase() + annotation.slice(1) : 'No AnnotationName') + ': ';
+                    tmpstring += (res.module[annotation] ? res.module[annotation] : 'No AnnotationText') + '\n';
                 }
+
+                if (tmpstring == '') {
+                    tmpstring = 'Error: No Annotations';
+                }
+
                 emb.addField('Command: ' + command, tmpstring);
 
                 helpcounter++;

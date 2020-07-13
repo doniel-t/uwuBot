@@ -1,5 +1,18 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.3.5: 30.05.2020
+    -Fixed help not working when a File has no Annotations
+    -Updated uwu-commands to 1.1.0
+
+4.3.4: 19.05.2020
+    -Made WSIP saved in a Localfile
+
+4.3.3: 14.05.2020
+    -Fixed Bot initing when DiscordConnection interruptes
+    -Made Updater update to package.json-Stats
+    -Fixed goodbadBot
+    -Removed some Modules
+
 4.3.2: 13.05.2020
     -Added helpText to ping Command
     -Changed Documentation

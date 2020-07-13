@@ -153,6 +153,10 @@ function create(Path) {
             writeFile('Files/local/adminprefix.json', 'uwuadmin');
             return 'uwuadmin';
 
+        case 'wsip.json':
+            writeFile('Files/local/wsip.json', 'ws://leftdoge.de:60001');
+            return 'ws://leftdoge.de:60001';
+
         default:
             File = undefined;
             break;
