@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.4.1: 21.07.2020
+    -Added wsbot_run.bat
+    -Simplified Music
+
 4.4.0: 13.07.2020
     -Added reload Function
     -Added Module ytdl-core-discord
