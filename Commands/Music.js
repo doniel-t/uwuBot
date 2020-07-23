@@ -57,7 +57,6 @@ async function playSong(first, Channel) { //Plays a Song
 function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
     global.bot.channels.get(voiceID).join().then(connection => {
-
         Musicconnection[Channel.guild.id] = connection;
         playSong(true, Channel);
     });
@@ -109,6 +108,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 
 function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
     try {
+        MusicQueues[guildID] = [];
         global.bot.channels.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
     } catch (ignored) { }
     MusicQueues[guildID] = undefined;
