@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Logger = require('./Logger');
+const { isNullOrUndefined } = require('util');
 
 /**
  * @usage N/A
@@ -83,7 +84,7 @@ module.exports = {
             }
 
             for (let setting in initset) { //Test for new Settings in initsettings.json
-                if (!set[setting]) {
+                if (isNullOrUndefined(set[setting])) {
                     set[setting] = initset[setting];
                 }
             }

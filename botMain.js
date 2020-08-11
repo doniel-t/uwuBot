@@ -110,7 +110,7 @@ global.bot.on('guildCreate', guild => { //Joining a new Guild while bot is activ
 
 function init() {
 
-    fh.initSettings('all'); //Init Settings for all Guilds
+    fh.initSettings(); //Init Settings for all Guilds
     BotID = '<@!' + global.bot.user.id + '>'; //Get BotID
 
     global.bot.user.setPresence({ game: { name: 'on ' + version }, status: 'online' }); //Set Bot as online

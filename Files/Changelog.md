@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.4.3: 12.08.2020
+    -Fixed wrong Settings Initialization
+
 4.4.2: 23.07.2020
     -Fixed Music
 
