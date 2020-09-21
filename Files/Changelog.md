@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.4.5: 18.09.2020
+    -Updated uwu-commands to 2.0.1
+
 4.4.4: 17.09.2020
     -Updated uwu-commands to 2.0.0
     -Update Modules:
