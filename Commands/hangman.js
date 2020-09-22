@@ -10,7 +10,7 @@ var hp = 7; //Amount of failed Tries
  * @does plays a Game of Hangman with the word from users PM or stops it
  */
 module.exports = { //!hangman starts the game
-    hangman: function (message,) {
+    hangman: function (message) {
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
         ogMessage = message;
@@ -32,7 +32,7 @@ module.exports = { //!hangman starts the game
                 inputWord = answer.get(key).content.toLowerCase();
 
                 hiddenMessage = inputWord.replace(/[^ ]/g, '-'); //replaces everything except spaces with -
-                message.channel.send(hiddenMessage);
+                message.channel.send(hiddenMessage + " | Tries left: " + hp);
 
             }).catch(error => {
                 Logger.log(error);
@@ -63,17 +63,20 @@ var listener = function (inputLetter) { //Listens to all Messages
             if (hp === 0) { //Losing Condition
                 ogMessage.channel.send("You lose!");
                 stop();
+                return;
             }
 
             if (hiddenMessage === inputWord) { //When guessed Letter by Letter
                 ogMessage.channel.send("You won!");
                 stop();
+                return;
             }
         }
 
         if (inputLetter.content === inputWord) { //When whole Answer is given  
             ogMessage.channel.send("You won!");
             stop();
+            return;
         }
     }
 }
@@ -88,6 +91,8 @@ function stop() {
 
 
 function checkLetter(letter) { // checks if letter is in word
+
+    letter = letter.toLowerCase();
 
     if (inputWord.includes(letter)) {
 

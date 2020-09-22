@@ -30,6 +30,8 @@ global.bot.on('message', (message) => { //When Message sent
 
     if (message.author.bot) { return; } //If Author is a Bot, return
 
+    if (message.channel.type != 'text') { return; } //If Channel is not TextChannel, return
+
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
     if (message.content.startsWith(global.guilds[message.guild.id]['prefix'])) {

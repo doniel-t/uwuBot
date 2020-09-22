@@ -2,6 +2,8 @@
 
 4.4.5: 18.09.2020
     -Updated uwu-commands to 2.0.1
+    -Bot ignores DMs
+    -Fixed hangman not working
 
 4.4.4: 17.09.2020
     -Updated uwu-commands to 2.0.0
