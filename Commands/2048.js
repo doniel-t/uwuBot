@@ -45,13 +45,14 @@ function start(message) {
 }
 
 function stop() {   //Stops the Game
+    collector.stop();
+    collector = undefined;
     ogmessage = undefined;
     gamemessage = undefined;
     GameField = undefined;
     isRunning = false;
     nSqaures = 0;
     maxSquare = 0;
-    collector = undefined;
 }
 
 function setUp() {
