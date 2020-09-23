@@ -1,5 +1,22 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.4.6: 22.09.2020
+    -Bot ignores DMs
+    -Fixed hangman not working
+    -Fixed 2048 crashing
+
+4.4.5: 18.09.2020
+    -Updated uwu-commands to 2.0.1
+
+4.4.4: 17.09.2020
+    -Updated uwu-commands to 2.0.0
+    -Update Modules:
+        + ffmpeg-static@4.2.7
+        + annotations@1.2.0
+
+4.4.3: 12.08.2020
+    -Fixed wrong Settings Initialization
+
 4.4.2: 23.07.2020
     -Fixed Music
 
