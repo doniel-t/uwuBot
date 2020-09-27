@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.4.7: 27.09.2020
+    -Fixed Music sometimes stopping
+
 4.4.6: 22.09.2020
     -Bot ignores DMs
     -Fixed hangman not working

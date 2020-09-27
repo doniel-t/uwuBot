@@ -131,7 +131,11 @@ function next(message) {       //Ends current Song
 
 async function playyt(url, guildID) {    //Plays the URL
 
-    var stream = await ytdldis(url);
+    var stream = await ytdldis(url, {
+        filter: "audioonly",
+        quality: 'highestaudio',
+        highWaterMark: 1<<25
+    });
 
     stream.on('error', err => {
         Logger.log(err);
