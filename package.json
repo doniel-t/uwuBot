@@ -22,8 +22,8 @@
     "require-dir": "^1.2.0",
     "ws": "^7.3.1",
     "ytdl-core": "^2.1.7",
-    "ytdl-core-discord": "^1.2.1",
-    "ytpl": "^0.1.22"
+    "ytdl-core-discord": "^1.2.3",
+    "ytpl": "^1.0.1"
   },
   "devDependencies": {},
   "repository": {

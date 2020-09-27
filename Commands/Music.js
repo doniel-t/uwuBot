@@ -51,7 +51,16 @@ async function playSong(first, Channel) { //Plays a Song
                 stop(Channel.guild.id);
             }
         })
-    }).catch(_ => { })
+    }).catch(_ => { //Skip Song if its not playable (DMCA, private Video, etc.)
+
+        Channel.send('Video not playable, maybe private');
+        if (MusicQueues[Channel.guild.id].length > 0) {
+            playSong(false, Channel);
+        } else {
+            Channel.send('End of Queue');
+            stop(Channel.guild.id);
+        }
+    })
 }
 
 function join(voiceID, Channel) { //Joins VoiceChannel of Caller
@@ -68,7 +77,8 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 
         var Link = message.content.substring(message.content.indexOf(' ') + 1); //Remove command
 
-        ytdl.getBasicInfo(Link).then(() => {  //If no Info is given, it isnt a Video
+        //Check if normal Youtube-Video
+        ytdl.getBasicInfo(Link).then(() => {
 
             addSong(Link, message.guild.id);
 
@@ -77,28 +87,20 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
             } else {
                 message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
             }
+        }).catch(_ => {
+            //Check if normal Youtube-Playlist
+            ytpl(Link).then(playlist => {
 
-        }).catch(() => { //Not a Video
+                for (var song of playlist.items) { //Iterate through Songs in Playlist
+                    addSong(song.url_simple, message.guild.id);
+                }
 
-            if (ytpl.validateURL(Link)) { //validate Playlist
-
-                ytpl(Link).then(playlist => { //Get Playlist
-
-                    for (var song of playlist.items) { //Iterate through Songs in Playlist
-                        addSong(song.url_simple, message.guild.id);
-                    }
-
-                    if (!Musicconnection[message.guild.id]) {
-                        join(message.author.lastMessage.member.voiceChannelID, message.channel);
-                    } else {
-                        message.channel.send("Added Playlist to Queue");
-                    }
-                }).catch(() => {
-                    message.channel.send('Playlist couldn`t be resolved');
-                })
-            } else { //When neither Video or Playlist
-                message.channel.send('Not a valid Link or use !help music');
-            }
+                if (!Musicconnection[message.guild.id]) {
+                    join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                } else {
+                    message.channel.send("Added Playlist to Queue");
+                }
+            }).catch(() => { message.channel.send('Link couldn`t be resolved. Use !help music'); })
         })
 
     } else {
@@ -114,7 +116,6 @@ function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
     MusicQueues[guildID] = undefined;
     Musicdispatcher[guildID] = undefined;
     Musicconnection[guildID] = undefined;
-
 }
 
 function pause(message) {      //Stops Music, remains Queue and stays in Channel
@@ -134,7 +135,7 @@ async function playyt(url, guildID) {    //Plays the URL
     var stream = await ytdldis(url, {
         filter: "audioonly",
         quality: 'highestaudio',
-        highWaterMark: 1<<25
+        highWaterMark: 1 << 25
     });
 
     stream.on('error', err => {
