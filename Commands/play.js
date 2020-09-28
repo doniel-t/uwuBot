@@ -13,7 +13,7 @@ module.exports = {
         let song = message.content.substring(message.content.indexOf(' ') + 1);
 
         if (Shortcuts[song] != undefined) {
-            message.content = Shortcuts[song];
+            message.content = "!p " + Shortcuts[song];
         }
         
         Music.play(message); //All Logic is in Music
