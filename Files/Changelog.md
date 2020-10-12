@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.0: 12.10.2020
+    -Added radio Function
+    -Fixed some MusicShortcuts
+
 4.4.8: 28.09.2020
     -Music Playlists can be randomly added
     -Music Playlists dont have size limit

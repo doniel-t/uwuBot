@@ -25,7 +25,7 @@ module.exports = {
 
         let notShortcut = false;
 
-        Shortcuts[message.content] ? message.content = Shortcuts[message.content] : notShortcut = true;
+        Shortcuts[message.content] ? message.content = "!p " + Shortcuts[message.content] : notShortcut = true;
 
         if (!notShortcut) { //Handling for botMain
             Music.play(message); //All Logic is in Music

@@ -14,7 +14,7 @@ module.exports = { //Redirects Shortcuts to Commands
                 command = 'ask';
                 break;
             case 'd':
-                message.content = '!p dorime';
+                message.content = 'dorime';
                 command = 'play';
                 break;
             case 'e':

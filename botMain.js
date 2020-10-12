@@ -6,7 +6,7 @@ const fh = require('./Commands/FileHandler');
 const { version } = require('./package.json');
 const adminprefix = fh.get('../Files/local/adminprefix.json');
 
-const debug = false; //true > no ready-message and BackgroundTasks
+const debug = true; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
 global.wsip = fh.get('../Files/local/wsip.json'); //IP thats used for every WS-Call
@@ -175,6 +175,7 @@ function init() {
 
         //Ready Message
         if (!debug) {
+            console.error("YES");
             StandardChannel.send('I am now ready to use: Prefix \'' + global.guilds[guild[0]]['prefix'] + '\'');
         }
     }
