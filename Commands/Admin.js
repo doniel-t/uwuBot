@@ -7,7 +7,7 @@ const Channel = require('./Channel');
 const botMain = require('../botMain');
 
 /**
- * @usage uwuadmin <command>
+ * @usage ADMINPREFIX <command>
  * @does will execute given Command
  * @hasOwnHelp
  */

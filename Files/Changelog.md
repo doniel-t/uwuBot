@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.1: 21.10.2020
+    -Help uses generic prefixes
+
 4.5.0: 12.10.2020
     -Added radio Function
     -Fixed some MusicShortcuts
