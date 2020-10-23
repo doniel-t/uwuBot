@@ -6,7 +6,7 @@ const fh = require('./Commands/FileHandler');
 const { version } = require('./package.json');
 const adminprefix = fh.get('../Files/local/adminprefix.json');
 
-const debug = true; //true > no ready-message and BackgroundTasks
+const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
 global.guilds = {};
 global.wsip = fh.get('../Files/local/wsip.json'); //IP thats used for every WS-Call

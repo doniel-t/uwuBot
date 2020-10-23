@@ -102,7 +102,11 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
 
             let comm = music[com];
 
-            emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+            if (com == "play") {
+                emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does).concat('\nRandomisedPlaylist: ').concat(comm.RandomisedPlaylists));
+            } else {
+                emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+            }
 
             helpcounter++;
 

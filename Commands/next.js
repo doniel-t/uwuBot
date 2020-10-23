@@ -6,7 +6,6 @@ const Music = require('./Music.js');
  */
 module.exports = {
     next: function (message) {
-
         Music.next(message); //All Logic is in Music
     }
 }

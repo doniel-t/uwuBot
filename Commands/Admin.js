@@ -4,7 +4,6 @@ const fh = require('./FileHandler');
 const { version } = require('../package.json');
 const Logger = require('./Logger');
 const Channel = require('./Channel');
-const botMain = require('../botMain');
 
 /**
  * @usage ADMINPREFIX <command>
@@ -33,18 +32,20 @@ module.exports = {
     },
 
     /**
-     * @summary Checks if User that called an AdminCommand is an Admin/Developer, is useless if called in Discord
+     * @summary Useless if called in Discord
+     * @does Checks if User that called an AdminCommand is an Admin or Developer
      * @returns boolean
      */
     isAdmin: function (message) {
-        if (this.isDev(message)) {
+        if (this.isDev(message))
             return true;
-        }
+
         return global.guilds[message.guild.id]['Admins'].includes(message.author.id);
     },
 
     /**
-     * @summary Checks if User that called an AdminCommand is a Developer, is useless if called in Discord
+     * @summary Useless if called in Discord
+     * @does Checks if User that called an AdminCommand is a Developer
      * @returns boolean
      */
     isDev: function (message) {
@@ -169,9 +170,8 @@ module.exports = {
 
             emoji.users.delete(global.bot.user.id);
 
-            if (global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] == undefined) {
+            if (global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] == undefined)
                 return;
-            }
 
             for (let user of emoji.users) {
 
@@ -208,6 +208,7 @@ module.exports = {
     },
     /**
      * @summary Adds a DiscordUser to AdminList for this Server/Guild
+     * @usage addAdmin @UwUBot
      */
     addAdmin: function (message) {
 
@@ -231,9 +232,10 @@ module.exports = {
     },
     /**
      * @summary Removes a DiscordUser to AdminList for this Server/Guild
+     * @usage removeAdmin @UwUBot
      */
     removeAdmin: function (message) {
-        
+
         let user = message.content.substring(message.content.indexOf(' ') + 12);
         user = user.substring(4, user.length - 1);
 
@@ -255,8 +257,8 @@ module.exports = {
     },
     /**
      * @summary sets prefix of normal Commands (default: !)
-     * @usage uwuadmin setPrefix PREFIX
-     * @note if you want a space at the end, but \n instead => please\n
+     * @usage setPrefix PREFIX
+     * @note if you want a space at the end, put '\n' at the end
      */
     setPrefix: function (message) {
 
@@ -264,7 +266,7 @@ module.exports = {
         if (prefix.endsWith('\\n')) {
             prefix = prefix.substring(0, prefix.length - 2) + ' ';
         }
-        
+
         fh.write('prefix.json', prefix, message.guild.id);
 
         message.channel.send('Changed Prefix to: ' + prefix);
@@ -283,9 +285,8 @@ module.exports = {
      * @note only Devs can use this
      */
     reload: function (message) {
-        if (this.isDev(message)) {
+        if (this.isDev(message))
             message.channel.send(require('../botMain').reload());
-        }
     }
 }
 

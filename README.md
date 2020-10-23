@@ -36,7 +36,5 @@
 - [x] make MusicShortcuts to array for print
 - [x] MusicQueue as List not Stack
 - [x] Twitch Stream Notification
-- [ ] Add Minesweeper support for bigger Fields
-- [ ] UNO
 - [x] Add WebSocket Error Handling
-- [ ] Add !rngQuote
+- [ ] UNO

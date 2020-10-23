@@ -38,7 +38,6 @@ module.exports = {
 function get(name, guildID) {
    try {
       return global.bot.channels.get(global.guilds[guildID][name]);
-
    } catch (err) {     
       Logger.log(err);
       return undefined;

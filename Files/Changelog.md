@@ -1,5 +1,10 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.2: 23.10.2020
+    -Updated README.md
+    -Code-Cleanup
+    -Removed Dorime MusicShortcut since Video is private
+
 4.5.1: 21.10.2020
     -Help uses generic prefixes
 

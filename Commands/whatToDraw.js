@@ -19,8 +19,6 @@ module.exports = {
 
         let contentArgs = message.content.split(' ');
 
-
-
         if (contentArgs.length == 1) { //Normal Call
             message.channel.send(List[Math.floor(Math.random() * List.length)]); //Returns random Character
         }
