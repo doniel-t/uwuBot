@@ -175,7 +175,6 @@ function init() {
 
         //Ready Message
         if (!debug) {
-            console.error("YES");
             StandardChannel.send('I am now ready to use: Prefix \'' + global.guilds[guild[0]]['prefix'] + '\'');
         }
     }
