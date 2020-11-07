@@ -79,6 +79,8 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 
         var Link = contentArgs[1];
 
+        console.log('fdfgfffffffffff');
+
         //Check if normal Youtube-Video
         if (ytdl.validateURL(Link)) {
 
@@ -91,7 +93,11 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                 } else {
                     message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
                 }
-            }).catch(_ => { message.channel.send('Video couldn`t be resolved. Use !help music'); })
+            }).catch(ex => {
+                message.channel.send('Video couldn`t be resolved. Use !help music');
+                console.log('asfasfasfasfasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
+                Logger.log(ex);
+            })
             return;
         }
 

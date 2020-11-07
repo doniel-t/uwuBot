@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.3: 07.11.2020
+    -Updated npm Modules
+    -Fixed Music not working
+
 4.5.2: 23.10.2020
     -Updated README.md
     -Code-Cleanup

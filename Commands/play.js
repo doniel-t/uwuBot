@@ -16,6 +16,8 @@ module.exports = {
             message.content = "!p " + Shortcuts[song];
         }
         
+        console.log(message.content);
+
         Music.play(message); //All Logic is in Music
     },
 
