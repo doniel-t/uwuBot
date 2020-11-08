@@ -7,7 +7,7 @@ const Logger = require('./Logger.js');
  */
 module.exports = {
     ask: function(message) {
-        var Answers = [
+        const Answers = [
             "So it would seem.",
             "As I see it, yes.",
             "Don't count on it",

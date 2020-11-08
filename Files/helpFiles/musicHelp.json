@@ -9,7 +9,8 @@
     },
     "play": {
         "usage": "!play <Link> or !p <Link>",
-        "does": "plays the given Link in your Channel (YT-Video,YT-Playlist)"
+        "does": "plays the given Link in your Channel (YT-Video,YT-Playlist)",
+        "RandomisedPlaylists":"!play <Link> r"
     },
     "resume": {
         "usage": "!resume",

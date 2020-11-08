@@ -6,7 +6,6 @@ const Music = require('./Music.js');
  */
 module.exports = {
     pause: function (message) {
-
         Music.pause(message); //All Logic is in Music
     }
 }

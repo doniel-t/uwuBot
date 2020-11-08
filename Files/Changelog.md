@@ -1,5 +1,25 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.3: 07.11.2020
+    -Updated npm Modules
+    -Fixed Music not working
+
+4.5.2: 23.10.2020
+    -Updated README.md
+    -Code-Cleanup
+    -Removed Dorime MusicShortcut since Video is private
+
+4.5.1: 21.10.2020
+    -Help uses generic prefixes
+
+4.5.0: 12.10.2020
+    -Added radio Function
+    -Fixed some MusicShortcuts
+
+4.4.8: 28.09.2020
+    -Music Playlists can be randomly added
+    -Music Playlists dont have size limit
+
 4.4.7: 27.09.2020
     -Fixed Music sometimes stopping
     -Updated ytpl to 1.0.1

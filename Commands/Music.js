@@ -75,24 +75,46 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 
     if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
 
-        var Link = message.content.substring(message.content.indexOf(' ') + 1); //Remove command
+        let contentArgs = message.content.split(" "); //Split Message for simpler Access
+
+        var Link = contentArgs[1];
+
+        console.log('fdfgfffffffffff');
 
         //Check if normal Youtube-Video
-        ytdl.getBasicInfo(Link).then(() => {
+        if (ytdl.validateURL(Link)) {
 
-            addSong(Link, message.guild.id);
+            ytdl.getBasicInfo(Link).then(() => {
 
-            if (!Musicconnection[message.guild.id]) {
-                join(message.author.lastMessage.member.voiceChannelID, message.channel);
-            } else {
-                message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
-            }
-        }).catch(_ => {
-            //Check if normal Youtube-Playlist
-            ytpl(Link).then(playlist => {
+                addSong(Link, message.guild.id);
+
+                if (!Musicconnection[message.guild.id]) {
+                    join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                } else {
+                    message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
+                }
+            }).catch(ex => {
+                message.channel.send('Video couldn`t be resolved. Use !help music');
+                console.log('asfasfasfasfasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
+                Logger.log(ex);
+            })
+            return;
+        }
+
+        //Check if normal Youtube-Playlist
+        if (ytpl.validateID(Link)) {
+
+            ytpl(Link, {
+                limit: Infinity
+            })
+            .then(playlist => {
 
                 for (var song of playlist.items) { //Iterate through Songs in Playlist
                     addSong(song.url_simple, message.guild.id);
+                }
+
+                if (contentArgs[2] == 'r') { //Randomise Playlist if wanted
+                    MusicQueues[message.guild.id] = shuffle(MusicQueues[message.guild.id]);
                 }
 
                 if (!Musicconnection[message.guild.id]) {
@@ -100,9 +122,12 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                 } else {
                     message.channel.send("Added Playlist to Queue");
                 }
-            }).catch(() => { message.channel.send('Link couldn`t be resolved. Use !help music'); })
-        })
+            }).catch(_ => { message.channel.send('Playlist couldn`t be resolved. Use !help music'); })
+            return;
+        }
 
+        //Link doesnt have a valid Format
+        message.channel.send('Link couldn`t be resolved. Use !help music');
     } else {
         message.channel.send('Please join a VoiceChannel');
     }
@@ -154,4 +179,23 @@ function addSong(Link, guildID) { //Adds Song to Queue
         MusicQueues[guildID] = [];
     }
     MusicQueues[guildID].push(Link);
+}
+
+function shuffle(array) { //Used for random Playlist
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }

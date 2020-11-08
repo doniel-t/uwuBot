@@ -16,22 +16,15 @@ function gbBot(first) { //Evalutes the day
     let counter = fh.get('../Files/local/counter.json'); //is Global
     let offset = 86_400_000;
 
-    if (first) { //Calculate offset if its first time
+    if (first)  //Calculate offset if its first time
         offset = getNextMidnight();
-    }
 
     setTimeout(function () {
 
         if (!counter.called && counter.good == 0 && counter.bad == 0) {
             sendMessage('Nobody talked to me today 😞');
         } else {
-            let tmp = 'Good: ' + counter.good + ' Bad: ' + counter.bad + ' \n';
-
-            if (counter.good > counter.bad) {
-                sendMessage(tmp + 'I was a good Bot today 😀');
-            } else {
-                sendMessage(tmp + 'I was a bad Bot today 😞');
-            }
+            sendMessage('Good: ' + counter.good + ' Bad: ' + counter.bad + ' \n' + (counter.good > counter.bad ? 'I was a good Bot today 😀' : 'I was a bad Bot today 😞'));
         }
 
         counter.good = 0; //Reset values

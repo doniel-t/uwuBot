@@ -13,9 +13,11 @@ module.exports = {
         let song = message.content.substring(message.content.indexOf(' ') + 1);
 
         if (Shortcuts[song] != undefined) {
-            message.content = Shortcuts[song];
+            message.content = "!p " + Shortcuts[song];
         }
         
+        console.log(message.content);
+
         Music.play(message); //All Logic is in Music
     },
 
@@ -25,7 +27,7 @@ module.exports = {
 
         let notShortcut = false;
 
-        Shortcuts[message.content] ? message.content = Shortcuts[message.content] : notShortcut = true;
+        Shortcuts[message.content] ? message.content = "!p " + Shortcuts[message.content] : notShortcut = true;
 
         if (!notShortcut) { //Handling for botMain
             Music.play(message); //All Logic is in Music

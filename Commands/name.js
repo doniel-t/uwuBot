@@ -21,15 +21,18 @@ module.exports = {
             return;
         }
 
-        if (contentArgs[1] == 'add') { //Add Person
-            add(message, contentArgs[2]);
-        }
-
-        if (contentArgs[1] == 'remove') { //Remove Person
-            remove(message, contentArgs[2]);
-        }
-        if (contentArgs[1] == 'get') {  //Get Name
-            get(message, contentArgs[2]);
+        switch (contentArgs[1]) {
+            case 'add': //Add Person
+                add(message, contentArgs[2]);
+                break;
+            case 'remove': //Remove Person
+                remove(message, contentArgs[2]);
+                break;
+            case 'get':  //Get Name
+                get(message, contentArgs[2]);
+                break;
+            default:
+                message.channel.send("No valid Argument given");
         }
     },
 

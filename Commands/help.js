@@ -36,13 +36,15 @@ function normalHelp(message) {
         let msgcounter = 0;
         let helpcounter = 0;
         let emb = new Discord.RichEmbed().setTitle('General Settings');
+        let adminprefix = fh.get("../Files/local/adminprefix.json");
+        let prefix = fh.get("../Files/local/" + message.guild.id + "/prefix.json");
 
         for (let command in requireDir('.')) {
 
             let res = annotations.getSync('./Commands/' + command + '.js');
 
             if (!res.module) {
-                Logger.log('Error at' + command);
+                Logger.log('Error at ' + command);
                 message.channel.send("Error in help.js, check Log for Details");
             }
 
@@ -50,16 +52,23 @@ function normalHelp(message) {
 
                 let tmpstring = '';
 
-                console.log(res.module);
-
                 for (let annotation in res.module) {
+
                     tmpstring += (annotation ? annotation.charAt(0).toUpperCase() + annotation.slice(1) : 'No AnnotationName') + ': ';
-                    tmpstring += (res.module[annotation] ? res.module[annotation] : 'No AnnotationText') + '\n';
+
+                    if (annotation.toLowerCase() == "usage") {
+                        if (command == 'Admin') {
+                            tmpstring += (res.module[annotation] ? adminprefix + res.module[annotation].slice(11) : 'No AnnotationText') + '\n';
+                        } else {
+                            tmpstring += (res.module[annotation] ? prefix + res.module[annotation].slice(1) : 'No AnnotationText') + '\n';
+                        }
+                    } else {
+                        tmpstring += (res.module[annotation] ? res.module[annotation] : 'No AnnotationText') + '\n';
+                    }
                 }
 
-                if (tmpstring == '') {
+                if (tmpstring == '')
                     tmpstring = 'Error: No Annotations';
-                }
 
                 emb.addField('Command: ' + command, tmpstring);
 
@@ -68,17 +77,16 @@ function normalHelp(message) {
                 if (helpcounter == 25) {
                     message.channel.send(emb);
                     msgcounter++;
-                    emb = new Discord.RichEmbed().setTitle('General Settings ' + msgcounter);;
+                    emb = new Discord.RichEmbed().setTitle('General Settings ' + msgcounter);
                 }
             }
         }
 
-        if (helpcounter > 0) {
+        if (helpcounter > 0)
             message.channel.send(emb);
-        }
 
     } catch (error) {
-        Logger.log(error)
+        Logger.log(error);
     }
 }
 
@@ -94,7 +102,11 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
 
             let comm = music[com];
 
-            emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+            if (com == "play") {
+                emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does).concat('\nRandomisedPlaylist: ').concat(comm.RandomisedPlaylists));
+            } else {
+                emb.addField("Command:   " + com, 'Usage:           '.concat(comm.usage).concat('\nDoes:             ').concat(comm.does));
+            }
 
             helpcounter++;
 
@@ -180,14 +192,13 @@ function nameHelp(message) {
 
         let { validGames } = require('./name');
         let tmp = 'All valid Games that can be added to the List:\n';
-        console.log(validGames);
-        
+
 
         for (let game of validGames) {
             tmp = tmp.concat(game + '\n');
         }
 
-        emb.addField('Valid Games',tmp);
+        emb.addField('Valid Games', tmp);
         message.channel.send(emb);
 
     } catch (error) {

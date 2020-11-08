@@ -13,10 +13,6 @@ module.exports = { //Redirects Shortcuts to Commands
             case 'a':
                 command = 'ask';
                 break;
-            case 'd':
-                message.content = 'dorime';
-                command = 'play';
-                break;
             case 'e':
                 command = 'emoji';
                 break;
