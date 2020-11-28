@@ -1,5 +1,6 @@
 const m3u8stream = require('m3u8stream');
 const https = require('https');
+const Channel = require('./Channel');
 /**
  * @usage !radio <optional: stop> <optional: master.m3u8-Link>
  * @does Plays Internetradio in your Channel
@@ -10,6 +11,11 @@ module.exports = {
       let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
       const voiceChannel = message.member.voiceChannel;
+
+      if (voiceChannel == null) {
+         message.channel.send("Please join a Channel to use this Feature");
+         return;
+      }
 
       if (contentArgs[1] == 'stop') { //Stop playing
          try {
@@ -56,6 +62,9 @@ module.exports = {
             dispatcher.on('end', () => {
                voiceChannel.leave();
             });
+         }).catch(_ => {
+            message.channel.send("Please join a Channel to use this Feature");
+            return;
          });
    }
 }

@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.4: 28.11.2020
+    -Added Message if not in Channel while !radio
+
 4.5.3: 07.11.2020
     -Updated npm Modules
     -Fixed Music not working
