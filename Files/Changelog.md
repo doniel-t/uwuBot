@@ -1,5 +1,11 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.6: 05.12.2020
+    -Fixed Music
+    -Removed ytdl-core-discord Module
+    -Bot cant join Channel if he is already in one
+    -Removed some console.logs
+
 4.5.4: 28.11.2020
     -Added Message if not in Channel while !radio
 

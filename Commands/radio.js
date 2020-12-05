@@ -5,12 +5,14 @@ const Channel = require('./Channel');
  * @usage !radio <optional: stop> <optional: master.m3u8-Link>
  * @does Plays Internetradio in your Channel
  */
+const defaultPlaylist = 'https://1livediggiuni-lh.akamaihd.net/i/1LIVEdiggi_HDS@179579/index_3_a-p.m3u8';
+var voiceChannel;
 module.exports = {
    radio: function (message) {
 
       let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
-      const voiceChannel = message.member.voiceChannel;
+      voiceChannel = message.member.voiceChannel;
 
       if (voiceChannel == null) {
          message.channel.send("Please join a Channel to use this Feature");
@@ -24,7 +26,19 @@ module.exports = {
          return;
       }
 
-      let playlist = 'https://1livediggiuni-lh.akamaihd.net/i/1LIVEdiggi_HDS@179579/index_3_a-p.m3u8'; //Default
+      let inChannel = false;
+      global.bot.voice.connections.every(conn => {
+         if (conn.channel.guild.id == message.guild.id) {
+            inChannel = true;
+         }
+      });
+
+      if (inChannel) {
+         message.channel.send("Im already in a Channel");
+         return;
+      }
+
+      let playlist = defaultPlaylist;//Default
 
       if (contentArgs[1]) {
          let isMaster = contentArgs[1].match(/(.*\/master\.m3u8).*/);

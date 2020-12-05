@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-const ytdldis = require('ytdl-core-discord');
 const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
@@ -36,24 +35,33 @@ var Musicdispatcher = {};
 var Musicconnection = {};
 var MusicQueues = {};
 
-async function playSong(first, Channel) { //Plays a Song
+function playSong(first, Channel) { //Plays a Song
 
     let Song = getNextSong(Channel.guild.id);
     if (!first) Channel.send("Now playing " + Song);
 
-    playyt(Song, Channel.guild.id).then(dispatcher => { //Throws error in console if url isnt valid
-        Musicdispatcher[Channel.guild.id] = dispatcher;
-        Musicdispatcher[Channel.guild.id].on('end', () => {
-            if (MusicQueues[Channel.guild.id].length > 0) {
-                playSong(false, Channel);
-            } else {
-                Channel.send('End of Queue');
-                stop(Channel.guild.id);
-            }
-        })
-    }).catch(_ => { //Skip Song if its not playable (DMCA, private Video, etc.)
+    let stream = ytdl(Song, {
+        filter: "audioonly",
+        quality: 'highestaudio',
+        highWaterMark: 1 << 25,
+        dlChunkSize: 0
+    });
 
+    stream.on('error', err => {
+        Logger.log(err);
+        
         Channel.send('Video not playable, maybe private');
+        if (MusicQueues[Channel.guild.id].length > 0) {
+            playSong(false, Channel);
+        } else {
+            Channel.send('End of Queue');
+            stop(Channel.guild.id);
+        }
+    });
+
+    let dispatcher = Musicconnection[Channel.guild.id].playStream(stream);
+    Musicdispatcher[Channel.guild.id] = dispatcher;
+    Musicdispatcher[Channel.guild.id].on('end', () => {
         if (MusicQueues[Channel.guild.id].length > 0) {
             playSong(false, Channel);
         } else {
@@ -79,7 +87,17 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 
         var Link = contentArgs[1];
 
-        console.log('fdfgfffffffffff');
+        let inChannel = false;
+        global.bot.voice.connections.every(conn => {
+           if (conn.channel.guild.id == message.guild.id) {
+              inChannel = true;
+           }
+        });
+  
+        if (inChannel) {
+           message.channel.send("Im already in a Channel");
+           return;
+        }
 
         //Check if normal Youtube-Video
         if (ytdl.validateURL(Link)) {
@@ -95,7 +113,6 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                 }
             }).catch(ex => {
                 message.channel.send('Video couldn`t be resolved. Use !help music');
-                console.log('asfasfasfasfasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
                 Logger.log(ex);
             })
             return;
@@ -155,20 +172,20 @@ function next(message) {       //Ends current Song
     Musicdispatcher[message.guild.id].end();
 }
 
-async function playyt(url, guildID) {    //Plays the URL
+//function playyt(url, guildID) {    //Plays the URL
 
-    var stream = await ytdldis(url, {
-        filter: "audioonly",
-        quality: 'highestaudio',
-        highWaterMark: 1 << 25
-    });
+//     var stream = ytdl(url, {
+//         filter: "audioonly",
+//         quality: 'highestaudio',
+//         highWaterMark: 1 << 25
+//     });
 
-    stream.on('error', err => {
-        Logger.log(err);
-    });
+//     stream.on('error', err => {
+//         Logger.log(err);
+//     });
 
-    return Musicconnection[guildID].playOpusStream(stream);
-}
+//     return Musicconnection[guildID].playOpusStream(stream);
+// }
 
 function getNextSong(guildID) { //Returns next Song on MusicQueues and deletes it from Queue   
     return MusicQueues[guildID].shift();
