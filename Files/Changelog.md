@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+4.5.7: 08.12.2020
+    -Fixed Playlists not working
+
 4.5.6: 05.12.2020
     -Fixed Music
     -Removed ytdl-core-discord Module

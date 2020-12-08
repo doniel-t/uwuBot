@@ -49,7 +49,7 @@ function playSong(first, Channel) { //Plays a Song
 
     stream.on('error', err => {
         Logger.log(err);
-        
+
         Channel.send('Video not playable, maybe private');
         if (MusicQueues[Channel.guild.id].length > 0) {
             playSong(false, Channel);
@@ -73,6 +73,21 @@ function playSong(first, Channel) { //Plays a Song
 
 function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
+    let inChannel = false;
+    global.bot.voice.connections.every(conn => {
+        if (conn.channel.guild.id == Channel.guild.id) {
+            inChannel = true;
+        }
+    });
+
+    if (inChannel) {
+        Channel.send("Im already in a Channel");
+        MusicQueues[guildID] = undefined;
+        Musicdispatcher[guildID] = undefined;
+        Musicconnection[guildID] = undefined;
+        return;
+    }
+
     global.bot.channels.get(voiceID).join().then(connection => {
         Musicconnection[Channel.guild.id] = connection;
         playSong(true, Channel);
@@ -81,23 +96,11 @@ function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
 async function play(message) { //Adds Music to Queue and starts Playing if not playing already
 
-    if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
+    if (message.member.voiceChannel) { //Only add if User is in a VoiceChannel
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
         var Link = contentArgs[1];
-
-        let inChannel = false;
-        global.bot.voice.connections.every(conn => {
-           if (conn.channel.guild.id == message.guild.id) {
-              inChannel = true;
-           }
-        });
-  
-        if (inChannel) {
-           message.channel.send("Im already in a Channel");
-           return;
-        }
 
         //Check if normal Youtube-Video
         if (ytdl.validateURL(Link)) {
@@ -124,22 +127,25 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
             ytpl(Link, {
                 limit: Infinity
             })
-            .then(playlist => {
+                .then(playlist => {
 
-                for (var song of playlist.items) { //Iterate through Songs in Playlist
-                    addSong(song.url_simple, message.guild.id);
-                }
+                    for (var song of playlist.items) { //Iterate through Songs in Playlist
+                        addSong(song.shortUrl, message.guild.id);
+                    }
 
-                if (contentArgs[2] == 'r') { //Randomise Playlist if wanted
-                    MusicQueues[message.guild.id] = shuffle(MusicQueues[message.guild.id]);
-                }
-
-                if (!Musicconnection[message.guild.id]) {
-                    join(message.author.lastMessage.member.voiceChannelID, message.channel);
-                } else {
-                    message.channel.send("Added Playlist to Queue");
-                }
-            }).catch(_ => { message.channel.send('Playlist couldn`t be resolved. Use !help music'); })
+                    if (contentArgs[2] == 'r') { //Randomise Playlist if wanted
+                        MusicQueues[message.guild.id] = shuffle(MusicQueues[message.guild.id]);
+                    }
+                    
+                    if (!Musicconnection[message.guild.id]) {
+                        join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                    } else {
+                        message.channel.send("Added Playlist to Queue");
+                    }
+                }).catch(ex => {
+                    message.channel.send('Playlist couldn`t be resolved. Use !help music');
+                    Logger.log(ex);
+                })
             return;
         }
 
