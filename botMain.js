@@ -15,7 +15,7 @@ var first = true;
 var commands = requireDir('./Commands');
 
 global.bot.on('error', err => { //ErrorHandling
-    console.error('\nBot crashed, see LogFile for more info\n');
+    console.error('Bot Error, see LogFile for more info\n');
     Logger.log(err);
 })
 
@@ -77,10 +77,10 @@ global.bot.on('message', (message) => { //When Message sent
                 return;
             }
 
-            if (Admin.isAdmin(message)) {
+            if (Admin.isAdmin(message.guild.id,message.author.id)) {
                 Admin[contentArgs[1]](message);
             } else {
-                Logger.log(message.author.username + " executed an Admin command");
+                Logger.log(message.author.username + " tried to execute an Admin command");
                 message.channel.send('You are not an Admin');
             }
 
@@ -88,6 +88,7 @@ global.bot.on('message', (message) => { //When Message sent
             Logger.log(error);
             message.channel.send('Not a admin command');
         }
+        return;
     }
 
     if (contentArgs[0].startsWith(BotID)) { //ChatBot
@@ -119,7 +120,7 @@ function init() {
 
     let names = fh.get('../Files/local/names.json');
 
-    for (let guild of global.bot.guilds) {
+    for (let guild of global.bot.guilds.cache) {
 
         //Init Channels for all Guilds
         let Channels = fh.get('../Files/local/' + guild[0] + '/Channels.json');
@@ -133,11 +134,11 @@ function init() {
 
         if (!StandardChannel) { //AutoPick a StandardChannel if none is set
 
-            for (let ch of guild[1].channels) {
+            for (let ch of guild[1].channels.cache) {
 
                 if (ch[1].type == 'text') {
                     commands.Channel.set('Standard', ch[1].id, guild[1].id);
-                    StandardChannel = global.bot.channels.get(ch[1].id);
+                    StandardChannel = global.bot.channels.cache.get(ch[1].id);
                     break;
                 }
             }
@@ -152,7 +153,7 @@ function init() {
         }
 
         //Init names.json
-        for (let member of guild[1].members) {
+        for (let member of guild[1].members.cache) {
 
             if (!names[member[1].user.id]) { //Create User
                 names[member[1].user.id] = {};
@@ -201,11 +202,11 @@ function serverJoin(guild) {
     global.guilds[guild.id]['settings'] = initset; //Init global.guilds.settings         
 
     //Set StandardChannel
-    for (let ch of guild.channels) {
+    for (let ch of guild.channels.cache) {
 
         if (ch[1].type == 'text') {
             commands.Channel.set('Standard', ch[1].id, guild.id);
-            StandardChannel = global.bot.channels.get(ch[1].id);
+            StandardChannel = global.bot.channels.cache.get(ch[1].id);
             break;
         }
     }
@@ -215,7 +216,7 @@ function serverJoin(guild) {
     global.guilds[guild.id]['prefix'] = '!';
 
     //Add Members to names.json
-    for (let member of guild.members) {
+    for (let member of guild.members.cache) {
 
         if (!names[member[1].user.id]) { //Create User
             names[member[1].user.id] = {};
@@ -234,12 +235,12 @@ function serverJoin(guild) {
     fh.write('names.json', names); //Write names back to names.json
 
     //Init Admins
-    fh.write('Admins.json', [guild.owner.id], guild.id);
-    global.guilds[guild.id]['Admins'] = [guild.owner.id];
+    fh.write('Admins.json', [guild.ownerID], guild.id);
+    global.guilds[guild.id]['Admins'] = [guild.ownerID];
 
     //Ready
     commands.Channel.get('Standard', guild.id).send('Hello, this is the Standard-Channel of the Server, you can talk to me via !, use !help for help\n I have added '
-        + guild.owner.user.username + ' as Admin on this Server');
+        + '<@!' + guild.ownerID + '>' + ' as Admin on this Server');
 }
 
 module.exports = {

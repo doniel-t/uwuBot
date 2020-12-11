@@ -35,7 +35,7 @@ function normalHelp(message) {
     try {
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('General Settings');
+        let emb = new Discord.MessageEmbed().setTitle('General Settings');
         let adminprefix = fh.get("../Files/local/adminprefix.json");
         let prefix = fh.get("../Files/local/" + message.guild.id + "/prefix.json");
 
@@ -77,7 +77,7 @@ function normalHelp(message) {
                 if (helpcounter == 25) {
                     message.channel.send(emb);
                     msgcounter++;
-                    emb = new Discord.RichEmbed().setTitle('General Settings ' + msgcounter);
+                    emb = new Discord.MessageEmbed().setTitle('General Settings ' + msgcounter);
                 }
             }
         }
@@ -96,7 +96,7 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
         const music = fh.get('../Files/helpFiles/musicHelp.json');
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('Music Settings');
+        let emb = new Discord.MessageEmbed().setTitle('Music Settings');
 
         for (let com in music) {
 
@@ -113,7 +113,7 @@ function musicHelp(message) { //prints all Shortcuts in MusicShortcut.json
             if (helpcounter == 25) {
                 message.channel.send(emb);
                 msgcounter++;
-                emb = new Discord.RichEmbed().setTitle('Music Settings ' + msgcounter);;
+                emb = new Discord.MessageEmbed().setTitle('Music Settings ' + msgcounter);;
             }
         }
 
@@ -142,7 +142,7 @@ function whatToDrawHelp(message) {
         const whatToDraw = fh.get('../Files/helpFiles/whatToDrawHelp.json'); //Get File
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('whatToDraw Settings');
+        let emb = new Discord.MessageEmbed().setTitle('whatToDraw Settings');
 
         for (let com in whatToDraw) {
 
@@ -155,7 +155,7 @@ function whatToDrawHelp(message) {
             if (helpcounter == 25) {
                 message.channel.send(emb);
                 msgcounter++;
-                emb = new Discord.RichEmbed().setTitle('whatToDraw Settings ' + msgcounter);;
+                emb = new Discord.MessageEmbed().setTitle('whatToDraw Settings ' + msgcounter);;
             }
         }
 
@@ -173,7 +173,7 @@ function nameHelp(message) {
         const names = fh.get('../Files/helpFiles/nameHelp.json'); //Get File
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('Name Settings');
+        let emb = new Discord.MessageEmbed().setTitle('Name Settings');
 
         for (let com in names) {
 
@@ -186,7 +186,7 @@ function nameHelp(message) {
             if (helpcounter == 25) {
                 message.channel.send(emb);
                 msgcounter++;
-                emb = new Discord.RichEmbed().setTitle('Name Settings ' + msgcounter);;
+                emb = new Discord.MessageEmbed().setTitle('Name Settings ' + msgcounter);;
             }
         }
 
@@ -213,7 +213,7 @@ function adminHelp(message) {
         const functions = annotations.getSync('./Commands/Admin.js');
         let msgcounter = 0;
         let helpcounter = 0;
-        let emb = new Discord.RichEmbed().setTitle('Admin Settings');
+        let emb = new Discord.MessageEmbed().setTitle('Admin Settings');
 
         for (let func in functions) {
 
@@ -233,7 +233,7 @@ function adminHelp(message) {
             if (helpcounter == 25) {
                 message.channel.send(emb);
                 msgcounter++;
-                emb = new Discord.RichEmbed().setTitle('Admin Settings ' + msgcounter);;
+                emb = new Discord.MessageEmbed().setTitle('Admin Settings ' + msgcounter);;
             }
         }
 

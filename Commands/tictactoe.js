@@ -57,7 +57,7 @@ function tictactoe(message) {
 
     isRunning = true;
     message.channel.send("Only two players can join!\nWrite join to join the game!");
-    global.Bot.on('message', listener);
+    global.bot.on('message', listener);
 }
 
 var listener = function(input) { //Listens to all Messages and ends game

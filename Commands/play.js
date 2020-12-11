@@ -15,8 +15,6 @@ module.exports = {
         if (Shortcuts[song] != undefined) {
             message.content = "!p " + Shortcuts[song];
         }
-        
-        console.log(message.content);
 
         Music.play(message); //All Logic is in Music
     },

@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-const ytdldis = require('ytdl-core-discord');
 const ytpl = require('ytpl');
 const Logger = require("./Logger.js");
 
@@ -36,24 +35,33 @@ var Musicdispatcher = {};
 var Musicconnection = {};
 var MusicQueues = {};
 
-async function playSong(first, Channel) { //Plays a Song
+function playSong(first, Channel) { //Plays a Song
 
     let Song = getNextSong(Channel.guild.id);
     if (!first) Channel.send("Now playing " + Song);
 
-    playyt(Song, Channel.guild.id).then(dispatcher => { //Throws error in console if url isnt valid
-        Musicdispatcher[Channel.guild.id] = dispatcher;
-        Musicdispatcher[Channel.guild.id].on('end', () => {
-            if (MusicQueues[Channel.guild.id].length > 0) {
-                playSong(false, Channel);
-            } else {
-                Channel.send('End of Queue');
-                stop(Channel.guild.id);
-            }
-        })
-    }).catch(_ => { //Skip Song if its not playable (DMCA, private Video, etc.)
+    let stream = ytdl(Song, {
+        filter: "audioonly",
+        quality: 'highestaudio',
+        highWaterMark: 1 << 25,
+        dlChunkSize: 0
+    });
+
+    stream.on('error', err => {
+        Logger.log(err);
 
         Channel.send('Video not playable, maybe private');
+        if (MusicQueues[Channel.guild.id].length > 0) {
+            playSong(false, Channel);
+        } else {
+            Channel.send('End of Queue');
+            stop(Channel.guild.id);
+        }
+    });
+
+    let dispatcher = Musicconnection[Channel.guild.id].play(stream);
+    Musicdispatcher[Channel.guild.id] = dispatcher;
+    Musicdispatcher[Channel.guild.id].on('end', () => {
         if (MusicQueues[Channel.guild.id].length > 0) {
             playSong(false, Channel);
         } else {
@@ -65,7 +73,22 @@ async function playSong(first, Channel) { //Plays a Song
 
 function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
-    global.bot.channels.get(voiceID).join().then(connection => {
+    let inChannel = false;
+    global.bot.voice.connections.every(conn => {
+        if (conn.channel.guild.id == Channel.guild.id) {
+            inChannel = true;
+        }
+    });
+
+    if (inChannel) {
+        Channel.send("Im already in a Channel");
+        MusicQueues[guildID] = undefined;
+        Musicdispatcher[guildID] = undefined;
+        Musicconnection[guildID] = undefined;
+        return;
+    }
+
+    global.bot.channels.cache.get(voiceID).join().then(connection => {
         Musicconnection[Channel.guild.id] = connection;
         playSong(true, Channel);
     });
@@ -73,13 +96,11 @@ function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
 async function play(message) { //Adds Music to Queue and starts Playing if not playing already
 
-    if (message.author.lastMessage.member.voiceChannelID) { //Only add if User is in a VoiceChannel
+    if (message.member.voice.channel) { //Only add if User is in a VoiceChannel
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
         var Link = contentArgs[1];
-
-        console.log('fdfgfffffffffff');
 
         //Check if normal Youtube-Video
         if (ytdl.validateURL(Link)) {
@@ -89,13 +110,12 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                 addSong(Link, message.guild.id);
 
                 if (!Musicconnection[message.guild.id]) {
-                    join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                    join(message.author.lastMessage.member.voice.channel.id, message.channel);
                 } else {
                     message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
                 }
             }).catch(ex => {
                 message.channel.send('Video couldn`t be resolved. Use !help music');
-                console.log('asfasfasfasfasfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
                 Logger.log(ex);
             })
             return;
@@ -107,22 +127,25 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
             ytpl(Link, {
                 limit: Infinity
             })
-            .then(playlist => {
+                .then(playlist => {
 
-                for (var song of playlist.items) { //Iterate through Songs in Playlist
-                    addSong(song.url_simple, message.guild.id);
-                }
+                    for (var song of playlist.items) { //Iterate through Songs in Playlist
+                        addSong(song.shortUrl, message.guild.id);
+                    }
 
-                if (contentArgs[2] == 'r') { //Randomise Playlist if wanted
-                    MusicQueues[message.guild.id] = shuffle(MusicQueues[message.guild.id]);
-                }
-
-                if (!Musicconnection[message.guild.id]) {
-                    join(message.author.lastMessage.member.voiceChannelID, message.channel);
-                } else {
-                    message.channel.send("Added Playlist to Queue");
-                }
-            }).catch(_ => { message.channel.send('Playlist couldn`t be resolved. Use !help music'); })
+                    if (contentArgs[2] == 'r') { //Randomise Playlist if wanted
+                        MusicQueues[message.guild.id] = shuffle(MusicQueues[message.guild.id]);
+                    }
+                    
+                    if (!Musicconnection[message.guild.id]) {
+                        join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                    } else {
+                        message.channel.send("Added Playlist to Queue");
+                    }
+                }).catch(ex => {
+                    message.channel.send('Playlist couldn`t be resolved. Use !help music');
+                    Logger.log(ex);
+                })
             return;
         }
 
@@ -136,7 +159,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
     try {
         MusicQueues[guildID] = [];
-        global.bot.channels.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
+        global.bot.channels.cache.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
     } catch (ignored) { }
     MusicQueues[guildID] = undefined;
     Musicdispatcher[guildID] = undefined;
@@ -155,20 +178,20 @@ function next(message) {       //Ends current Song
     Musicdispatcher[message.guild.id].end();
 }
 
-async function playyt(url, guildID) {    //Plays the URL
+//function playyt(url, guildID) {    //Plays the URL
 
-    var stream = await ytdldis(url, {
-        filter: "audioonly",
-        quality: 'highestaudio',
-        highWaterMark: 1 << 25
-    });
+//     var stream = ytdl(url, {
+//         filter: "audioonly",
+//         quality: 'highestaudio',
+//         highWaterMark: 1 << 25
+//     });
 
-    stream.on('error', err => {
-        Logger.log(err);
-    });
+//     stream.on('error', err => {
+//         Logger.log(err);
+//     });
 
-    return Musicconnection[guildID].playOpusStream(stream);
-}
+//     return Musicconnection[guildID].playOpusStream(stream);
+// }
 
 function getNextSong(guildID) { //Returns next Song on MusicQueues and deletes it from Queue   
     return MusicQueues[guildID].shift();

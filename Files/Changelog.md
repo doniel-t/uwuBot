@@ -1,5 +1,20 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+5.0.0: 11.12.2020
+    -Updated to discord.js v12.5.1
+
+4.5.7: 08.12.2020
+    -Fixed Playlists not working
+
+4.5.6: 05.12.2020
+    -Fixed Music
+    -Removed ytdl-core-discord Module
+    -Bot cant join Channel if he is already in one
+    -Removed some console.logs
+
+4.5.4: 28.11.2020
+    -Added Message if not in Channel while !radio
+
 4.5.3: 07.11.2020
     -Updated npm Modules
     -Fixed Music not working

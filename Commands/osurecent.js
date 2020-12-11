@@ -51,7 +51,7 @@ module.exports = {
             let percentagePassed = (ScoreCount / ObjectCount) * 100;
             let parsedMods = result[1];
 
-            let emb = new Discord.RichEmbed()
+            let emb = new Discord.MessageEmbed()
                 .setTitle(recentScore._beatmap.artist + ' - ' + recentScore._beatmap.title)
                 .setURL('https://osu.ppy.sh/beatmapsets/' + recentScore._beatmap.beatmapSetId + '#osu/' + recentScore._beatmap.id)
                 .setColor('#0099ff')
@@ -66,12 +66,12 @@ module.exports = {
             if (!(parsedMods === "" || parsedMods == null)) {
                 emb.addField('Mods', parsedMods, true);
             } else {
-                emb.addBlankField(true);
+                emb.addField('\u200b', '\u200b',true);
             }
 
             emb.addField('Difficulty', recentScore._beatmap.version, true)
                 .addField('StarRating', parseFloat(recentScore._beatmap.difficulty.rating).toFixed(2), true)
-                .addBlankField(true)
+                emb.addField('\u200b', '\u200b',true);
 
 
             emb.addField('Accuracy', Acc + '%', true)
@@ -96,6 +96,6 @@ function getosuName(message) {       //Gives back a NameString
 }
 
 function getEmoji(emojiName) {
-    let emoji = global.bot.emojis.find(e => e.name == emojiName);   //get Emoji from Server
+    let emoji = global.bot.emojis.cache.find(e => e.name == emojiName);   //get Emoji from Server
     return emoji ? '<:' + emoji.name + ':' + emoji.id + '>' : emojiName; //Build emojiString
 }

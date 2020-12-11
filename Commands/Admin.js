@@ -36,11 +36,8 @@ module.exports = {
      * @does Checks if User that called an AdminCommand is an Admin or Developer
      * @returns boolean
      */
-    isAdmin: function (message) {
-        if (this.isDev(message))
-            return true;
-
-        return global.guilds[message.guild.id]['Admins'].includes(message.author.id);
+    isAdmin: function (guildid, id) {
+        return isAdmin(guildid, id);
     },
 
     /**
@@ -48,8 +45,8 @@ module.exports = {
      * @does Checks if User that called an AdminCommand is a Developer
      * @returns boolean
      */
-    isDev: function (message) {
-        return Devs.includes(message.author.id);
+    isDev: function (id) {
+        return isDev(id);
     },
 
     /**
@@ -57,7 +54,7 @@ module.exports = {
      * @DevOnly
      */
     update: function (message) {
-        if (this.isDev(message)) {
+        if (this.isDev(message.author.id)) {
             message.channel.send("Updating now").then(_ => {
 
                 spawn('start', ['cmd.exe', '/c', '.\\Files\\Updater.bat'], { shell: true })
@@ -75,7 +72,7 @@ module.exports = {
      * @DevOnly
      */
     stop: function (message) {
-        if (this.isDev(message)) {
+        if (this.isDev(message.author.id)) {
             if (stopvar) {
 
                 message.channel.send("Stopping now").then(_ => {
@@ -100,7 +97,7 @@ module.exports = {
      * @DevOnly
      */
     restart: function (message) {
-        if (this.isDev(message)) {
+        if (this.isDev(message.author.id)) {
             message.channel.send('Restarting now').then(_ => {
 
                 spawn('start', ['cmd.exe', '/c', 'run.bat'], { shell: true })
@@ -155,7 +152,7 @@ module.exports = {
         var msg;
 
         var writeMessage = function () { //Returns Embed Message
-            var emb = new Discord.RichEmbed().setTitle('Settings (Will be removed after 5 minutes)');
+            var emb = new Discord.MessageEmbed().setTitle('Settings (Will be removed after 5 minutes)');
 
             let i = 0;
             for (let setting in global.guilds[message.guild.id]['settings']) {
@@ -166,18 +163,20 @@ module.exports = {
             return emb;
         }
 
-        var listener = function (emoji) { //EmojiListener
+        var listener = function (emoji, user) { //EmojiListener
 
-            emoji.users.delete(global.bot.user.id);
+            emoji.users.cache.delete(global.bot.user.id);
 
             if (global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] == undefined)
                 return;
 
-            for (let user of emoji.users) {
+                Logger.log(emoji.users.cache);
 
-                if (Devs.includes(user[0])) { //to be changed to perSever-Check
+            for (let user of emoji.users.cache) {
 
-                    msg.clearReactions();
+                if (isAdmin(message.guild.id, user[1].id)) {
+
+                    emoji.remove();
 
                     global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] = !global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]];
 
@@ -203,7 +202,7 @@ module.exports = {
             collector = ans.createReactionCollector(x => true); //Emoji Listener
             collector.on('collect', listener);
 
-            ans.delete(300000); //Delete Message after 5 minutes
+            ans.delete({ timeout: 300_000 }); //Delete Message after 5 minutes
         })
     },
     /**
@@ -215,7 +214,7 @@ module.exports = {
         let user = message.content.substring(message.content.indexOf(' ') + 9);
         user = user.substring(4, user.length - 1);
 
-        if (!global.bot.users.find(u => u.id == user)) {
+        if (!global.bot.users.cache.find(u => u.id == user)) {
             message.channel.send('No User tagged');
             return;
         }
@@ -239,7 +238,7 @@ module.exports = {
         let user = message.content.substring(message.content.indexOf(' ') + 12);
         user = user.substring(4, user.length - 1);
 
-        if (!global.bot.users.find(u => u.id == user)) {
+        if (!global.bot.users.cache.find(u => u.id == user)) {
             message.channel.send('No User tagged');
             return;
         }
@@ -285,14 +284,25 @@ module.exports = {
      * @note only Devs can use this
      */
     reload: function (message) {
-        if (this.isDev(message))
+        if (this.isDev(message.author.id))
             message.channel.send(require('../botMain').reload());
     }
 }
 
+function isAdmin(guildid, id) {
+    if (isDev(id))
+        return true;
+
+    return global.guilds[guildid]['Admins'].includes(id);
+}
+
+function isDev(id) {
+    return Devs.includes(id);
+}
+
 var Devs = [ //Add DiscordID for DevAccess
     '270929192399536138', //ackhack
-    '222398053703876628' //Human Daniel
+    '222398053703876628'  //Human Daniel
 ]
 
 var stopvar = false;

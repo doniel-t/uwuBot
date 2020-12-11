@@ -59,7 +59,7 @@ module.exports = {
 }
 
 function makeEmbed(players,gameInfo) {
-    return new Discord.RichEmbed().setColor('#0099ff').setTitle(gameInfo)
+    return new Discord.MessageEmbed().setColor('#0099ff').setTitle(gameInfo)
 
         .addField("Blue Team", '[' + players[0].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[0].name.replace(/ /g, '_') + ')\n' +
             '[' + players[1].name + '](' + 'https://euw.op.gg/summoner/userName=' + players[1].name.replace(/ /g, '_') + ')\n' +
