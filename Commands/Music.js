@@ -59,7 +59,7 @@ function playSong(first, Channel) { //Plays a Song
         }
     });
 
-    let dispatcher = Musicconnection[Channel.guild.id].playStream(stream);
+    let dispatcher = Musicconnection[Channel.guild.id].play(stream);
     Musicdispatcher[Channel.guild.id] = dispatcher;
     Musicdispatcher[Channel.guild.id].on('end', () => {
         if (MusicQueues[Channel.guild.id].length > 0) {
@@ -88,7 +88,7 @@ function join(voiceID, Channel) { //Joins VoiceChannel of Caller
         return;
     }
 
-    global.bot.channels.get(voiceID).join().then(connection => {
+    global.bot.channels.cache.get(voiceID).join().then(connection => {
         Musicconnection[Channel.guild.id] = connection;
         playSong(true, Channel);
     });
@@ -96,7 +96,7 @@ function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
 async function play(message) { //Adds Music to Queue and starts Playing if not playing already
 
-    if (message.member.voiceChannel) { //Only add if User is in a VoiceChannel
+    if (message.member.voice.channel) { //Only add if User is in a VoiceChannel
 
         let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
@@ -110,7 +110,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                 addSong(Link, message.guild.id);
 
                 if (!Musicconnection[message.guild.id]) {
-                    join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                    join(message.author.lastMessage.member.voice.channel.id, message.channel);
                 } else {
                     message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
                 }
@@ -159,7 +159,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
     try {
         MusicQueues[guildID] = [];
-        global.bot.channels.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
+        global.bot.channels.cache.get(Musicconnection[guildID].channel.id).leave(); //Can fail if Bot is kicked from Channel
     } catch (ignored) { }
     MusicQueues[guildID] = undefined;
     Musicdispatcher[guildID] = undefined;

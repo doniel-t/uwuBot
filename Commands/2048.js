@@ -1,3 +1,5 @@
+const Logger = require("./Logger");
+
 var ogmessage;
 var gamemessage;
 var isRunning = false;
@@ -38,7 +40,7 @@ function start(message) {
         addNumber();
         addNumber();
         updateField();
-        collector = gamemessage.createReactionCollector(m => m.users.has(ogmessage.author.id));
+        collector = gamemessage.createReactionCollector(m => m.users.cache.has(ogmessage.author.id));
         collector.on('collect', listener);
         messageReact();
     });
@@ -134,10 +136,8 @@ var listener = function (emoji) {   //Processes the Input of Player
 
     addNumber();
     updateField();
-    gamemessage.clearReactions();   //Resets Reactions
-    setTimeout(() => {
-        messageReact();
-    }, 100);
+    emoji.remove();   //Resets Reaction
+    gamemessage.react(emoji._emoji.name);
 }
 
 function calcMove(dir) {    //DOWN -> RIGHT

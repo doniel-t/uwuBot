@@ -15,7 +15,7 @@ module.exports = {
             return;
         }
 
-        var emoji = global.bot.emojis.find(e => e.name.toLowerCase() == contentArgs[1]);   //get Emoji from Server
+        var emoji = global.bot.emojis.cache.find(e => e.name.toLowerCase() == contentArgs[1]);   //get Emoji from Server
 
         if (emoji == null) { //Error detection
             message.channel.send('No Emoji found with this name');
@@ -41,7 +41,7 @@ module.exports = {
 
             word = word.toLowerCase();
 
-            let emoji = global.bot.emojis.find(e => e.name.toLowerCase() == word);   //Find emoji
+            let emoji = global.bot.emojis.cache.find(e => e.name.toLowerCase() == word);   //Find emoji
 
             if (emoji) {
                 sendMessage = sendMessage.concat(getEmojiString(emoji));
@@ -67,7 +67,7 @@ function getEmojiString(emoji) {
 function printAll(message) {
     let sendMessage = '';
     let counter = 0;
-    for (let val of global.bot.emojis) {
+    for (let val of global.bot.emojis.cache) {
         sendMessage = sendMessage.concat(getEmojiString(val[1]));
         counter++;
         if (counter == 27) {

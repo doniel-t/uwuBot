@@ -37,7 +37,7 @@ module.exports = {
 
 function get(name, guildID) {
    try {
-      return global.bot.channels.get(global.guilds[guildID][name]);
+      return global.bot.channels.cache.get(global.guilds[guildID][name]);
    } catch (err) {     
       Logger.log(err);
       return undefined;
@@ -58,14 +58,14 @@ function set(name, channelID, guildID) {
 
 function getAll(name) {
    let arr = {};
-   for (let guild of global.bot.guilds) {
+   for (let guild of global.bot.guilds.cache) {
       arr[guild.id] = get(name, guild.id);
    }
    return arr;
 }
 
 function sendAll(name, msg) {
-   for (let guild of global.bot.guilds) {
+   for (let guild of global.bot.guilds.cache) {
       try {
          get(name, guild[0]).send(msg);
       }catch (ignored) {}

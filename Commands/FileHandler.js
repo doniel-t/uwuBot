@@ -60,7 +60,7 @@ module.exports = {
 
         const initset = require('../Files/initsettings.json');
 
-        for (let guild of global.bot.guilds) {
+        for (let guild of global.bot.guilds.cache) {
 
             global.guilds[guild[0]] = {}; //Init global.guilds
 
@@ -84,7 +84,7 @@ module.exports = {
             }
 
             for (let setting in initset) { //Test for new Settings in initsettings.json
-                if (isNullOrUndefined(set[setting])) {
+                if (set[setting] === null || set[setting] === undefined) {
                     set[setting] = initset[setting];
                 }
             }

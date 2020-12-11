@@ -209,7 +209,7 @@ var listener = function (guess) {   //Processes Answers
                     }
                 } else {//ALREADY CHECKED
                     ogmessage.channel.send('Already checked that Field').then(check => {
-                        check.delete(1000);
+                        check.delete({ timeout: 1_000 });
                     })
                 }
             }

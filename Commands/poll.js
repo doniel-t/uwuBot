@@ -26,7 +26,7 @@ module.exports = {
                 }
             }
 
-            let Embed = new Discord.RichEmbed().setTitle(title);  //Build an Embeded Message
+            let Embed = new Discord.MessageEmbed().setTitle(title);  //Build an Embeded Message
 
             for (let p = 0; p < args.length; p++) {
                 Embed.addField(getEmote(p) + ' ' + args[p], '----');

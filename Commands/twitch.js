@@ -70,7 +70,7 @@ function autoCheck() {
 
     ws.on('open', function open() {
 
-        for (let guild of global.bot.guilds) { //Create Pairs for different Guilds
+        for (let guild of global.bot.guilds.cache) { //Create Pairs for different Guilds
             Pairs[guild[0]] = {
                 id: guild[0],
                 TwitchChannel: Channel.get('Twitch', guild[0]),

@@ -36,7 +36,7 @@ module.exports = {
             scores = result[0];
             AccArray = result[1];
             
-            let emb = new Discord.RichEmbed()
+            let emb = new Discord.MessageEmbed()
                 .setTitle(name + '`s Top 5 Plays');
             for (let index = 0; index < 5; index++) {
                 let Link = '[' + [scores[index]._beatmap.title] + '](https://osu.ppy.sh/beatmapsets/' + scores[index]._beatmap.beatmapSetId + '#osu/' + scores[index]._beatmap.id + ')';

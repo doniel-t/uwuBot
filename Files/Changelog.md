@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+5.0.0: 11.12.2020
+    -Updated to discord.js v12.5.1
+
 4.5.7: 08.12.2020
     -Fixed Playlists not working
 
