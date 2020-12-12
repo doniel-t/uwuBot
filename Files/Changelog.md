@@ -1,5 +1,8 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+5.0.1: 12.12.2020
+    -Fixed Music not working
+
 5.0.0: 11.12.2020
     -Updated to discord.js v12.5.1
 

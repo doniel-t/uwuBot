@@ -110,7 +110,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                 addSong(Link, message.guild.id);
 
                 if (!Musicconnection[message.guild.id]) {
-                    join(message.author.lastMessage.member.voice.channel.id, message.channel);
+                    join(message.member.voice.channel.id, message.channel);
                 } else {
                     message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
                 }
@@ -138,7 +138,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                     }
                     
                     if (!Musicconnection[message.guild.id]) {
-                        join(message.author.lastMessage.member.voiceChannelID, message.channel);
+                        join(message.member.voice.channel.id, message.channel);
                     } else {
                         message.channel.send("Added Playlist to Queue");
                     }
