@@ -64,7 +64,7 @@ function getTimeUntil(hour) {  //Returns time in ms until hour
 //Sends msg to all StandardChannels that have automatedMessages enabled
 function sendMessage(msg) {
 
-    for (let guild of global.bot.guilds) {
+    for (let guild of global.bot.guilds.cache) {
         try {
             if (global.guilds[guild[0]].settings.automatedMessages) {
                 Channel.get('Standard', guild[0]).send(msg);
