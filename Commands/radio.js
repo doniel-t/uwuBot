@@ -69,14 +69,12 @@ module.exports = {
 
       voiceChannel.join() //Playing logic
          .then(connnection => {
-            let stream = m3u8stream(playlist, {
-               chunkReadahead: 20,
-               highWaterMark: 1 << 25
-            });
-            const dispatcher = connnection.play(stream);
-            dispatcher.on('end', () => {
+            let stream = m3u8stream(playlist);
+
+            connnection.play(stream).on('end', () => {
                voiceChannel.leave();
-            });
+            });;
+
          }).catch(ex => {
             message.channel.send("Please join a Channel to use this Feature");
             Logger.log(ex);
