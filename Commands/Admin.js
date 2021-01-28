@@ -170,8 +170,6 @@ module.exports = {
             if (global.guilds[message.guild.id]['settings'][etn[emoji._emoji.name]] == undefined)
                 return;
 
-                Logger.log(emoji.users.cache);
-
             for (let user of emoji.users.cache) {
 
                 if (isAdmin(message.guild.id, user[1].id)) {

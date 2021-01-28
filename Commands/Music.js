@@ -41,9 +41,7 @@ function playSong(first, Channel) { //Plays a Song
     if (!first) Channel.send("Now playing " + Song);
 
     let stream = ytdl(Song, {
-        filter: "audioonly",
-        quality: 'highestaudio',
-        highWaterMark: 1 << 25,
+        format: 'audioonly',
         dlChunkSize: 0
     });
 
@@ -59,15 +57,16 @@ function playSong(first, Channel) { //Plays a Song
         }
     });
 
-    let dispatcher = Musicconnection[Channel.guild.id].play(stream);
-    Musicdispatcher[Channel.guild.id] = dispatcher;
-    Musicdispatcher[Channel.guild.id].on('end', () => {
-        if (MusicQueues[Channel.guild.id].length > 0) {
-            playSong(false, Channel);
-        } else {
-            Channel.send('End of Queue');
-            stop(Channel.guild.id);
-        }
+    Musicdispatcher[Channel.guild.id] = Musicconnection[Channel.guild.id].play(stream);
+    Musicdispatcher[Channel.guild.id].on('speaking', speaking => {
+
+        if (!speaking)
+            if (MusicQueues[Channel.guild.id].length > 0) {
+                playSong(false, Channel);
+            } else {
+                Channel.send('End of Queue');
+                stop(Channel.guild.id);
+            }
     })
 }
 
@@ -82,9 +81,9 @@ function join(voiceID, Channel) { //Joins VoiceChannel of Caller
 
     if (inChannel) {
         Channel.send("Im already in a Channel");
-        MusicQueues[guildID] = undefined;
-        Musicdispatcher[guildID] = undefined;
-        Musicconnection[guildID] = undefined;
+        MusicQueues[Channel.guild.id] = undefined;
+        Musicdispatcher[Channel.guild.id] = undefined;
+        Musicconnection[Channel.guild.id] = undefined;
         return;
     }
 
@@ -109,7 +108,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
 
                 addSong(Link, message.guild.id);
 
-                if (!Musicconnection[message.guild.id]) {
+                if (!Musicdispatcher[message.guild.id]) {
                     join(message.member.voice.channel.id, message.channel);
                 } else {
                     message.channel.send("Added Song to Queue: " + MusicQueues[message.guild.id].length);
@@ -136,7 +135,7 @@ async function play(message) { //Adds Music to Queue and starts Playing if not p
                     if (contentArgs[2] == 'r') { //Randomise Playlist if wanted
                         MusicQueues[message.guild.id] = shuffle(MusicQueues[message.guild.id]);
                     }
-                    
+
                     if (!Musicconnection[message.guild.id]) {
                         join(message.member.voice.channel.id, message.channel);
                     } else {
@@ -167,7 +166,7 @@ function stop(guildID) {       //Stops Music, cleares Queue and leaves Channel
 }
 
 function pause(message) {      //Stops Music, remains Queue and stays in Channel
-    Musicdispatcher[message.guild.id].pause();
+    Musicdispatcher[message.guild.id].pause(true);
 }
 
 function resume(message) {     //Returns Music if pause was called before

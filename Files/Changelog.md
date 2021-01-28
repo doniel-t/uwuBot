@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+5.0.2: 26.12.2020
+    -Fixed Music
+    -fixed radio
+
 5.0.1: 12.12.2020
     -Fixed Music not working
     -Fixed Bot crashing when Auto.js triggers
