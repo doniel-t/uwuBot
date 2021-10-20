@@ -1,6 +1,6 @@
 /**
  * @usage !setAnnoy <@targeted_user> <#channel>
- * @does sets the parameters for the readToAnnoy command
+ * @does  pings a user very time a message is posted in a specific channel
  */
 module.export = {
 
@@ -26,5 +26,18 @@ module.export = {
             output = input.slice(2, -1);
         }
         return output;
+    },
+
+    readToAnnoy: function(){
+        let fs = require('fs');
+        let annoyObject ={
+            userId: null,
+            channelId: null
+        }
+        fs.readFile('ToAnnoyData.json'), (err, data) =>{
+            if(err) throw err;
+            annoyObject = JSON.parse(data);
+        }
+        return annoyObject;
     }
 }
