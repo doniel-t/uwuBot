@@ -34,6 +34,12 @@ global.bot.on('message', (message) => { //When Message sent
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
 
+
+    let annoyObject = commands.readToAnnoy(); 
+        if(message.channel.id == annoyObject.channeId){      //checks and executions the annoy command
+            message.channel.send(`<@${annoyObject.userId}>`);
+        }
+
     if (message.content.startsWith(global.guilds[message.guild.id]['prefix'])) {
 
         let command = message.content.substring(global.guilds[message.guild.id]['prefix'].length); //Get commandName
