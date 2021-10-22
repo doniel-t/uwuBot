@@ -5,6 +5,7 @@ const Admin = require('./Commands/Admin.js');
 const fh = require('./Commands/FileHandler');
 const { version } = require('./package.json');
 const adminprefix = fh.get('../Files/local/adminprefix.json');
+const annoyFs = require("./Commands/setAnnoy");
 
 const debug = false; //true > no ready-message and BackgroundTasks
 global.bot = new Discord.Client();
@@ -33,6 +34,11 @@ global.bot.on('message', (message) => { //When Message sent
     if (message.channel.type != 'text') { return; } //If Channel is not TextChannel, return
 
     let contentArgs = message.content.split(" "); //Split Message for simpler Access
+
+    let annoyObject = annoyFs.readToAnnoy();
+        if(message.channel.id == annoyObject.channelId){      //checks and executions the annoy command
+            message.channel.send(`<@${annoyObject.userId}>`);
+        }
 
     if (message.content.startsWith(global.guilds[message.guild.id]['prefix'])) {
 
