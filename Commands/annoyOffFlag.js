@@ -9,7 +9,7 @@ module.exports = {
         let annoyFs = require("./setAnnoy");
         let content = message.content.split(" ")
         if(content.length != 2){
-            message.channel.send("invalid input_0");
+            message.channel.send("invalid input");
             return;
         }
         if(content[1] === "1"){
@@ -21,6 +21,6 @@ module.exports = {
             message.channel.send("annoy online");
             return;
         }
-        message.channel.send("invalid input_1");
+        message.channel.send("invalid input");
     }
 }
