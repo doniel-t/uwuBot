@@ -1,5 +1,5 @@
 /**
- * @usage !setAnnoy <@targeted_user> <#channel>
+ * @usage !setAnnoy <@targeted_user> <#channel> || !setAnnoy <true | false>
  * @does  pings a user very time a message is posted in a specific channel
  */
 module.exports = {
@@ -8,6 +8,18 @@ module.exports = {
     setAnnoy: function(message){
         let fs = require('fs');
         let content = message.content.split(" ");
+        if(content.length === 2){
+            try{
+                this.switch = JSON.parse(content[1].toLowerCase());
+                message.channel.send("annoy set to " + this.switch + "😎")
+                return;
+            }catch{
+                this.switch = false;
+                message.channel.send("annoy set to " + this.switch + "😎")
+                return;
+            }
+        }
+
         if(content.length != 3) message.channel.send("invalid input");     
         if(this.getId(content[1], '@') === "" || this.getId(content[2], '#') === ""){
             message.channel.send("invalid input");
