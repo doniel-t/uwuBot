@@ -1,5 +1,10 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+5.0.4: 22.10.2021
+    -Added setAnnoy-command
+    -Added annoyOffFlag-command
+    -Added ToAnnoyData.json
+
 5.0.3: 24.04.2021
     -Updated Packages
 
