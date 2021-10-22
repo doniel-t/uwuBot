@@ -1,5 +1,9 @@
 //CHANGE VERSION && SET DEBUG TO FALSE AGAIN
 
+5.0.5: 22.10.2021
+    -updated the setAnnoy-command to also include annoyOffFlag
+    -removed annoyOffFlag
+
 5.0.4: 22.10.2021
     -Added setAnnoy-command
     -Added annoyOffFlag-command
