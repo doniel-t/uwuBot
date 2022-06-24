@@ -1,4 +1,4 @@
-git clone https://github.com/danieltheil/uwuBot.git
+git clone https://github.com/doniel-t/uwuBot.git
 cd uwuBot
 call npm install
 git config merge.theirs.name "Keep changes of upstream branch"
