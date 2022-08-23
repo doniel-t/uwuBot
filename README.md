@@ -1,3 +1,6 @@
+# Newer Version of the Bot is available [here](https://github.com/doniel-t/uwu-botv2)
+
+
 # Requires:
 * a DiscordBotToken
 
